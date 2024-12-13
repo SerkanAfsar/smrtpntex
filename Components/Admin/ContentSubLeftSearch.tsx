@@ -56,8 +56,8 @@ export default function ContentSubLeftSearch({
   }, [searchKey, selectedType, variables]);
 
   return (
-    <section className="ml-[62px] flex flex-col border-r bg-white">
-      <div className="flex w-[320px] flex-col gap-3 p-4">
+    <section className="ml-[62px] flex w-[320px] flex-col border-r bg-white">
+      <div className="flex w-full flex-col gap-3 p-4">
         <div className="mb-4 flex items-center justify-between gap-3">
           <h3>{title}</h3>
           <div className="flex items-center gap-3">
@@ -105,8 +105,7 @@ export default function ContentSubLeftSearch({
         />
       </div>
       <hr />
-
-      <div className="w-[320px] flex-1 flex-col gap-3 overflow-auto overscroll-contain p-4">
+      <div className="w-full flex-1 flex-col gap-3 overflow-auto overscroll-contain p-4">
         {tempDataResult.map((item, index) => (
           <div
             className="group flex w-full cursor-pointer items-center justify-between gap-3 rounded-md p-3 text-sm transition-all hover:bg-blue-100"

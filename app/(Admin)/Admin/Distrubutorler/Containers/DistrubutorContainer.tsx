@@ -34,7 +34,7 @@ export default function DistrubutorContainer({
     ]),
   );
   return (
-    <div className={cn("flex flex-1 bg-adminBgColor transition-all")}>
+    <>
       <ContentSubLeftSearch
         actionOne={() => {
           alert("test");
@@ -77,16 +77,14 @@ export default function DistrubutorContainer({
             />
           </>
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-adminBgColor">
-            <NotSelected
-              title="Distribütör"
-              action={() => toggleOpened()}
-              buttonTitle="Distribütör Ekle"
-            />
-          </div>
+          <NotSelected
+            title="Distribütör"
+            action={() => toggleOpened()}
+            buttonTitle="Distribütör Ekle"
+          />
         )}
       </ContentWithInfoSection>
       <AddEditDistrubutorModal />
-    </div>
+    </>
   );
 }

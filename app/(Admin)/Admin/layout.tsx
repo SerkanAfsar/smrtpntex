@@ -4,7 +4,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex h-screen w-full">
       <LeftSection />
-      <div className="flex flex-1">{children}</div>
+      <div className="flex flex-1 bg-adminBgColor transition-all">
+        {children}
+      </div>
     </div>
   );
 }

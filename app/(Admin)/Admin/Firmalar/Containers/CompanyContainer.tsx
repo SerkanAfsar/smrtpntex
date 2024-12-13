@@ -27,12 +27,11 @@ export default function CompaniesContainer({
     useShallow((state) => [
       state.toggleOpened,
       state.selectedId,
-
       state.setSelectedCompany,
     ]),
   );
   return (
-    <div className={cn("flex flex-1 bg-adminBgColor transition-all")}>
+    <>
       <ContentSubLeftSearch
         actionOne={() => {
           alert("test");
@@ -50,9 +49,9 @@ export default function CompaniesContainer({
         }))}
         selectAction={selectAction}
       />
-      {selectedId ? (
-        <>
-          <ContentWithInfoSection>
+      <ContentWithInfoSection>
+        {selectedId ? (
+          <>
             <AdminTopSection className="border-b">
               <CustomButton
                 className="gap-1 bg-gray-900 p-2 text-white"
@@ -73,19 +72,16 @@ export default function CompaniesContainer({
               convertAction={returnCarItem}
               apiUrl="/api/cars/getlist"
             />
-          </ContentWithInfoSection>
-        </>
-      ) : (
-        <div className="flex h-full w-full items-center justify-center bg-adminBgColor">
+          </>
+        ) : (
           <NotSelected
             title="Firma"
             action={() => toggleOpened()}
             buttonTitle="Firma Ekle"
           />
-        </div>
-      )}
-
+        )}
+      </ContentWithInfoSection>
       <AddEditCompanyModal />
-    </div>
+    </>
   );
 }

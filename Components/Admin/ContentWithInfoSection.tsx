@@ -6,7 +6,7 @@ export default function ContentWithInfoSection({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-screen flex-auto flex-col overflow-auto overscroll-contain">
+    <div className="flex h-screen flex-1 flex-col overflow-auto overscroll-contain">
       {children}
     </div>
   );

@@ -42,6 +42,19 @@ const CustomGrid = React.forwardRef<
           ref={ref}
           {...rest}
           columns={cols}
+          language={{
+            pagination: {
+              previous: "Önceki",
+              next: "Sonraki",
+              showing: " ",
+              results: " veri gösteriliyor",
+              to: " ",
+              of: "/",
+            },
+            search: {
+              placeholder: "Arama yapın...",
+            },
+          }}
           pagination={{
             limit: 10,
             server: {
