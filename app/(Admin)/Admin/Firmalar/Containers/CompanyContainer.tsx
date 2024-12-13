@@ -15,6 +15,7 @@ import CompaniesCustomSearch from "../Components/CompaniesCustomSearch";
 import { CompanyType } from "@/Types/Company.Types";
 import { useCompanyModal } from "@/store/useCompanyModal";
 import AddEditCompanyModal from "../Components/AddEditCompanyModal";
+import NotSelected from "@/Components/Admin/NotSelected";
 
 export default function CompaniesContainer({
   dataResult,
@@ -22,11 +23,16 @@ export default function CompaniesContainer({
   dataResult: PaginationType<CompanyType>;
 }) {
   const [keywords, setKeywords] = useState<string>();
-  const toggleOpened = useCompanyModal(
-    useShallow((state) => state.toggleOpened),
+  const [toggleOpened, selectedId, selectAction] = useCompanyModal(
+    useShallow((state) => [
+      state.toggleOpened,
+      state.selectedId,
+
+      state.setSelectedCompany,
+    ]),
   );
   return (
-    <div className={cn("flex bg-adminBgColor transition-all")}>
+    <div className={cn("flex flex-1 bg-adminBgColor transition-all")}>
       <ContentSubLeftSearch
         actionOne={() => {
           alert("test");
@@ -42,29 +48,43 @@ export default function CompaniesContainer({
           value: item.Id.toString(),
           active: item.IsActive,
         }))}
+        selectAction={selectAction}
       />
-      <ContentWithInfoSection>
-        <AdminTopSection className="border-b">
-          <CustomButton
-            className="gap-1 bg-gray-900 p-2 text-white"
-            title="Tüm Satışlar"
+      {selectedId ? (
+        <>
+          <ContentWithInfoSection>
+            <AdminTopSection className="border-b">
+              <CustomButton
+                className="gap-1 bg-gray-900 p-2 text-white"
+                title="Tüm Satışlar"
+              />
+              <CustomButton
+                className="gap-1 bg-green-100 p-2 text-green-600"
+                icon={ExportCsvIcon}
+                title="Dışa Aktar"
+              />
+            </AdminTopSection>
+            <CompaniesCustomSearch setKeywords={setKeywords} />
+            <CustomGrid
+              search={false}
+              columns={AraclarDatatableProps.columns}
+              pagination={true}
+              sort={true}
+              convertAction={returnCarItem}
+              apiUrl="/api/cars/getlist"
+            />
+          </ContentWithInfoSection>
+        </>
+      ) : (
+        <div className="flex h-full w-full items-center justify-center bg-adminBgColor">
+          <NotSelected
+            title="Firma"
+            action={() => toggleOpened()}
+            buttonTitle="Firma Ekle"
           />
-          <CustomButton
-            className="gap-1 bg-green-100 p-2 text-green-600"
-            icon={ExportCsvIcon}
-            title="Dışa Aktar"
-          />
-        </AdminTopSection>
-        <CompaniesCustomSearch setKeywords={setKeywords} />
-        <CustomGrid
-          search={false}
-          columns={AraclarDatatableProps.columns}
-          pagination={true}
-          sort={true}
-          convertAction={returnCarItem}
-          apiUrl="/api/cars/getlist"
-        />
-      </ContentWithInfoSection>
+        </div>
+      )}
+
       <AddEditCompanyModal />
     </div>
   );

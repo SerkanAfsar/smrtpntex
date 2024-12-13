@@ -4,17 +4,14 @@ import { create } from "zustand";
 interface CompanyModal {
   isOpened: boolean;
   toggleOpened: () => void;
-  setCompanyValues: (id: number) => Promise<Partial<CompanyType>>;
+  setSelectedCompany: (id?: number) => void;
+
+  selectedId?: number | null;
 }
 
 export const useCompanyModal = create<CompanyModal>()((set) => ({
   isOpened: false,
   toggleOpened: () => set((state) => ({ isOpened: !state.isOpened })),
-  setCompanyValues: async (id: number) => {
-    return new Promise<Partial<CompanyType>>((resolve) =>
-      resolve({
-        Id: id,
-      }),
-    );
-  },
+  setSelectedCompany: async (id?: number) =>
+    set((state) => ({ selectedId: id })),
 }));

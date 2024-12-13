@@ -8,7 +8,7 @@ import CustomButton from "../UI/CustomButton";
 import { CustomTextbox } from "../UI/CustomTextbox";
 import CustomSelect from "../UI/CustomSelect";
 import Image from "next/image";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 export type VariablesType = {
   name: string;
@@ -23,6 +23,7 @@ export type ContentSubLeftSearchType = {
   addAction: () => void;
   placeholder: string;
   variables: VariablesType[];
+  selectAction: (id?: number) => void;
 };
 export type SelectTypes = "all" | "true" | "false";
 export default function ContentSubLeftSearch({
@@ -32,6 +33,7 @@ export default function ContentSubLeftSearch({
   placeholder,
   title,
   variables,
+  selectAction,
 }: ContentSubLeftSearchType) {
   const [searchKey, setSearchKey] = useState<string>();
   const [selectedType, setSelectedType] = useState<SelectTypes>("all");
@@ -104,11 +106,12 @@ export default function ContentSubLeftSearch({
       </div>
       <hr />
 
-      <div className="w-full flex-1 flex-col gap-3 overflow-auto overscroll-contain p-4">
+      <div className="w-[320px] flex-1 flex-col gap-3 overflow-auto overscroll-contain p-4">
         {tempDataResult.map((item, index) => (
           <div
             className="group flex w-full cursor-pointer items-center justify-between gap-3 rounded-md p-3 text-sm transition-all hover:bg-blue-100"
             key={index}
+            onClick={() => selectAction(Number(item.value))}
           >
             {item.name}
             <Image

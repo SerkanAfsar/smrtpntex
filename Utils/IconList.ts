@@ -23,6 +23,7 @@ import EditContentIcon from "../public/icons/edit-content.svg?url";
 import SearchIcon from "../public/icons/search.svg?url";
 import EditIcon from "../public/icons/edit.svg?url";
 import ExitIcon from "../public/icons/cross.svg?url";
+import NotSelectedIcon from "../public/icons/company-filled.svg?url";
 
 export {
   AnasayfaIcon,
@@ -50,4 +51,5 @@ export {
   SearchIcon,
   EditIcon,
   ExitIcon,
+  NotSelectedIcon,
 };

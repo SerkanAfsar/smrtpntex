@@ -18,6 +18,7 @@ import { useDistrubutorModal } from "@/store/useDistrubutorModal";
 
 import { useShallow } from "zustand/shallow";
 import AddEditDistrubutorModal from "../Components/AddEditDistrubutorModal";
+import NotSelected from "@/Components/Admin/NotSelected";
 
 export default function DistrubutorContainer({
   dataResult,
@@ -25,11 +26,15 @@ export default function DistrubutorContainer({
   dataResult: PaginationType<DistrubitorType>;
 }) {
   const [keywords, setKeywords] = useState<string>();
-  const toggleOpened = useDistrubutorModal(
-    useShallow((state) => state.toggleOpened),
+  const [toggleOpened, selectedId, selectAction] = useDistrubutorModal(
+    useShallow((state) => [
+      state.toggleOpened,
+      state.selectedId,
+      state.setSelectedDistributor,
+    ]),
   );
   return (
-    <div className={cn("flex bg-adminBgColor transition-all")}>
+    <div className={cn("flex flex-1 bg-adminBgColor transition-all")}>
       <ContentSubLeftSearch
         actionOne={() => {
           alert("test");
@@ -45,28 +50,41 @@ export default function DistrubutorContainer({
           value: item.Id.toString(),
           active: item.IsActive,
         }))}
+        selectAction={selectAction}
       />
       <ContentWithInfoSection>
-        <AdminTopSection className="border-b">
-          <CustomButton
-            className="gap-1 bg-gray-900 p-2 text-white"
-            title="Tüm Satışlar"
-          />
-          <CustomButton
-            className="gap-1 bg-green-100 p-2 text-green-600"
-            icon={ExportCsvIcon}
-            title="Dışa Aktar"
-          />
-        </AdminTopSection>
-        <DistributorsCustomSearch setKeywords={setKeywords} />
-        <CustomGrid
-          search={false}
-          columns={AraclarDatatableProps.columns}
-          pagination={true}
-          sort={true}
-          convertAction={returnCarItem}
-          apiUrl="/api/cars/getlist"
-        />
+        {selectedId ? (
+          <>
+            <AdminTopSection className="border-b">
+              <CustomButton
+                className="gap-1 bg-gray-900 p-2 text-white"
+                title="Tüm Satışlar"
+              />
+              <CustomButton
+                className="gap-1 bg-green-100 p-2 text-green-600"
+                icon={ExportCsvIcon}
+                title="Dışa Aktar"
+              />
+            </AdminTopSection>
+            <DistributorsCustomSearch setKeywords={setKeywords} />
+            <CustomGrid
+              search={false}
+              columns={AraclarDatatableProps.columns}
+              pagination={true}
+              sort={true}
+              convertAction={returnCarItem}
+              apiUrl="/api/cars/getlist"
+            />
+          </>
+        ) : (
+          <div className="flex h-full w-full items-center justify-center bg-adminBgColor">
+            <NotSelected
+              title="Distribütör"
+              action={() => toggleOpened()}
+              buttonTitle="Distribütör Ekle"
+            />
+          </div>
+        )}
       </ContentWithInfoSection>
       <AddEditDistrubutorModal />
     </div>
