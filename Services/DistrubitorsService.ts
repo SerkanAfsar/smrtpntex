@@ -1,0 +1,47 @@
+import { PaginationType, ResponseResult } from "@/Types/Common.Types";
+import {
+  AddDistributerType,
+  DistrubitorListType,
+  DistrubitorType,
+  PaymentMethodType,
+} from "@/Types/Distrubitor.Types";
+import BaseFetch from "./BaseService";
+
+export async function GetAllDistrubitors({
+  searchType,
+}: {
+  searchType: DistrubitorListType;
+}) {
+  return (await BaseFetch({
+    method: "POST",
+    url: "adminApi/Distributor/List",
+    body: searchType,
+  })) as ResponseResult<PaginationType<DistrubitorType>>;
+}
+
+export async function GetPaymentMethodTypes() {
+  return (await BaseFetch({
+    method: "GET",
+    url: "adminApi/Common/payment-methods",
+  })) as ResponseResult<PaymentMethodType>;
+}
+
+export async function AddDistributorService({
+  data,
+}: {
+  data: AddDistributerType;
+}) {
+  return (await BaseFetch({
+    method: "POST",
+    url: "adminApi/Distributor/add",
+    body: data,
+  })) as ResponseResult<DistrubitorType>;
+}
+
+// export async function GetDistributorById({ id }: { id: number }) {
+//   return (await BaseFetch({
+//     method: "POST",
+//     url: "adminApi/Distributor/add",
+//     body: data,
+//   })) as ResponseResult<DistrubitorType>;
+// }
