@@ -1,5 +1,5 @@
 "use server";
-import { BaseFetchType } from "@/Types/Common.Types";
+import { BaseFetchType, ResponseResult } from "@/Types/Common.Types";
 import { cookies } from "next/headers";
 
 export default async function BaseFetch({ method, url, body }: BaseFetchType) {
@@ -19,12 +19,32 @@ export default async function BaseFetch({ method, url, body }: BaseFetchType) {
       `${process.env.NEXT_PUBLIC_API_URL}/${url}`,
       requestHeaders,
     );
+    const result = (await response.json()) as any;
     if (response.ok) {
-      const result = await response.json();
       return result;
+    } else {
+      const newResult: ResponseResult<any> = {
+        Code: response.status,
+        Data: null,
+        Message: result.Message,
+        IsSuccess: false,
+      };
+      return newResult;
     }
-    throw new Error("err");
-  } catch (error) {
-    console.log(error);
+  } catch (err: unknown) {
+    const newResult: ResponseResult<any> = {
+      Data: null,
+      IsSuccess: false,
+    };
+
+    if (typeof err == "string") {
+      newResult.Message = err;
+      newResult.Code = 500;
+    }
+    if (err instanceof Error) {
+      newResult.Message = err.message;
+      newResult.Code = 500;
+    }
+    return newResult;
   }
 }

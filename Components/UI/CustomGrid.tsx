@@ -1,25 +1,36 @@
 "use client";
-import * as GridRoot from "gridjs-react";
+import { Grid, ReactWrapper, _ } from "gridjs-react";
 import * as React from "react";
 import "gridjs/dist/theme/mermaid.css";
 import { html } from "gridjs";
+
 import { PaginationType, ResponseResult } from "@/Types/Common.Types";
 
-type CustomGridPropsType = React.ComponentPropsWithoutRef<
-  typeof GridRoot.Grid
-> & {
+type CustomGridPropsType = React.ComponentPropsWithoutRef<typeof Grid> & {
   isCheckbox?: boolean;
   convertAction?: any;
   apiUrl?: string;
   keywords?: string;
+  startDate?: string;
+  endDate?: string;
 };
 
 const CustomGrid = React.forwardRef<
-  React.ElementRef<typeof GridRoot.Grid>,
+  React.ElementRef<typeof Grid>,
   CustomGridPropsType
 >(
   (
-    { children, isCheckbox, convertAction, keywords, columns, apiUrl, ...rest },
+    {
+      children,
+      isCheckbox,
+      startDate,
+      endDate,
+      convertAction,
+      keywords,
+      columns,
+      apiUrl,
+      ...rest
+    },
     ref,
   ) => {
     let cols = columns;
@@ -27,9 +38,10 @@ const CustomGrid = React.forwardRef<
     if (isCheckbox) {
       cols = [
         {
-          name: html(`<input type="checkbox" class="w-4 h-4" />`),
-          formatter: (cell: any) =>
-            html(`<input type="checkbox" class="w-4 h-4" />`),
+          id: "deneme",
+          name: "deneme",
+          formatter: () => html(`<i>Deneme</i>`),
+          sort: false,
         },
         ...cols,
       ];
@@ -38,7 +50,7 @@ const CustomGrid = React.forwardRef<
     return (
       <div className="flex w-full flex-col gap-3">
         {children}
-        <GridRoot.Grid
+        <Grid
           ref={ref}
           {...rest}
           columns={cols}
@@ -59,7 +71,7 @@ const CustomGrid = React.forwardRef<
             limit: 10,
             server: {
               url: (prev, page, limit) =>
-                `${prev}?pageIndex=${page + 1}&pageSize=${limit}&keywords=${keywords}`,
+                `${prev}?pageIndex=${page + 1}&pageSize=${limit}&keywords=${keywords}&startDate=${startDate}&endDate=${endDate}`,
             },
           }}
           server={{

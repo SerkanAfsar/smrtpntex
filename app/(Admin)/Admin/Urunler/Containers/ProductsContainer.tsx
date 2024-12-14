@@ -3,11 +3,10 @@ import AdminTopSection from "@/Components/Admin/TopSection";
 import CustomButton from "@/Components/UI/CustomButton";
 import CustomGrid from "@/Components/UI/CustomGrid";
 
-import { cn } from "@/Utils";
-import { ExportCsvIcon } from "@/Utils/IconList";
+import { ExportCsvIcon, PlusSmall } from "@/Utils/IconList";
 import { AraclarDatatableProps } from "@/Utils/Variables";
 import { returnCarItem } from "@/Utils/ConvertTableItems";
-import DistributorsCustomSearch from "../Components/DistributorsCustomSearch";
+
 import { useState } from "react";
 
 import ContentWithInfoSection from "@/Components/Admin/ContentWithInfoSection";
@@ -17,13 +16,16 @@ import { DistrubitorType } from "@/Types/Distrubitor.Types";
 import { useDistrubutorModal } from "@/store/useDistrubutorModal";
 
 import { useShallow } from "zustand/shallow";
-import AddEditDistrubutorModal from "../Components/AddEditDistrubutorModal";
-import NotSelected from "@/Components/Admin/NotSelected";
 
-export default function DistrubutorContainer({
+import NotSelected from "@/Components/Admin/NotSelected";
+import ProductsSubLeftSection from "../Components/ProductsSubLeftSection";
+import { CategoryType } from "@/Types/Category.Types";
+import ProductCustomSearch from "../Components/ProductCustomSearch";
+
+export default function ProductsContainer({
   dataResult,
 }: {
-  dataResult: PaginationType<DistrubitorType>;
+  dataResult: PaginationType<CategoryType>;
 }) {
   const [keywords, setKeywords] = useState<string>();
 
@@ -36,18 +38,18 @@ export default function DistrubutorContainer({
   );
   return (
     <>
-      <ContentSubLeftSearch
+      <ProductsSubLeftSection
         actionOne={() => {
           alert("test");
         }}
         addAction={() => {
           toggleOpened();
         }}
-        addTitle="Distribütör Ekle"
-        placeholder="Distribütör Ara"
-        title="Distribütörler"
-        variables={dataResult.records.map((item: DistrubitorType) => ({
-          name: item.Title,
+        addTitle="Ürün Ekle"
+        placeholder="Ürün Ara"
+        title="Ürümnler"
+        variables={dataResult.records.map((item: CategoryType) => ({
+          name: item.name,
           value: item.Id.toString(),
           active: item.IsActive,
         }))}
@@ -57,17 +59,20 @@ export default function DistrubutorContainer({
         {selectedId ? (
           <>
             <AdminTopSection className="border-b">
-              <CustomButton
-                className="gap-1 bg-gray-900 p-2 text-white"
-                title="Tüm Satışlar"
-              />
-              <CustomButton
-                className="gap-1 bg-green-100 p-2 text-green-600"
-                icon={ExportCsvIcon}
-                title="Dışa Aktar"
-              />
+              <h3>Müşteriler</h3>
+              <div className="flex items-center justify-between gap-3">
+                <CustomButton
+                  className="gap-1 bg-green-100 p-1.5 text-sm text-green-600"
+                  icon={ExportCsvIcon}
+                />
+                <CustomButton
+                  title="Müşteri Ekle"
+                  className="bg-adminDarkBlueBg px-3 text-adminDarkBlue"
+                  icon={PlusSmall}
+                />
+              </div>
             </AdminTopSection>
-            <DistributorsCustomSearch setKeywords={setKeywords} />
+            <ProductCustomSearch setKeywords={setKeywords} />
             <CustomGrid
               search={false}
               columns={AraclarDatatableProps.columns}
@@ -79,13 +84,13 @@ export default function DistrubutorContainer({
           </>
         ) : (
           <NotSelected
-            title="Distribütör"
+            title="Ürün"
             action={() => toggleOpened()}
-            buttonTitle="Distribütör Ekle"
+            buttonTitle="Ürün Ekle"
           />
         )}
       </ContentWithInfoSection>
-      <AddEditDistrubutorModal />
+      {/* <AddEditDistrubutorModal /> */}
     </>
   );
 }

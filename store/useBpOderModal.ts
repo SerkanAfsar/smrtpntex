@@ -1,16 +1,15 @@
 import { create } from "zustand";
 
-interface CompanyModal {
+interface BpModal {
   isOpened: boolean;
   toggleOpened: () => void;
-  setSelectedCompany: (id?: number) => void;
-
+  setSelectedBpOrder: (id?: number) => void;
   selectedId?: number | null;
 }
 
-export const useCompanyModal = create<CompanyModal>()((set) => ({
+export const useBpOrderModal = create<BpModal>()((set) => ({
   isOpened: false,
   toggleOpened: () => set((state) => ({ isOpened: !state.isOpened })),
-  setSelectedCompany: async (id?: number) =>
+  setSelectedBpOrder: async (id?: number) =>
     set((state) => ({ selectedId: id })),
 }));

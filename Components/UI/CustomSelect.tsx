@@ -9,6 +9,7 @@ type CustomSelectProps = React.HTMLAttributes<HTMLSelectElement> & {
   err?: string;
   name?: string;
   setFirst?: boolean;
+  subTitle?: string;
 };
 
 const CustomSelect = React.forwardRef<HTMLSelectElement, CustomSelectProps>(
@@ -23,6 +24,7 @@ const CustomSelect = React.forwardRef<HTMLSelectElement, CustomSelectProps>(
       err,
       title,
       options,
+      subTitle,
       ...rest
     },
     ref,
@@ -52,7 +54,7 @@ const CustomSelect = React.forwardRef<HTMLSelectElement, CustomSelectProps>(
           ref={ref}
           {...rest}
         >
-          {setFirst && <option value="">Seçiniz</option>}
+          {setFirst && <option value="">{subTitle} Seçiniz</option>}
           {options?.map((op, index) => (
             <option value={op.value} key={index}>
               {op.name}
