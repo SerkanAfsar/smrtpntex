@@ -11,7 +11,7 @@ export type CustomDataTableProps = {
   startDate?: string;
   endDate?: string;
   columns: any;
-  updated: boolean;
+  updated?: boolean;
 };
 export default function CustomDatatable({
   apiUrl,
