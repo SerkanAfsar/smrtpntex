@@ -16,7 +16,7 @@ const CustomButton = React.forwardRef<HTMLButtonElement, CustomButtonProps>(
         ref={ref}
         type={type}
         className={cn(
-          "flex items-center justify-between rounded-md p-1.5 text-xs font-medium",
+          "flex items-center justify-between rounded-md border-gray-300 p-1.5 text-xs font-medium",
           className,
         )}
         {...rest}

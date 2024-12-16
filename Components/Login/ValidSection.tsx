@@ -14,6 +14,7 @@ export default function ValidSection() {
     handleSubmit,
     formState: { errors },
   } = useForm<AuthValidType>();
+  const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string | null>();
 
   useEffect(() => {
@@ -24,7 +25,9 @@ export default function ValidSection() {
   }, [message]);
 
   const onSubmit: SubmitHandler<AuthValidType> = async (data) => {
+    setLoading(true);
     const result = await LoginValidSectionAction({ data });
+    setLoading(false);
     if (result.IsSuccess) {
       return router.push("/Admin/Dashboard");
     } else {
@@ -34,11 +37,11 @@ export default function ValidSection() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex text-[#635C5C] justify-start items-start w-full flex-col gap-3"
+      className="flex w-full flex-col items-start justify-start gap-3 text-[#635C5C]"
     >
       <CustomTextbox
         {...register("userName", { required: "Kullanıcı Adı Boş Bırakılamaz" })}
-        className="border w-full text-sm text-[#635C5C] placeholder:text-[#635C5C] placeholder:text-sm border-[#887E7E] rounded-md block p-3"
+        className="block w-full rounded-md border border-[#887E7E] p-3 text-sm text-[#635C5C] placeholder:text-sm placeholder:text-[#635C5C]"
         placeholder="Kullanıcı Adınız"
         err={errors.userName?.message}
       />
@@ -46,22 +49,22 @@ export default function ValidSection() {
         {...register("validCode", {
           required: "Doğrulama Kodu Boş Bırakılamaz",
         })}
-        className="border w-full text-sm text-[#635C5C] placeholder:text-[#635C5C] placeholder:text-sm border-[#887E7E] rounded-md block p-3"
+        className="block w-full rounded-md border border-[#887E7E] p-3 text-sm text-[#635C5C] placeholder:text-sm placeholder:text-[#635C5C]"
         placeholder="Doğrulama Kodu"
         type="text"
         err={errors.validCode?.message}
       />
 
       {message && (
-        <span className="text-red-700 block w-full text-center text-sm">
+        <span className="block w-full text-center text-sm text-red-700">
           {message}
         </span>
       )}
       <button
         type="submit"
-        className="p-3 rounded-md w-full my-4  bg-loginBlue text-lg text-white flex items-center justify-center"
+        className="my-4 flex w-full items-center justify-center rounded-md bg-loginBlue p-3 text-lg text-white"
       >
-        GİRİŞ
+        {loading ? "Yükleniyor..." : "GİRİŞ"}
       </button>
     </form>
   );

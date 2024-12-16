@@ -13,6 +13,7 @@ export default function LoginSection({
 }: {
   setActiveStep: React.Dispatch<number>;
 }) {
+  const [loading, setLoading] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
@@ -28,6 +29,7 @@ export default function LoginSection({
   }, [message]);
 
   const onSubmit: SubmitHandler<LoginType> = async (data) => {
+    setLoading(true);
     const response = await fetch("/api/login", {
       method: "POST",
       headers: {
@@ -36,7 +38,7 @@ export default function LoginSection({
       body: JSON.stringify(data),
     });
     const result: ResponseResult<LoginType> = await response.json();
-
+    setLoading(false);
     if (result.IsSuccess) {
       setActiveStep(1);
     } else {
@@ -48,6 +50,7 @@ export default function LoginSection({
       onSubmit={handleSubmit(onSubmit)}
       className="flex w-full flex-col items-start justify-start gap-3 text-[#635C5C]"
     >
+      <h2></h2>
       <CustomTextbox
         {...register("userName", { required: "Kullanıcı Adı Boş Bırakılamaz" })}
         className="block w-full rounded-md border border-[#887E7E] p-3 text-sm text-[#635C5C] placeholder:text-sm placeholder:text-[#635C5C]"
@@ -73,7 +76,7 @@ export default function LoginSection({
         type="submit"
         className="my-4 flex w-full items-center justify-center rounded-md bg-loginBlue p-3 text-lg text-white"
       >
-        GİRİŞ
+        {loading ? "Yükleniyor..." : "GİRİŞ"}
       </button>
     </form>
   );

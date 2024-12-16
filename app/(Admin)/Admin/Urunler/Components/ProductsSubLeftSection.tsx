@@ -2,6 +2,7 @@ import CustomButton from "@/Components/UI/CustomButton";
 import CustomSelect from "@/Components/UI/CustomSelect";
 import { CustomTextbox } from "@/Components/UI/CustomTextbox";
 import { GetAllProducts } from "@/Services/ProductService";
+import { useProductModal } from "@/store/useProductModal";
 import { PaginationType, ResponseResult } from "@/Types/Common.Types";
 import { ProductListType, ProductType } from "@/Types/Product.Types";
 import {
@@ -13,6 +14,7 @@ import {
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useShallow } from "zustand/shallow";
 
 export type VariablesType = {
   name: string;
@@ -39,6 +41,7 @@ export default function ProductsSubLeftSection({
   variables,
   selectAction,
 }: ContentSubLeftSearchType) {
+  const [isOpened] = useProductModal(useShallow((state) => [state.isOpened]));
   const [searchKey, setSearchKey] = useState<string>();
   const [selectedType, setSelectedType] = useState<SelectTypes>("all");
   const [selectedCategory, setSelectedCategory] = useState<string>();
@@ -46,6 +49,7 @@ export default function ProductsSubLeftSection({
 
   useEffect(() => {
     const process = async () => {
+      console.log("girdi");
       const searchType: ProductListType = {
         pageIndex: 1,
         pageSize: 1000,
@@ -71,8 +75,10 @@ export default function ProductsSubLeftSection({
         setProductList([]);
       }
     };
-    process();
-  }, [searchKey, selectedCategory, selectedType]);
+    if (!isOpened) {
+      process();
+    }
+  }, [searchKey, selectedCategory, selectedType, isOpened]);
 
   return (
     <section className="ml-[62px] flex w-[320px] flex-col border-r bg-white">
@@ -137,7 +143,7 @@ export default function ProductsSubLeftSection({
         </div>
       </div>
       <hr />
-      <div className="w-full flex-1 flex-col gap-3 overflow-auto overscroll-contain p-4">
+      <div className="w-full flex-1 flex-col gap-6 overflow-auto overscroll-contain p-4">
         {productList.map((item, index) => (
           <div
             className="group flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-md p-3 text-sm transition-all hover:bg-blue-100"
@@ -159,7 +165,7 @@ export default function ProductsSubLeftSection({
                 </div>
               </div>
             </div>
-            <div className="flex w-full items-center justify-between">
+            <div className="flex w-full items-center justify-between text-gray-500">
               <span>{item.Point}</span>
               <span>{item.Sku}</span>
             </div>

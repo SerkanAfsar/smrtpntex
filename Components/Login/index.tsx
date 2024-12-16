@@ -32,7 +32,7 @@ export default function LoginBaseComponent() {
         alt="Login"
       />
       <h3 className="block text-center text-2xl font-normal text-black">
-        Smartpoint Giriş
+        Smartpoint {activeStep == 0 ? "Auth" : "Valid"}
       </h3>
       {componentList[activeStep]}
     </section>

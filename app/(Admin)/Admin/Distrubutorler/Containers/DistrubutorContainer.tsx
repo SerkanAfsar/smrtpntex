@@ -68,14 +68,18 @@ export default function DistrubutorContainer({
               />
             </AdminTopSection>
             <DistributorsCustomSearch setKeywords={setKeywords} />
-            <CustomGrid
+            {/* <CustomGrid
               search={false}
               columns={AraclarDatatableProps.columns}
               pagination={true}
               sort={true}
               convertAction={returnCarItem}
               apiUrl="/api/cars/getlist"
-            />
+            /> */}
+            <div>
+              Buraya distribitörlere ait satışlar tablosu gelicek ama nerden
+              çekicek belli değil
+            </div>
           </>
         ) : (
           <NotSelected

@@ -53,25 +53,60 @@ export default function CompaniesContainer({
         {selectedId ? (
           <>
             <AdminTopSection className="border-b">
-              <CustomButton
-                className="gap-1 bg-gray-900 p-2 text-white"
-                title="Tüm Satışlar"
-              />
-              <CustomButton
-                className="gap-1 bg-green-100 p-2 text-green-600"
-                icon={ExportCsvIcon}
-                title="Dışa Aktar"
-              />
+              <div className="flex items-center justify-center">
+                <div className="mr-3 flex items-center justify-between gap-3 border-r pr-3">
+                  <CustomButton
+                    className="gap-1 bg-gray-900 p-2 px-3 text-white"
+                    title="Şubeler"
+                  />
+                  <CustomButton
+                    className="gap-1 rounded-md border bg-white p-2 px-3 text-black"
+                    title="Satışlar"
+                  />
+                  <CustomButton
+                    className="gap-1 rounded-md border bg-white p-2 px-3 text-black"
+                    title="Kullanıcılar"
+                  />
+
+                  {/* <CustomButton
+                  className="gap-1 bg-green-100 p-2 text-green-600"
+                  icon={ExportCsvIcon}
+                  title="Dışa Aktar"
+                /> */}
+                </div>
+                <div className="flex items-center justify-between gap-3">
+                  <CustomButton
+                    className="gap-1 rounded-md border bg-white p-2 px-3 text-black"
+                    title="Finans"
+                  />
+                  <CustomButton
+                    className="gap-1 rounded-md border bg-white p-2 px-3 text-black"
+                    title="Otorizasyonlar"
+                  />
+                  <CustomButton
+                    className="gap-1 rounded-md border bg-white p-2 px-3 text-black"
+                    title="Kredi Kartları"
+                  />
+                  <CustomButton
+                    className="gap-1 rounded-md border bg-white p-2 px-3 text-black"
+                    title="Faturalar"
+                  />
+                </div>
+              </div>
             </AdminTopSection>
             <CompaniesCustomSearch setKeywords={setKeywords} />
-            <CustomGrid
+            {/* <CustomGrid
               search={false}
               columns={AraclarDatatableProps.columns}
               pagination={true}
               sort={true}
               convertAction={returnCarItem}
               apiUrl="/api/cars/getlist"
-            />
+            /> */}
+            <div>
+              Buraya firmalara ait satışlar tablosu gelicek ama nerden çekicek
+              belli değil
+            </div>
           </>
         ) : (
           <NotSelected

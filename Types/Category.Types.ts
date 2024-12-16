@@ -10,7 +10,5 @@ export type CategoryType = {
 };
 
 export type CategoryListType = PageIndexType & {
-  categoryId?: number;
-  productName?: string;
-  status?: boolean;
+
 };
