@@ -44,3 +44,47 @@ body {
 .gridjs-th-content {
   @apply mt-1 !flex !h-full !items-center !text-black;
 }
+
+.table-container {
+  overflow: auto; /* Taşma sorunlarını engeller */
+  max-width: 100%; /* Genişliği sınırlı tutar */
+}
+.rdt_Table {
+  border-collapse: collapse !important;
+}
+.custom-table .rdt_Table {
+  border-collapse: collapse !important;
+}
+.rdt_TableRow {
+  border-bottom: 1px solid #ddd; /* Çizgi stillerini kontrol edin */
+  border: none !important;
+}
+.rdt_TableCell,
+.rdt_TableCol {
+  @apply border-b border-l;
+}
+
+.rdt_TableCell:first-child,
+.rdt_TableCol:first-child {
+  @apply border-l-0;
+}
+
+.rdt_TableHeadRow {
+  border: none !important;
+  background: inherit !important;
+}
+.rdt_TableRow:last-child {
+  border: none !important;
+}
+.rdt_Pagination {
+  border-top: none !important;
+}
+.rdt_TableHead {
+  background: #f9fafb;
+}
+.rdt_TableCol span {
+  @apply !justify-end;
+}
+.rdt_TableCol_Sortable {
+  @apply !w-full !flex-1;
+}

@@ -232,7 +232,28 @@ export const DashboardDataTableProps = {
 };
 
 export const AraclarDatatableProps = {
-  columns: ["Plaka", "Üye Adı", "Tutar", "Kayıt Tarihi"],
+  columns: [
+    {
+      name: "Plaka",
+      selector: (row: any) => row.PlateNumber,
+      sortable: true,
+    },
+    {
+      name: "Üye Adı",
+      selector: (row: any) => row.FirstName,
+      sortable: true,
+    },
+    {
+      name: "Tutar",
+      selector: (row: any) => row.Amount,
+      sortable: true,
+    },
+    {
+      name: "Kayıt Tarihi",
+      selector: (row: any) => row.CreatedDate,
+      sortable: true,
+    },
+  ],
   data: [
     ["35 XYZ 456", "Ayşe Demir", "750.00", "02.11.2024 14:50:10"],
     ["35 XYZ 123", "Ayşe Demir2", "750.00", "02.11.2024 14:50:10"],
@@ -247,12 +268,42 @@ export const AraclarDatatableProps = {
 
 export const BpDatatableProps = {
   columns: [
-    "Sipariş No",
-    "İstasyon",
-    "Litre",
-    "Durum",
-    "Sipariş Tarihi",
-    "Kayıt Tarihi",
+    // "Sipariş No",
+    // "İstasyon",
+    // "Litre",
+    // "Durum",
+    // "Sipariş Tarihi",
+    // "Kayıt Tarihi",
+    {
+      name: "Sipariş No",
+      selector: (row: any) => row.OrderCode,
+      sortable: true,
+    },
+    {
+      name: "İstasyon",
+      selector: (row: any) => row.StationName,
+      sortable: true,
+    },
+    {
+      name: "Litre",
+      selector: (row: any) => row.Quantity,
+      sortable: true,
+    },
+    {
+      name: "Durum",
+      selector: (row: any) => row.StateMessage,
+      sortable: true,
+    },
+    {
+      name: "Sipariş Tarihi",
+      selector: (row: any) => row.OrderDate,
+      sortable: true,
+    },
+    {
+      name: "Kayıt Tarihi",
+      selector: (row: any) => row.CreatedDate,
+      sortable: true,
+    },
   ],
   data: [
     [

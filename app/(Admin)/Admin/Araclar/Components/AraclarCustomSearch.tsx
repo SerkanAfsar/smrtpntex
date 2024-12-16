@@ -17,7 +17,7 @@ export default function AraclarCustomSearch({
   }, [keyValue, setKeywords]);
 
   return (
-    <section className="flex w-full items-center justify-start gap-3 bg-adminBgColor p-3">
+    <section className="flex w-full items-center justify-start gap-3 border-b border-t bg-adminBgColor px-3 py-4">
       <CustomTextbox
         placeholder="Arama Yapın"
         isFull={false}

@@ -18,6 +18,7 @@ import {
 
 import { cn } from "@/Utils";
 import { ExitIcon } from "@/Utils/IconList";
+import { revalidateTag } from "next/cache";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -26,11 +27,17 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useShallow } from "zustand/shallow";
 
-export default function BpOrderEditModal() {
+export default function BpOrderEditModal({
+  toggleOpened,
+  isOpenedModal,
+  setUpdated,
+}: {
+  toggleOpened: any;
+  isOpenedModal: boolean;
+  setUpdated: any;
+}) {
   const router = useRouter();
-  const [isOpened, toggleOpened] = useBpOrderModal(
-    useShallow((state) => [state.isOpened, state.toggleOpened]),
-  );
+
   const [stationList, setStationList] = useState<CustomOptionsType[]>([]);
   const {
     register,
@@ -69,6 +76,7 @@ export default function BpOrderEditModal() {
       });
       reset();
       toggleOpened();
+      setUpdated();
       return router.refresh();
     } else {
       return toast.error(result.Message || "Hata", {
@@ -81,7 +89,7 @@ export default function BpOrderEditModal() {
     <div
       className={cn(
         "fixed -right-[100%] z-50 h-screen w-[340px] overflow-auto overscroll-contain border-l bg-white p-4 shadow-2xl transition-all duration-700 ease-in-out",
-        isOpened ? "right-0" : "-right-[100%]",
+        isOpenedModal ? "right-0" : "-right-[100%]",
       )}
     >
       <div className="flex items-center justify-between">

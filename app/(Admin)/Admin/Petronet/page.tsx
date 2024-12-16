@@ -1,3 +1,5 @@
+import PetronetContainer from "./Containers/PetronetContainer";
+
 export default function Page() {
-  return <div></div>;
+  return <PetronetContainer />;
 }

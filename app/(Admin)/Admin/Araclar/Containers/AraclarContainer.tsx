@@ -7,17 +7,18 @@ import { cn } from "@/Utils";
 import { ExportCsvIcon } from "@/Utils/IconList";
 import { AraclarDatatableProps } from "@/Utils/Variables";
 import AraclarCustomSearch from "../Components/AraclarCustomSearch";
-import { returnCarItem } from "@/Utils/ConvertTableItems";
+
 import { useState } from "react";
+import CustomDatatable from "@/Components/UI/CustomDataTable";
 
 export default function AraclarContainer() {
-  const { isOpened } = useLeftMenuStore();
+  const isOpened = useLeftMenuStore((state) => state.isOpened);
   const [keywords, setKeywords] = useState<string>();
 
   return (
     <div
       className={cn(
-        "flex flex-col bg-adminBgColor transition-all",
+        "flex flex-1 flex-col bg-adminBgColor transition-all",
         isOpened ? "ml-[244px]" : "ml-[62px]",
       )}
     >
@@ -30,12 +31,8 @@ export default function AraclarContainer() {
         />
       </AdminTopSection>
       <AraclarCustomSearch setKeywords={setKeywords} />
-      <CustomGrid
-        search={false}
+      <CustomDatatable
         columns={AraclarDatatableProps.columns}
-        pagination={true}
-        sort={true}
-        convertAction={returnCarItem}
         apiUrl="/api/cars/getlist"
         keywords={keywords}
       />

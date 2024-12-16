@@ -1,27 +1,34 @@
 "use client";
+import CustomButton from "@/Components/UI/CustomButton";
 import { CustomTextbox } from "@/Components/UI/CustomTextbox";
-import React from "react";
+import { useEffect, useState } from "react";
 
-type BpCustomSearchType = {
-  setStartDate: React.Dispatch<string>;
-  setEndDate: React.Dispatch<string>;
-};
-export default function BpCustomSearch({
-  setStartDate,
-  setEndDate,
-}: BpCustomSearchType) {
+export default function PetronetCustomSearch({
+  setKeywords,
+}: {
+  setKeywords: React.Dispatch<string | undefined>;
+}) {
+  const [keyValue, setKeyValue] = useState<string>();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setKeywords(keyValue);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [keyValue, setKeywords]);
+
   return (
-    <section className="flex w-full items-center justify-start gap-3 border-b bg-adminBgColor p-3">
+    <section className="flex w-full items-center justify-start gap-3 bg-adminBgColor p-3">
       <CustomTextbox
         placeholder="Arama Yapın"
         isFull={false}
+        onChange={(e) => setKeyValue(e.target.value)}
         className="inline-block w-[290px] rounded-md border border-border-primary p-2 text-sm placeholder:text-xs"
       />
       <CustomTextbox
         type="text"
         isFull={false}
         placeholder="Başlangıç Tarihi"
-        onChange={(e) => setStartDate(e.target.value)}
         onFocus={(e) => (e.target.type = "date")}
         onBlur={(e) => (e.target.type = "text")}
         className="inline-block w-auto rounded-md border border-border-primary p-2.5 text-xs placeholder:text-xs"
@@ -30,7 +37,6 @@ export default function BpCustomSearch({
         type="text"
         isFull={false}
         placeholder="Bitiş Tarihi"
-        onChange={(e) => setEndDate(e.target.value)}
         onFocus={(e) => (e.target.type = "date")}
         onBlur={(e) => (e.target.type = "text")}
         className="inline-block w-auto rounded-md border border-border-primary p-2.5 text-xs placeholder:text-xs"

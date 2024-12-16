@@ -18,10 +18,12 @@
     "next": "15.0.4",
     "react": "^19.0.0",
     "react-chartjs-2": "^5.2.0",
+    "react-data-table-component": "^7.6.2",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.0",
     "react-toastify": "^10.0.6",
     "tailwind-merge": "^2.5.5",
+    "uuid": "^11.0.3",
     "zustand": "^5.0.2"
   },
   "devDependencies": {

@@ -13,19 +13,25 @@ import { useState } from "react";
 import { useBpOrderModal } from "@/store/useBpOderModal";
 import BpOrderEditModal from "../Components/BpOrderEditModal";
 import { useShallow } from "zustand/shallow";
+import CustomDatatable from "@/Components/UI/CustomDataTable";
 
 export default function BpContainer() {
   const { isOpened } = useLeftMenuStore();
   const [startDate, setStartDate] = useState<string>();
   const [endDate, setEndDate] = useState<string>();
-  const [toggleOpened] = useBpOrderModal(
-    useShallow((state) => [state.toggleOpened]),
+  const [toggleOpened, updated, setUpdated, isOpenedModal] = useBpOrderModal(
+    useShallow((state) => [
+      state.toggleOpened,
+      state.updated,
+      state.setUpdated,
+      state.isOpened,
+    ]),
   );
 
   return (
     <div
       className={cn(
-        "flex flex-col bg-adminBgColor transition-all",
+        "flex flex-1 flex-col bg-adminBgColor transition-all",
         isOpened ? "ml-[244px]" : "ml-[62px]",
       )}
     >
@@ -46,19 +52,16 @@ export default function BpContainer() {
         </div>
       </AdminTopSection>
       <BpCustomSearch setStartDate={setStartDate} setEndDate={setEndDate} />
-      <CustomGrid
-        search={false}
+      <CustomDatatable
         columns={BpDatatableProps.columns}
-        data={BpDatatableProps.data}
-        pagination={true}
-        sort={true}
-        isCheckbox={true}
         apiUrl="/api/bporder/getlist"
-        startDate={startDate}
-        endDate={endDate}
-        convertAction={returnBpOrderItem}
+        updated={updated}
       />
-      <BpOrderEditModal />
+      <BpOrderEditModal
+        isOpenedModal={isOpenedModal}
+        toggleOpened={toggleOpened}
+        setUpdated={setUpdated}
+      />
     </div>
   );
 }
