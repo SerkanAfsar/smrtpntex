@@ -18,7 +18,7 @@ export default function CompaniesCustomSearch({
   }, [keyValue, setKeywords]);
 
   return (
-    <section className="flex w-full items-center justify-start gap-3 bg-adminBgColor p-3">
+    <section className="flex w-full items-center justify-start gap-3 border-b bg-adminBgColor p-3">
       <CustomTextbox
         placeholder="Arama Yapın"
         isFull={false}

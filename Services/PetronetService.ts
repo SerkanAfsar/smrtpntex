@@ -1,6 +1,7 @@
 import {
   PetronetDealersType,
   PetronetSearchType,
+  PetronetTankSimulesType,
   PetronetTankStatusType,
   PetronetTankTransactionsType,
 } from "@/Types/Petronet.Types";
@@ -53,4 +54,16 @@ export async function GetPetronetTransactionsService({
     url: "adminApi/Petronet/tank-transactions",
     body: searchType,
   })) as ResponseResult<PaginationType<PetronetTankTransactionsType>>;
+}
+
+export async function GetPetronetSimulesService({
+  searchType,
+}: {
+  searchType: PetronetSearchType;
+}) {
+  return (await BaseFetch({
+    method: "POST",
+    url: "adminApi/Petronet/tank-simules",
+    body: searchType,
+  })) as ResponseResult<PaginationType<PetronetTankSimulesType>>;
 }

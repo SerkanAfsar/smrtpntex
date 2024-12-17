@@ -17,10 +17,12 @@ import {
 } from "./IconList";
 import {
   PetronetDealerSalesType,
+  PetronetTankSimulesType,
   PetronetTankStatusType,
   PetronetTankTransactionsType,
 } from "@/Types/Petronet.Types";
 import { format, formatDate } from "date-fns";
+import { CompanySalesType } from "@/Types/Company.Types";
 
 export const AdminMenuList: MenuLinkGroupType[] = [
   {
@@ -497,6 +499,92 @@ export const PetronetTransactionsColumns = [
   {
     name: "Kayıt Tarihi",
     selector: (row: PetronetTankTransactionsType) =>
+      formatDate(row.CreatedDate, "dd.MM.yyy hh:MM"),
+    sortable: true,
+  },
+];
+
+export const PetronetTankSimulesColumns = [
+  {
+    name: "Bayi Adı",
+    selector: (row: PetronetTankSimulesType) => row.Title,
+    sortable: true,
+    width: "250px",
+  },
+  {
+    name: "Tank Adı",
+    selector: (row: PetronetTankSimulesType) => row.TankAd,
+    sortable: true,
+  },
+  {
+    name: "Tank Kapasitesi",
+    selector: (row: PetronetTankSimulesType) => row.KapasiteHacim,
+    sortable: true,
+  },
+  {
+    name: "Yakıt Hacmi",
+    selector: (row: PetronetTankSimulesType) => row.YakitHacim,
+    sortable: true,
+    width: "120px",
+  },
+  {
+    name: "Boş Hacim",
+    selector: (row: PetronetTankSimulesType) => row.BosHacim,
+    sortable: true,
+  },
+  {
+    name: "Su Seviyesi",
+    selector: (row: PetronetTankSimulesType) => row.SuSeviye,
+    sortable: true,
+  },
+  {
+    name: "Su Hacmi",
+    selector: (row: PetronetTankSimulesType) => row.SuHacim,
+    sortable: true,
+  },
+  {
+    name: "Sıcaklık",
+    selector: (row: PetronetTankSimulesType) => row.YakitSicaklik,
+    sortable: true,
+  },
+];
+
+export const CompanySalesColumns = [
+  {
+    name: "Üye Adı",
+    selector: (row: CompanySalesType) => row.UserName,
+    sortable: true,
+  },
+  {
+    name: "Firma Adı",
+    selector: (row: CompanySalesType) => row.CompanyName,
+    sortable: true,
+    width: "250px",
+  },
+  {
+    name: "İstasyon",
+    selector: (row: CompanySalesType) => row.StationName,
+    sortable: true,
+  },
+  {
+    name: "Tank Adı",
+    selector: (row: CompanySalesType) => row.TankName,
+    sortable: true,
+  },
+  {
+    name: "Plaka",
+    selector: (row: CompanySalesType) => row.PlateNumber,
+    sortable: true,
+  },
+  {
+    name: "Satış Tarihi",
+    selector: (row: CompanySalesType) =>
+      formatDate(row.SaleDate, "dd.MM.yyy hh:MM"),
+    sortable: true,
+  },
+  {
+    name: "Kayıt Tarihi",
+    selector: (row: CompanySalesType) =>
       formatDate(row.CreatedDate, "dd.MM.yyy hh:MM"),
     sortable: true,
   },

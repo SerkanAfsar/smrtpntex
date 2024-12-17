@@ -1,6 +1,6 @@
 import { GetAllCategories } from "@/Services/CategoryService";
 import ProductsContainer from "./Containers/ProductsContainer";
-import { PaginationType } from "@/Types/Common.Types";
+import { GenericType2, PaginationType } from "@/Types/Common.Types";
 import { CategoryType } from "@/Types/Category.Types";
 
 export default async function Page() {
@@ -13,9 +13,11 @@ export default async function Page() {
   if (!result.IsSuccess) {
     throw new Error(result.Message || "Hata");
   }
+  const data = result.Data as PaginationType<CategoryType>;
+
   return (
     <ProductsContainer
-      dataResult={result.Data as PaginationType<CategoryType>}
+      dataResult={data.records as GenericType2<CategoryType>}
     />
   );
 }

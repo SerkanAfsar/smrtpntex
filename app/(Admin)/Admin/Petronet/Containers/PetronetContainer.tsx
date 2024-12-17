@@ -12,6 +12,7 @@ import CustomDatatable from "@/Components/UI/CustomDataTable";
 import {
   PetronetDealerColumns,
   PetronetDealerSalesColumns,
+  PetronetTankSimulesColumns,
   PetronetTankStatusHeaders,
   PetronetTransactionsColumns,
 } from "@/Utils/Variables";
@@ -47,8 +48,9 @@ const types: MenuType = {
     columns: PetronetTransactionsColumns,
   },
   "Tank Doluluk Oranları": {
-    apiUrl: "deneme",
+    apiUrl: "/api/petronet/tank-simules",
     searchItems: ["aranacak", "baslangic", "bitis"],
+    columns: PetronetTankSimulesColumns,
   },
 };
 

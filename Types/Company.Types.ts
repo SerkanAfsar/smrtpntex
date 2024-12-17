@@ -11,6 +11,12 @@ export type CompanyListType = PageIndexType & {
   keywords?: string;
 };
 
+export type CompanySalesListType = PageIndexType & {
+  keywords?: string;
+  startDate?: string;
+  endDate?: string;
+};
+
 export type AddCompanyType = {
   paymentMethodId: number;
   title: string;
@@ -19,4 +25,29 @@ export type AddCompanyType = {
   alertLimit: number;
   riskLimit: number;
   isActive: boolean;
+};
+
+export type CompanySalesType = {
+  UserName: string;
+  DisplayName: string;
+  CompanyName: string;
+  StationName: string;
+  TankName: string;
+  DistributorId: number | null;
+  MemberId: number;
+  StationId: number;
+  TankId: number;
+  UniqueId: number;
+  ProductId: number;
+  PaymentMethodId: number;
+  PlateNumber: string;
+  UnitPrice: number;
+  DistributorPrice: number | null;
+  Liter: number;
+  NewAmount: number;
+  DiscountRatio: number;
+  Total: number;
+  SaleDate: string;
+  CreatedDate: string;
+  Id: number;
 };

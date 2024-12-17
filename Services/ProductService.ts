@@ -1,5 +1,9 @@
 import BaseFetch from "./BaseService";
-import { PaginationType, ResponseResult } from "@/Types/Common.Types";
+import {
+  GenericType2,
+  PaginationType,
+  ResponseResult,
+} from "@/Types/Common.Types";
 import {
   AddProductType,
   ProductListType,

@@ -46,12 +46,15 @@ export default function DistrubutorContainer({
         addTitle="Distribütör Ekle"
         placeholder="Distribütör Ara"
         title="Distribütörler"
-        variables={dataResult.records.map((item: DistrubitorType) => ({
-          name: item.Title,
-          value: item.Id.toString(),
-          active: item.IsActive,
-        }))}
+        variables={(dataResult.records as DistrubitorType[]).map(
+          (item: DistrubitorType) => ({
+            name: item.Title,
+            value: item.Id.toString(),
+            active: item.IsActive,
+          }),
+        )}
         selectAction={selectAction}
+        selectedId={selectedId ?? undefined}
       />
       <ContentWithInfoSection>
         {selectedId ? (
@@ -68,14 +71,7 @@ export default function DistrubutorContainer({
               />
             </AdminTopSection>
             <DistributorsCustomSearch setKeywords={setKeywords} />
-            {/* <CustomGrid
-              search={false}
-              columns={AraclarDatatableProps.columns}
-              pagination={true}
-              sort={true}
-              convertAction={returnCarItem}
-              apiUrl="/api/cars/getlist"
-            /> */}
+
             <div>
               Buraya distribitörlere ait satışlar tablosu gelicek ama nerden
               çekicek belli değil

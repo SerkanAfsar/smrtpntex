@@ -11,7 +11,7 @@ import { useState } from "react";
 
 import ContentWithInfoSection from "@/Components/Admin/ContentWithInfoSection";
 import ContentSubLeftSearch from "@/Components/Admin/ContentSubLeftSearch";
-import { PaginationType } from "@/Types/Common.Types";
+import { GenericType2, PaginationType } from "@/Types/Common.Types";
 import { DistrubitorType } from "@/Types/Distrubitor.Types";
 import { useDistrubutorModal } from "@/store/useDistrubutorModal";
 
@@ -27,9 +27,10 @@ import { useProductModal } from "@/store/useProductModal";
 export default function ProductsContainer({
   dataResult,
 }: {
-  dataResult: PaginationType<CategoryType>;
+  dataResult: GenericType2<CategoryType>;
 }) {
   const [keywords, setKeywords] = useState<string>();
+  const data = dataResult.Result as CategoryType[];
 
   const [toggleOpened, selectedId, selectAction] = useProductModal(
     useShallow((state) => [
@@ -51,8 +52,8 @@ export default function ProductsContainer({
         addTitle="Ürün Ekle"
         placeholder="Ürün Ara"
         title="Ürümnler"
-        variables={dataResult.records.map((item: CategoryType) => ({
-          name: item.name,
+        variables={data.map((item: CategoryType) => ({
+          name: item.Name,
           value: item.Id.toString(),
           active: item.IsActive,
         }))}

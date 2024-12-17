@@ -9,7 +9,11 @@ import {
 
 import { useBpOrderModal } from "@/store/useBpOderModal";
 
-import { AddBpOrderType, BpOrderStationType } from "@/Types/BpOrder.Types";
+import {
+  AddBpOrderType,
+  BpOrderListType,
+  BpOrderStationType,
+} from "@/Types/BpOrder.Types";
 import {
   CustomOptionsType,
   PaginationType,
@@ -54,12 +58,12 @@ export default function BpOrderEditModal({
         await GetBpOrderStationList();
       if (result.IsSuccess) {
         const data = result.Data as PaginationType<BpOrderStationType>;
-        const paymetOptionsData: CustomOptionsType[] = data.records.map(
-          (item) => ({
-            name: item.AccountName,
-            value: item.Code,
-          }),
-        );
+        const paymetOptionsData: CustomOptionsType[] = (
+          data.records as BpOrderStationType[]
+        ).map((item) => ({
+          name: item.AccountName,
+          value: item.Code,
+        }));
         setStationList(paymetOptionsData);
       } else {
         setStationList([]);

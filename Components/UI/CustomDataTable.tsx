@@ -13,6 +13,7 @@ export type CustomDataTableProps = {
   columns: any;
   updated?: boolean;
   isActive?: boolean;
+  id?: number;
 };
 export default function CustomDatatable({
   apiUrl,
@@ -22,6 +23,7 @@ export default function CustomDatatable({
   columns,
   updated,
   isActive,
+  id,
 }: CustomDataTableProps) {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -32,21 +34,20 @@ export default function CustomDatatable({
     async ({ page }: { page: number }) => {
       setLoading(true);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_API_URL}/${apiUrl}?pageIndex=${page}&pageSize=${perPage}&keywords=${keywords}&startDate=${startDate}&endDate=${endDate}&isActive=${isActive}`,
+        `${process.env.NEXT_PUBLIC_BASE_API_URL}/${apiUrl}?pageIndex=${page}&pageSize=${perPage}&keywords=${keywords}&startDate=${startDate}&endDate=${endDate}&isActive=${isActive}&id=${id}`,
       );
       const result: ResponseResult<PaginationType<any>> = await response.json();
       if (result.IsSuccess) {
         const data: PaginationType<any> = result.Data as PaginationType<any>;
-        setData(data.records);
+        setData(data.records as any[]);
         setTotalRows(data.totalCount);
       } else {
         setData([]);
         setTotalRows(0);
       }
-
       setLoading(false);
     },
-    [apiUrl, endDate, keywords, startDate, perPage, updated, isActive],
+    [apiUrl, endDate, keywords, startDate, perPage, updated, isActive, id],
   );
 
   const handlePageChange = async (page: number) => {

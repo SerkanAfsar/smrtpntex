@@ -14,7 +14,15 @@ export type PageIndexType = {
 export type PaginationType<T> = {
   totalPages: number;
   totalCount: number;
-  records: T[];
+  records: T[] | GenericType2<T>;
+};
+
+export type GenericType2<T> = {
+  IsCompleted: boolean;
+  IsCompletedSuccessfully: boolean;
+  IsFaulted: boolean;
+  IsCanceled: boolean;
+  Result: T[];
 };
 
 export type BaseFetchType = {

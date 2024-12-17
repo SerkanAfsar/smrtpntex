@@ -8,6 +8,7 @@ import { useProductModal } from "@/store/useProductModal";
 import { CategoryType } from "@/Types/Category.Types";
 import {
   CustomOptionsType,
+  GenericType2,
   PaginationType,
   ResponseResult,
 } from "@/Types/Common.Types";
@@ -48,13 +49,14 @@ export default function AddEditProductModal() {
         });
       if (result.IsSuccess) {
         const data = result.Data as PaginationType<CategoryType>;
-        const paymetOptionsData: CustomOptionsType[] = data.records.map(
+        const resultData = data.records as GenericType2<CategoryType>;
+        const categoryData: CustomOptionsType[] = resultData.Result.map(
           (item) => ({
-            name: item.name,
+            name: item.Name,
             value: item.Id,
           }),
         );
-        setCategoryList(paymetOptionsData);
+        setCategoryList(categoryData);
       } else {
         setCategoryList([]);
       }
@@ -116,11 +118,7 @@ export default function AddEditProductModal() {
             valueAsNumber: true,
           })}
           setFirst={true}
-          options={
-            categoryList.length
-              ? categoryList
-              : [{ name: "Kategori 1", value: 1 }]
-          }
+          options={categoryList}
           className="rounded-md border p-3"
           title="Kategori Seçiniz"
           err={errors.categoryId?.message}

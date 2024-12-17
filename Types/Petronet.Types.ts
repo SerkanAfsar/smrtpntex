@@ -90,3 +90,21 @@ export type PetronetTankTransactionsType = {
   Id: number;
   CustomProperties: { [key: string]: any };
 };
+
+export type PetronetTankSimulesType = {
+  LicenseNumber: string;
+  Title: string;
+  CityName: string;
+  TankAd: string;
+  BosHacim: number;
+  KapasiteHacim: number;
+  YakitSeviye: number;
+  YakitHacim: number;
+  SuSeviye: number;
+  SuHacim: number;
+  YakitSicaklik: number;
+  IsOnline: boolean;
+  Durum: string;
+  Ratio: number;
+  RatioLevel: number;
+};

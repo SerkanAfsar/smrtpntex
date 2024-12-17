@@ -34,12 +34,11 @@ export default function PetronetCustomSearch({
   }, [keyValue, setKeywords]);
 
   useEffect(() => {
-    setKeyValue("");
     setKeywords("");
     setStartDate("");
     setEndDate("");
     setIsActive(undefined);
-  }, [activeMenu]);
+  }, [activeMenu, setKeywords, setStartDate, setEndDate, setIsActive]);
 
   return (
     <section className="flex w-full items-center justify-start gap-3 border-b bg-adminBgColor p-3">
@@ -91,7 +90,7 @@ export default function PetronetCustomSearch({
           options={[
             { name: "Hepsi", value: "all" },
             { name: "Aktif", value: "true" },
-            { name: "pasif", value: "false" },
+            { name: "Pasif", value: "false" },
           ]}
         />
       )}

@@ -3,7 +3,11 @@ import CustomSelect from "@/Components/UI/CustomSelect";
 import { CustomTextbox } from "@/Components/UI/CustomTextbox";
 import { GetAllProducts } from "@/Services/ProductService";
 import { useProductModal } from "@/store/useProductModal";
-import { PaginationType, ResponseResult } from "@/Types/Common.Types";
+import {
+  GenericType2,
+  PaginationType,
+  ResponseResult,
+} from "@/Types/Common.Types";
 import { ProductListType, ProductType } from "@/Types/Product.Types";
 import {
   EditIcon,
@@ -68,9 +72,11 @@ export default function ProductsSubLeftSection({
         await GetAllProducts({
           searchType,
         });
+
       if (response.IsSuccess) {
         const data = response.Data as PaginationType<ProductType>;
-        setProductList(data.records);
+        const data2 = data.records as GenericType2<ProductType>;
+        setProductList(data2.Result as ProductType[]);
       } else {
         setProductList([]);
       }
@@ -79,6 +85,8 @@ export default function ProductsSubLeftSection({
       process();
     }
   }, [searchKey, selectedCategory, selectedType, isOpened]);
+
+  console.log(productList);
 
   return (
     <section className="ml-[62px] flex w-[320px] flex-col border-r bg-white">
@@ -144,24 +152,24 @@ export default function ProductsSubLeftSection({
       </div>
       <hr />
       <div className="w-full flex-1 flex-col gap-6 overflow-auto overscroll-contain p-4">
-        {productList.map((item, index) => (
+        {productList.map((item: ProductType, index) => (
           <div
             className="group flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-md p-3 text-sm transition-all hover:bg-blue-100"
             key={index}
             onClick={() => selectAction(Number(item.Id))}
           >
             <div className="flex w-full items-center justify-between">
-              <h4 className="text-[16px]">{item.ProductName}</h4>
+              <h4 className="text-[16px]">{item.Name}</h4>
               <div className="h-[30px]">
                 <Image
                   src={EditIcon}
                   width={20}
                   height={20}
-                  alt={item.name}
+                  alt={item.Name}
                   className="hidden opacity-0 transition-all delay-[25] group-hover:block group-hover:opacity-100"
                 />
                 <div className="block rounded-md bg-[#2970ff] px-2 py-1 text-sm text-white opacity-100 group-hover:hidden group-hover:opacity-0">
-                  AdBlue
+                  {item.CategoryPath}
                 </div>
               </div>
             </div>
