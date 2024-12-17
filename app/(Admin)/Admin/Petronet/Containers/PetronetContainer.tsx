@@ -1,7 +1,7 @@
 "use client";
 import AdminTopSection from "@/Components/Admin/TopSection";
 import CustomButton from "@/Components/UI/CustomButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ContentWithInfoSection from "@/Components/Admin/ContentWithInfoSection";
 import PetronetCustomSearch from "../Components/PetronetCustomSearch";
 import { ExportCsvIcon } from "@/Utils/IconList";
@@ -56,11 +56,18 @@ const types: MenuType = {
 
 export default function PetronetContainer() {
   const isOpened = useLeftMenuStore((state) => state.isOpened);
-  const [keywords, setKeywords] = useState<string>();
+  const [keywords, setKeywords] = useState<string>("");
   const [activeMenu, setActiveMenu] = useState<string>("Bayiler");
-  const [startDate, setStartDate] = useState<string>();
-  const [endDate, setEndDate] = useState<string>();
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
   const [isActive, setIsActive] = useState<boolean | undefined>(undefined);
+
+  useEffect(() => {
+    setKeywords("");
+    setStartDate("");
+    setEndDate("");
+    setIsActive(undefined);
+  }, [activeMenu]);
 
   return (
     <div

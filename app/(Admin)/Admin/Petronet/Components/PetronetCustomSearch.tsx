@@ -7,6 +7,7 @@ import { PetronetItemsType } from "../Containers/PetronetContainer";
 
 export default function PetronetCustomSearch({
   setKeywords,
+
   activeMenu,
   types,
   setStartDate,
@@ -17,28 +18,25 @@ export default function PetronetCustomSearch({
 }: {
   activeMenu: string;
   types: Record<string, PetronetItemsType>;
-  setKeywords: React.Dispatch<string | undefined>;
+  setKeywords: React.Dispatch<string>;
   setStartDate: React.Dispatch<string>;
   setEndDate: React.Dispatch<string>;
   setIsActive: React.Dispatch<boolean | undefined>;
-  startDate?: string;
-  endDate?: string;
+  startDate?: string | null;
+  endDate?: string | null;
 }) {
   const [keyValue, setKeyValue] = useState<string>();
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setKeywords(keyValue);
+      setKeywords(keyValue ?? "");
     }, 1000);
     return () => clearTimeout(timer);
   }, [keyValue, setKeywords]);
 
   useEffect(() => {
-    setKeywords("");
-    setStartDate("");
-    setEndDate("");
-    setIsActive(undefined);
-  }, [activeMenu, setKeywords, setStartDate, setEndDate, setIsActive]);
+    setKeyValue("");
+  }, [activeMenu]);
 
   return (
     <section className="flex w-full items-center justify-start gap-3 border-b bg-adminBgColor p-3">
@@ -46,6 +44,7 @@ export default function PetronetCustomSearch({
         <CustomTextbox
           placeholder="Arama Yapın"
           isFull={false}
+          value={keyValue as string}
           onChange={(e) => setKeyValue(e.target.value)}
           className="inline-block w-[290px] rounded-md border border-border-primary p-2 text-sm placeholder:text-xs"
         />
@@ -55,7 +54,7 @@ export default function PetronetCustomSearch({
         <CustomTextbox
           type="text"
           isFull={false}
-          value={startDate}
+          value={startDate as string}
           onChange={(e) => setStartDate(e.target.value)}
           placeholder="Başlangıç Tarihi"
           onFocus={(e) => (e.target.type = "date")}
@@ -67,7 +66,7 @@ export default function PetronetCustomSearch({
         <CustomTextbox
           type="text"
           isFull={false}
-          value={endDate}
+          value={endDate as string}
           placeholder="Bitiş Tarihi"
           onChange={(e) => setEndDate(e.target.value)}
           onFocus={(e) => (e.target.type = "date")}
