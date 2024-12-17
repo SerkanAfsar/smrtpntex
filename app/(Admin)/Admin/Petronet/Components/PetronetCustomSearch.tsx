@@ -7,7 +7,6 @@ import { PetronetItemsType } from "../Containers/PetronetContainer";
 
 export default function PetronetCustomSearch({
   setKeywords,
-
   activeMenu,
   types,
   setStartDate,

@@ -23,6 +23,7 @@ import {
 } from "@/Types/Petronet.Types";
 import { format, formatDate } from "date-fns";
 import { CompanySalesType } from "@/Types/Company.Types";
+import { MemberType, MemberTypeType } from "@/Types/Member.Types";
 
 export const AdminMenuList: MenuLinkGroupType[] = [
   {
@@ -98,6 +99,12 @@ export const AdminMenuList: MenuLinkGroupType[] = [
         title: "Kullanıcılar",
         icon: UsersIcon,
         url: "/Admin/Kullanicilar",
+        isOpenedForce: true,
+      },
+      {
+        title: "Üyeler",
+        icon: UsersIcon,
+        url: "/Admin/Uyeler",
         isOpenedForce: true,
       },
       {
@@ -586,6 +593,53 @@ export const CompanySalesColumns = [
     name: "Kayıt Tarihi",
     selector: (row: CompanySalesType) =>
       formatDate(row.CreatedDate, "dd.MM.yyy hh:MM"),
+    sortable: true,
+  },
+];
+
+export const MemberColumnHeaders = [
+  {
+    name: "Üye Tipi",
+    selector: (row: MemberType) => row.MemberTypeName,
+    sortable: true,
+  },
+  {
+    name: "Kullanıcı Adı",
+    selector: (row: MemberType) => row.UserName,
+    sortable: true,
+  },
+  {
+    name: "Görünür İsim",
+    selector: (row: MemberType) => row.DisplayName,
+    sortable: true,
+  },
+  {
+    name: "Gsm",
+    selector: (row: MemberType) => row.Gsm,
+    sortable: true,
+  },
+  {
+    name: "Aktif",
+    selector: (row: MemberType) => row.IsActive,
+    sortable: true,
+  },
+  {
+    name: "Kayıt Tarihi",
+    selector: (row: MemberType) =>
+      formatDate(row.CreatedDate, "dd.MM.yyy hh:MM"),
+    sortable: true,
+  },
+];
+
+export const MemberTypeColumnHeaders = [
+  {
+    name: "Id",
+    selector: (row: MemberTypeType) => row.Id,
+    sortable: true,
+  },
+  {
+    name: "Üye Tipi",
+    selector: (row: MemberTypeType) => row.Description,
     sortable: true,
   },
 ];

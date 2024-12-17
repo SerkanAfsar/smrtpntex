@@ -20,7 +20,6 @@ import {
 export type PetronetItemsType = {
   apiUrl: string;
   searchItems: string[];
-  data?: PetronetDealersType[];
   columns?: any;
 };
 

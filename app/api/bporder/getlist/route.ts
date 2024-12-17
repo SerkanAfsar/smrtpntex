@@ -6,9 +6,9 @@ export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
   const pageIndex = Number(searchParams.get("pageIndex"));
   const pageSize = Number(searchParams.get("pageSize"));
-  const keywords = String(searchParams.get("keywords"));
-  const startDate = String(searchParams.get("startDate"));
-  const endDate = String(searchParams.get("endDate"));
+  const keywords = searchParams.get("keywords");
+  const startDate = searchParams.get("startDate");
+  const endDate = searchParams.get("endDate");
 
   const searchType: BpOrderListType = {
     pageSize,

@@ -1,0 +1,11 @@
+import { CompanySalesService } from "@/Services/CompanyService";
+import { GetMemberTypesService } from "@/Services/MemberService";
+import { CompanySalesListType } from "@/Types/Company.Types";
+import { NextRequest, NextResponse } from "next/server";
+
+export async function GET(req: NextRequest) {
+  const searchParams = req.nextUrl.searchParams;
+  const result = await GetMemberTypesService();
+
+  return NextResponse.json(result);
+}

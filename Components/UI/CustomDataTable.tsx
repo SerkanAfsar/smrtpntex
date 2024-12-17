@@ -14,6 +14,7 @@ export type CustomDataTableProps = {
   updated?: boolean;
   isActive?: boolean;
   id?: number;
+  gsm?: string;
 };
 export default function CustomDatatable({
   apiUrl,
@@ -24,6 +25,7 @@ export default function CustomDatatable({
   updated,
   isActive,
   id,
+  gsm,
 }: CustomDataTableProps) {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -33,10 +35,37 @@ export default function CustomDatatable({
   const handleChange = useCallback(
     async ({ page }: { page: number }) => {
       setLoading(true);
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_API_URL}/${apiUrl}?pageIndex=${page}&pageSize=${perPage}&keywords=${keywords}&startDate=${startDate}&endDate=${endDate}&isActive=${isActive}&id=${id}`,
-      );
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_API_URL as string;
+      const newUrl = new URL(`${apiUrl}`, baseUrl);
+
+      if (page) {
+        newUrl.searchParams.append("pageIndex", page.toString());
+      }
+      if (perPage) {
+        newUrl.searchParams.append("pageSize", perPage.toString());
+      }
+      if (keywords) {
+        newUrl.searchParams.append("keywords", keywords.toString());
+      }
+      if (startDate) {
+        newUrl.searchParams.append("startDate", startDate.toString());
+      }
+      if (endDate) {
+        newUrl.searchParams.append("endDate", endDate.toString());
+      }
+      if (!!isActive || !isActive) {
+        newUrl.searchParams.append("isActive", String(isActive));
+      }
+      if (id) {
+        newUrl.searchParams.append("id", id.toString());
+      }
+      if (gsm) {
+        newUrl.searchParams.append("gsm", gsm.toString());
+      }
+      console.log(newUrl.toString());
+      const response = await fetch(newUrl.toString());
       const result: ResponseResult<PaginationType<any>> = await response.json();
+
       if (result.IsSuccess) {
         const data: PaginationType<any> = result.Data as PaginationType<any>;
         setData(data.records as any[]);
@@ -47,7 +76,7 @@ export default function CustomDatatable({
       }
       setLoading(false);
     },
-    [apiUrl, endDate, keywords, startDate, perPage, updated, isActive, id],
+    [apiUrl, endDate, keywords, startDate, perPage, updated, isActive, id, gsm],
   );
 
   const handlePageChange = async (page: number) => {

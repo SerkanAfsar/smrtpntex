@@ -1,4 +1,5 @@
-import { GetPetronetTankStatusService } from "@/Services/PetronetService";
+import { GetMemberListService } from "@/Services/MemberService";
+import { MemberListType } from "@/Types/Member.Types";
 import { PetronetSearchType } from "@/Types/Petronet.Types";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -6,32 +7,23 @@ export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
   const pageIndex = Number(searchParams.get("pageIndex"));
   const pageSize = Number(searchParams.get("pageSize"));
-  const keywords = searchParams.get("keywords");
-  const startDate = searchParams.get("startDate");
-  const endDate = searchParams.get("endDate");
+  const gsm = searchParams.get("gsm");
   const isActive = searchParams.get("isActive");
 
-  const searchType: PetronetSearchType = {
+  const searchType: MemberListType = {
     pageSize,
     pageIndex,
   };
 
-  if (keywords && keywords != "undefined") {
-    searchType.keywords = keywords;
+  if (gsm && gsm != "undefined") {
+    searchType.gsm = gsm;
   }
 
-  if (startDate && startDate != "undefined") {
-    searchType.startDate = startDate;
-  }
-
-  if (endDate && endDate != "undefined") {
-    searchType.endDate = endDate;
-  }
   if (isActive && isActive != "undefined") {
     searchType.status = isActive == "true" ? true : false;
   }
 
-  const result = await GetPetronetTankStatusService({
+  const result = await GetMemberListService({
     searchType,
   });
 

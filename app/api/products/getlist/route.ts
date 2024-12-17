@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
   const pageIndex = Number(searchParams.get("pageIndex"));
   const pageSize = Number(searchParams.get("pageSize"));
-  const keywords = String(searchParams.get("keywords"));
+  const keywords = searchParams.get("keywords");
 
   const searchType: ProductListType = {
     pageSize,
