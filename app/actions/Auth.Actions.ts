@@ -18,7 +18,7 @@ export const LoginValidSectionAction = async ({
         "Content-Type": "application/json; charset=utf-8",
       },
       body: JSON.stringify(data),
-    }
+    },
   );
   const result: ResponseResult<UserTokenType> = await response.json();
 

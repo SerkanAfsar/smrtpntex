@@ -10,8 +10,10 @@ import { ResponseResult } from "@/Types/Common.Types";
 
 export default function LoginSection({
   setActiveStep,
+  setUserName,
 }: {
   setActiveStep: React.Dispatch<number>;
+  setUserName: React.Dispatch<string>;
 }) {
   const [loading, setLoading] = useState<boolean>(false);
   const {
@@ -40,6 +42,7 @@ export default function LoginSection({
     const result: ResponseResult<LoginType> = await response.json();
     setLoading(false);
     if (result.IsSuccess) {
+      setUserName(data.userName);
       setActiveStep(1);
     } else {
       setMessage(result.Message);

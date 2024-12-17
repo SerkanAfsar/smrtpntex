@@ -61,7 +61,10 @@ body {
 }
 .rdt_TableCell,
 .rdt_TableCol {
-  @apply border-b border-l;
+  @apply border-b border-l !px-3;
+}
+.rdt_TableCell > div {
+  @apply !whitespace-normal !py-1.5 !leading-6;
 }
 
 .rdt_TableCell:first-child,

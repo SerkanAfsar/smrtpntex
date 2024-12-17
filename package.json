@@ -11,6 +11,7 @@
   "dependencies": {
     "chart.js": "^4.4.7",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "gridjs": "^6.2.0",
     "gridjs-react": "^6.1.1",
     "gridjs-selection": "^4.0.0",

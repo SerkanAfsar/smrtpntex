@@ -1,3 +1,4 @@
+import { tr } from "date-fns/locale";
 import { MenuLinkGroupType } from "@/Types/Common.Types";
 import {
   AnasayfaIcon,
@@ -14,6 +15,12 @@ import {
   TopluIslemlerIcon,
   UsersIcon,
 } from "./IconList";
+import {
+  PetronetDealerSalesType,
+  PetronetTankStatusType,
+  PetronetTankTransactionsType,
+} from "@/Types/Petronet.Types";
+import { format, formatDate } from "date-fns";
 
 export const AdminMenuList: MenuLinkGroupType[] = [
   {
@@ -268,12 +275,6 @@ export const AraclarDatatableProps = {
 
 export const BpDatatableProps = {
   columns: [
-    // "Sipariş No",
-    // "İstasyon",
-    // "Litre",
-    // "Durum",
-    // "Sipariş Tarihi",
-    // "Kayıt Tarihi",
     {
       name: "Sipariş No",
       selector: (row: any) => row.OrderCode,
@@ -316,3 +317,187 @@ export const BpDatatableProps = {
     ],
   ],
 };
+
+export const PetronetDealerColumns = [
+  {
+    name: "Bayi Id",
+    selector: (row: any) => row.DealerId,
+    sortable: true,
+    width: "100px",
+  },
+  {
+    name: "Lisans No",
+    selector: (row: any) => row.LisenceNumber,
+    sortable: true,
+    width: "150px",
+  },
+  {
+    name: "Bayi Ünvan",
+    selector: (row: any) => row.Title,
+    sortable: true,
+  },
+  {
+    name: "Şehir",
+    selector: (row: any) => row.CityName,
+    sortable: true,
+    width: "120px",
+  },
+  {
+    name: "Online",
+    selector: (row: any) => row.IsOnline,
+    sortable: true,
+    width: "100px",
+  },
+  {
+    name: "Kayıt Tarihi",
+    selector: (row: any) => formatDate(row.CreatedDate, "dd.MM.yyy hh:MM"),
+    sortable: true,
+  },
+];
+
+export const PetronetDealerSalesColumns = [
+  {
+    name: "Bayi Id",
+    selector: (row: any) => row.DealerId,
+    sortable: true,
+    width: "100px",
+  },
+  {
+    name: "Lisans No",
+    selector: (row: any) => row.LisansNo,
+    sortable: true,
+    width: "110px",
+  },
+  {
+    name: "Bayi Ünvan",
+    selector: (row: any) => row.Unvan,
+    sortable: true,
+    width: "240px",
+  },
+  {
+    name: "Şehir",
+    selector: (row: any) => row.Sehir,
+    sortable: true,
+  },
+  {
+    name: "Plaka",
+    selector: (row: any) => row.Plaka,
+    sortable: true,
+  },
+  {
+    name: "Fiyat",
+    selector: (row: any) => row.Tutar,
+    sortable: true,
+    width: "80px",
+  },
+  {
+    name: "Litre",
+    selector: (row: any) => row.Litre,
+    sortable: true,
+    width: "80px",
+  },
+  {
+    name: "Kart Tip",
+    selector: (row: any) => row.KartTip,
+    sortable: true,
+  },
+  {
+    name: "Satış Tarihi",
+    selector: (row: PetronetDealerSalesType) =>
+      format(row.TarihSaat, "dd.MM.yyy HH:mm:ss", { locale: tr }),
+    sortable: true,
+  },
+
+  {
+    name: "Kayıt Tarihi",
+    selector: (row: PetronetDealerSalesType) =>
+      format(row.CreatedDate, "dd.MM.yyy HH:mm:ss", { locale: tr }),
+    sortable: true,
+  },
+];
+
+export const PetronetTankStatusHeaders = [
+  {
+    name: "Bayi Adı",
+    selector: (row: PetronetTankStatusType) => row.Ad,
+    sortable: true,
+  },
+  {
+    name: "Lisans No",
+    selector: (row: PetronetTankStatusType) => row.LisansNo,
+    sortable: true,
+  },
+  {
+    name: "Tank Kapasitesi",
+    selector: (row: PetronetTankStatusType) => row.KapasiteHacim,
+    sortable: true,
+  },
+  {
+    name: "Kalibrasyon",
+    selector: (row: PetronetTankStatusType) => row.Kalibrasyon,
+    sortable: true,
+  },
+  {
+    name: "Sıcaklık",
+    selector: (row: PetronetTankStatusType) => row.SpeedWire,
+    sortable: true,
+  },
+];
+
+export const PetronetTransactionsColumns = [
+  {
+    name: "Bayi Id",
+    selector: (row: PetronetTankTransactionsType) => row.DealerId,
+    sortable: true,
+    width: "100px",
+  },
+  {
+    name: "Lisans No",
+    selector: (row: PetronetTankTransactionsType) => row.LisansNo,
+    sortable: true,
+  },
+  {
+    name: "Bayi Ünvan",
+    selector: (row: PetronetTankTransactionsType) => row.BayiUnvan,
+    sortable: true,
+    width: "200px",
+  },
+  {
+    name: "E.Yakıt",
+    selector: (row: PetronetTankTransactionsType) => row.EpdkYakitAd,
+    sortable: true,
+    width: "100px",
+  },
+  {
+    name: "Yakıt Seviye",
+    selector: (row: PetronetTankTransactionsType) => row.YakitSeviye,
+    sortable: true,
+  },
+  {
+    name: "Yakıt Litre",
+    selector: (row: PetronetTankTransactionsType) => row.YakitHacim,
+    sortable: true,
+  },
+  {
+    name: "Su Seviye",
+    selector: (row: PetronetTankTransactionsType) => row.SuSeviye,
+    sortable: true,
+  },
+  {
+    name: "Su Litre",
+    selector: (row: PetronetTankTransactionsType) => row.SuHacim,
+    sortable: true,
+  },
+  {
+    name: "Sıcaklık",
+    selector: (row: PetronetTankTransactionsType) => row.YakitSicaklik,
+    sortable: true,
+    width: "80px",
+  },
+  {
+    name: "Kayıt Tarihi",
+    selector: (row: PetronetTankTransactionsType) =>
+      formatDate(row.CreatedDate, "dd.MM.yyy hh:MM"),
+    sortable: true,
+  },
+];

@@ -28,7 +28,9 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "svgr.d.ts",
-    "Components/Admin"
+    "Components/Admin",
+    "Utils/Variables.tsz",
+    "Utils/Variables.tsz"
   ],
   "exclude": ["node_modules"]
 }

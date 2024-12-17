@@ -11,10 +11,15 @@ import ValidSection from "./ValidSection";
 const poppins = Poppins({ subsets: ["latin"], weight: "500" });
 export default function LoginBaseComponent() {
   const [activeStep, setActiveStep] = useState<number>(0);
+  const [userName, setUserName] = useState<string>("");
 
   const componentList = [
-    <LoginSection setActiveStep={setActiveStep} key={0} />,
-    <ValidSection key={1} />,
+    <LoginSection
+      setActiveStep={setActiveStep}
+      setUserName={setUserName}
+      key={0}
+    />,
+    <ValidSection userName={userName} key={1} />,
   ];
 
   return (

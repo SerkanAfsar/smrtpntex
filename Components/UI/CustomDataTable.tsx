@@ -12,6 +12,7 @@ export type CustomDataTableProps = {
   endDate?: string;
   columns: any;
   updated?: boolean;
+  isActive?: boolean;
 };
 export default function CustomDatatable({
   apiUrl,
@@ -20,6 +21,7 @@ export default function CustomDatatable({
   startDate,
   columns,
   updated,
+  isActive,
 }: CustomDataTableProps) {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -30,7 +32,7 @@ export default function CustomDatatable({
     async ({ page }: { page: number }) => {
       setLoading(true);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_API_URL}/${apiUrl}?pageIndex=${page}&pageSize=${perPage}&keywords=${keywords}&startDate=${startDate}&endDate=${endDate}`,
+        `${process.env.NEXT_PUBLIC_BASE_API_URL}/${apiUrl}?pageIndex=${page}&pageSize=${perPage}&keywords=${keywords}&startDate=${startDate}&endDate=${endDate}&isActive=${isActive}`,
       );
       const result: ResponseResult<PaginationType<any>> = await response.json();
       if (result.IsSuccess) {
@@ -44,7 +46,7 @@ export default function CustomDatatable({
 
       setLoading(false);
     },
-    [apiUrl, endDate, keywords, startDate, perPage, updated],
+    [apiUrl, endDate, keywords, startDate, perPage, updated, isActive],
   );
 
   const handlePageChange = async (page: number) => {
@@ -59,7 +61,7 @@ export default function CustomDatatable({
   }, [handleChange]);
 
   return (
-    <div>
+    <div className="block h-full w-full flex-1">
       <DataTable
         columns={columns}
         data={data}
@@ -76,6 +78,7 @@ export default function CustomDatatable({
             style: {
               borderCollapse: "collapse",
               flex: 1,
+              maxWidth: "100%",
             },
           },
         }}

@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import { LoginValidSectionAction } from "@/app/actions/Auth.Actions";
 import { useRouter } from "next/navigation";
 
-export default function ValidSection() {
+export default function ValidSection({ userName }: { userName: string }) {
   const router = useRouter();
   const {
     register,
@@ -26,7 +26,9 @@ export default function ValidSection() {
 
   const onSubmit: SubmitHandler<AuthValidType> = async (data) => {
     setLoading(true);
-    const result = await LoginValidSectionAction({ data });
+    const result = await LoginValidSectionAction({
+      data: { ...data, userName },
+    });
     setLoading(false);
     if (result.IsSuccess) {
       return router.push("/Admin/Dashboard");
@@ -39,12 +41,12 @@ export default function ValidSection() {
       onSubmit={handleSubmit(onSubmit)}
       className="flex w-full flex-col items-start justify-start gap-3 text-[#635C5C]"
     >
-      <CustomTextbox
+      {/* <CustomTextbox
         {...register("userName", { required: "Kullanıcı Adı Boş Bırakılamaz" })}
         className="block w-full rounded-md border border-[#887E7E] p-3 text-sm text-[#635C5C] placeholder:text-sm placeholder:text-[#635C5C]"
         placeholder="Kullanıcı Adınız"
         err={errors.userName?.message}
-      />
+      /> */}
       <CustomTextbox
         {...register("validCode", {
           required: "Doğrulama Kodu Boş Bırakılamaz",
