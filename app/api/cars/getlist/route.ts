@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
     pageIndex,
   };
 
-  if (keywords != "undefined") {
+  if (keywords && keywords != "undefined") {
     searchType.keywords = keywords;
   }
 
