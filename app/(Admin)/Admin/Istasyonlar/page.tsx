@@ -1,3 +1,5 @@
+import StationListContainer from "./Containers/StationListContainer";
+
 export default function Page() {
-  return <div>İstasyonlar</div>;
+  return <StationListContainer />;
 }

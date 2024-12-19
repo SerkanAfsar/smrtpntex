@@ -4,7 +4,11 @@ import CustomSelect from "@/Components/UI/CustomSelect";
 import { CustomTextbox } from "@/Components/UI/CustomTextbox";
 
 import { GetAllDistrubitors } from "@/Services/DistrubitorsService";
-import { AddRoleService, GetAllRolesService } from "@/Services/RoleService";
+import {
+  AddRoleService,
+  GetAllRolesService,
+  UpdateRoleService,
+} from "@/Services/RoleService";
 import { AddUserService, UpdateUserService } from "@/Services/UserService";
 
 import {
@@ -57,23 +61,25 @@ export default function RoleDetailModal({
       isActive: data.IsActive,
       name: data.Name,
     };
-    if (roleData == null) {
-      const result: ResponseResult<AddRoleType> = await AddRoleService({
-        data: newRoleData,
-      });
-      if (result.IsSuccess) {
-        toast.success("Rol Eklendi", {
-          position: "top-right",
-        });
-        reset();
-        clearErrors();
-        toggleOpened();
-        setUpdated();
-      } else {
-        return toast.error(result.Message || "Hata", {
-          position: "top-right",
-        });
-      }
+
+    const result: ResponseResult<RoleType> =
+      roleData == null
+        ? await AddRoleService({
+            data: newRoleData,
+          })
+        : await UpdateRoleService({ id: roleData.Id, data: newRoleData });
+    if (result.IsSuccess) {
+      roleData == null
+        ? toast.success("Rol Eklendi", {
+            position: "top-right",
+          })
+        : toast.warn("Rol Bilgileri Güncellendi", {
+            position: "top-right",
+          });
+      reset();
+      clearErrors();
+      toggleOpened();
+      setUpdated();
     }
   };
 

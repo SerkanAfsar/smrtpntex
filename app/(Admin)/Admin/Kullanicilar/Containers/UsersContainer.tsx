@@ -24,6 +24,7 @@ import UserRoleCustomSearch from "../Components/UsersCustomSearch";
 import { useRoleModal } from "@/store/useRoleModal";
 import RoleDetailModal from "../Components/RoleDetailModal";
 import { RoleType } from "@/Types/Role.Types";
+import { GetRoleByIdService } from "@/Services/RoleService";
 
 export default function UsersContainer() {
   const isOpened = useLeftMenuStore((state) => state.isOpened);
@@ -95,21 +96,21 @@ export default function UsersContainer() {
     [toggleOpened, setSelectedUser],
   );
 
-  // const getRoleDetailFunc = useCallback(
-  //   async ({ id }: { id: number }) => {
-  //     const result: ResponseResult<RoleType> = await GetUserByIdService({
-  //       id,
-  //     });
-  //     if (result.IsSuccess) {
-  //       setUserData(result.Data as UserType);
-  //       setSelectedUser(id);
-  //       toggleOpened();
-  //     } else {
-  //       return toast.error(result.Message || "Hata", { position: "top-right" });
-  //     }
-  //   },
-  //   [toggleOpened, setSelectedUser],
-  // );
+  const getRoleDetailFunc = useCallback(
+    async ({ id }: { id: number }) => {
+      const result: ResponseResult<RoleType> = await GetRoleByIdService({
+        id,
+      });
+      if (result.IsSuccess) {
+        setRoleData(result.Data as RoleType);
+        setSelectedRole(id);
+        toggleOpenedRole();
+      } else {
+        return toast.error(result.Message || "Hata", { position: "top-right" });
+      }
+    },
+    [toggleOpenedRole, setSelectedRole],
+  );
 
   const types = useMemo<MenuType>(() => {
     return {
@@ -136,9 +137,9 @@ export default function UsersContainer() {
       Roller: {
         searchItems: ["aranacak"],
         apiUrl: "/api/users/rolelist",
-        columns: RollerDataTableColumns(() => {
-          alert("deneme");
-        }),
+        columns: RollerDataTableColumns(
+          async ({ id }: { id: number }) => await getRoleDetailFunc({ id }),
+        ),
         addButton: (
           <CustomButton
             className="P-2 bg-blue-100 text-blue-500"
@@ -153,7 +154,7 @@ export default function UsersContainer() {
         ),
       },
     };
-  }, [UnBanFunc, getUserDetailsFunc]);
+  }, []);
 
   return (
     <>
