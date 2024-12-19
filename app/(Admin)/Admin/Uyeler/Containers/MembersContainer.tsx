@@ -6,7 +6,6 @@ import { useLeftMenuStore } from "@/store/useLeftMenuStore";
 import { cn } from "@/Utils";
 import { ExportCsvIcon } from "@/Utils/IconList";
 import {
-  AraclarDatatableProps,
   MemberColumnHeaders,
   MemberTypeColumnHeaders,
 } from "@/Utils/Variables";

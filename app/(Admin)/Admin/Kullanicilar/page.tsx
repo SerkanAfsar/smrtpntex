@@ -1,3 +1,5 @@
+import UsersContainer from "./Containers/UsersContainer";
+
 export default function Page() {
-  return <div>Kullanıcılar</div>;
+  return <UsersContainer />;
 }

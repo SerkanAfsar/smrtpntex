@@ -1,19 +1,13 @@
 "use client";
 import AdminTopSection from "@/Components/Admin/TopSection";
 import CustomButton from "@/Components/UI/CustomButton";
-import CustomGrid from "@/Components/UI/CustomGrid";
 
 import { ExportCsvIcon, PlusSmall } from "@/Utils/IconList";
-import { AraclarDatatableProps } from "@/Utils/Variables";
-import { returnCarItem } from "@/Utils/ConvertTableItems";
 
 import { useState } from "react";
 
 import ContentWithInfoSection from "@/Components/Admin/ContentWithInfoSection";
-import ContentSubLeftSearch from "@/Components/Admin/ContentSubLeftSearch";
-import { GenericType2, PaginationType } from "@/Types/Common.Types";
-import { DistrubitorType } from "@/Types/Distrubitor.Types";
-import { useDistrubutorModal } from "@/store/useDistrubutorModal";
+import { GenericType2 } from "@/Types/Common.Types";
 
 import { useShallow } from "zustand/shallow";
 

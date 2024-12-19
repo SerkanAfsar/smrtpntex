@@ -47,3 +47,5 @@ export type CustomOptionsType = {
   name: string;
   value: string | number;
 };
+
+export type Nullable<T> = { [K in keyof T]: T[K] | null };

@@ -10,6 +10,7 @@ export const CustomCheckbox = React.forwardRef<
   HTMLInputElement,
   CustomCheckboxType
 >(({ className, onChange, onBlur, name, title, ...rest }, ref) => {
+  const id = React.useId();
   return (
     <div
       className={cn("relative flex w-full items-center justify-start gap-2")}
@@ -20,12 +21,12 @@ export const CustomCheckbox = React.forwardRef<
         name={name}
         onChange={onChange}
         onBlur={onBlur}
-        id={name}
+        id={id}
         className={cn("h-4 w-4", className)}
         {...rest}
       />
       {title && (
-        <label htmlFor={name} className="text-sm">
+        <label htmlFor={id} className="text-sm">
           {title}
         </label>
       )}

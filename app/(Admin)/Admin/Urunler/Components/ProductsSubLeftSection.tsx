@@ -53,7 +53,6 @@ export default function ProductsSubLeftSection({
 
   useEffect(() => {
     const process = async () => {
-      console.log("girdi");
       const searchType: ProductListType = {
         pageIndex: 1,
         pageSize: 1000,
@@ -85,8 +84,6 @@ export default function ProductsSubLeftSection({
       process();
     }
   }, [searchKey, selectedCategory, selectedType, isOpened]);
-
-  console.log(productList);
 
   return (
     <section className="ml-[62px] flex w-[320px] flex-col border-r bg-white">

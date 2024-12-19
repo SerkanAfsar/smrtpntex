@@ -1,5 +1,4 @@
 import CustomButton from "@/Components/UI/CustomButton";
-import CustomCheckbox from "@/Components/UI/CustomCheckbox";
 import CustomSelect from "@/Components/UI/CustomSelect";
 import { CustomTextbox } from "@/Components/UI/CustomTextbox";
 import {
@@ -7,11 +6,9 @@ import {
   GetBpOrderStationList,
 } from "@/Services/BpOrderService";
 
-import { useBpOrderModal } from "@/store/useBpOderModal";
 
 import {
   AddBpOrderType,
-  BpOrderListType,
   BpOrderStationType,
 } from "@/Types/BpOrder.Types";
 import {
@@ -22,14 +19,12 @@ import {
 
 import { cn } from "@/Utils";
 import { ExitIcon } from "@/Utils/IconList";
-import { revalidateTag } from "next/cache";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { useShallow } from "zustand/shallow";
 
 export default function BpOrderEditModal({
   toggleOpened,

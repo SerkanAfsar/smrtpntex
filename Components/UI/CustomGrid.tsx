@@ -1,5 +1,5 @@
 "use client";
-import { Grid, ReactWrapper, _ } from "gridjs-react";
+import { Grid } from "gridjs-react";
 import * as React from "react";
 import "gridjs/dist/theme/mermaid.css";
 import { html } from "gridjs";

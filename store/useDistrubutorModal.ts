@@ -1,4 +1,3 @@
-import { DistrubitorType } from "@/Types/Distrubitor.Types";
 import { create } from "zustand";
 
 interface DistrubutorModal {

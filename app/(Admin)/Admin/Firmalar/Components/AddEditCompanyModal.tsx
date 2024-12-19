@@ -4,15 +4,12 @@ import CustomSelect from "@/Components/UI/CustomSelect";
 import { CustomTextbox } from "@/Components/UI/CustomTextbox";
 import { AddCompanyService } from "@/Services/CompanyService";
 import {
-  AddDistributorService,
   GetPaymentMethodTypes,
 } from "@/Services/DistrubitorsService";
 import { useCompanyModal } from "@/store/useCompanyModal";
-import { useDistrubutorModal } from "@/store/useDistrubutorModal";
 import { CustomOptionsType, ResponseResult } from "@/Types/Common.Types";
 import { AddCompanyType } from "@/Types/Company.Types";
 import {
-  AddDistributerType,
   PaymentMethodType,
 } from "@/Types/Distrubitor.Types";
 import { cn } from "@/Utils";

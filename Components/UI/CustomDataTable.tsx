@@ -2,7 +2,7 @@
 
 import { PaginationType, ResponseResult } from "@/Types/Common.Types";
 
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 
 export type CustomDataTableProps = {
@@ -62,7 +62,7 @@ export default function CustomDatatable({
       if (gsm) {
         newUrl.searchParams.append("gsm", gsm.toString());
       }
-      console.log(newUrl.toString());
+
       const response = await fetch(newUrl.toString());
       const result: ResponseResult<PaginationType<any>> = await response.json();
 

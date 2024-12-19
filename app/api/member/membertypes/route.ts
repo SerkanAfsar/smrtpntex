@@ -1,6 +1,4 @@
-import { CompanySalesService } from "@/Services/CompanyService";
 import { GetMemberTypesService } from "@/Services/MemberService";
-import { CompanySalesListType } from "@/Types/Company.Types";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {

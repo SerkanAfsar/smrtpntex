@@ -1,6 +1,5 @@
-import { GetCarList } from "@/Services/CarService";
-import { ProductListType } from "@/Types/Product.Types";
-
+import { GetAllUsersService } from "@/Services/UserService";
+import { UserListType } from "@/Types/User.Types";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -9,16 +8,16 @@ export async function GET(req: NextRequest) {
   const pageSize = Number(searchParams.get("pageSize"));
   const keywords = searchParams.get("keywords");
 
-  const searchType: ProductListType = {
+  const searchType: UserListType = {
     pageSize,
     pageIndex,
   };
 
   if (keywords && keywords != "undefined") {
-    searchType.productName = keywords;
+    searchType.keywords = keywords;
   }
 
-  const result = await GetCarList({
+  const result = await GetAllUsersService({
     searchType,
   });
 

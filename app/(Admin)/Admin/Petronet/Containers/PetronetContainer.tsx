@@ -2,12 +2,10 @@
 import AdminTopSection from "@/Components/Admin/TopSection";
 import CustomButton from "@/Components/UI/CustomButton";
 import { useEffect, useState } from "react";
-import ContentWithInfoSection from "@/Components/Admin/ContentWithInfoSection";
 import PetronetCustomSearch from "../Components/PetronetCustomSearch";
 import { ExportCsvIcon } from "@/Utils/IconList";
 import { cn } from "@/Utils";
 import { useLeftMenuStore } from "@/store/useLeftMenuStore";
-import { PetronetDealersType } from "@/Types/Petronet.Types";
 import CustomDatatable from "@/Components/UI/CustomDataTable";
 import {
   PetronetDealerColumns,
@@ -21,6 +19,7 @@ export type PetronetItemsType = {
   apiUrl: string;
   searchItems: string[];
   columns?: any;
+  addButton?: any;
 };
 
 export type MenuType = Record<string, PetronetItemsType>;

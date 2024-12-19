@@ -1,6 +1,5 @@
 import { GetMemberListService } from "@/Services/MemberService";
 import { MemberListType } from "@/Types/Member.Types";
-import { PetronetSearchType } from "@/Types/Petronet.Types";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {

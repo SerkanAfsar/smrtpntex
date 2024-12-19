@@ -1,5 +1,4 @@
 import {
-  GetPetronetTankStatusService,
   GetPetronetTransactionsService,
 } from "@/Services/PetronetService";
 import { PetronetSearchType } from "@/Types/Petronet.Types";
