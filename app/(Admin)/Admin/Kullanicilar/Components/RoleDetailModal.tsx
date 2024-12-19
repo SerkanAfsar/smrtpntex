@@ -1,31 +1,17 @@
 import CustomButton from "@/Components/UI/CustomButton";
 import CustomCheckbox from "@/Components/UI/CustomCheckbox";
-import CustomSelect from "@/Components/UI/CustomSelect";
 import { CustomTextbox } from "@/Components/UI/CustomTextbox";
 
-import { GetAllDistrubitors } from "@/Services/DistrubitorsService";
-import {
-  AddRoleService,
-  GetAllRolesService,
-  UpdateRoleService,
-} from "@/Services/RoleService";
-import { AddUserService, UpdateUserService } from "@/Services/UserService";
+import { AddRoleService, UpdateRoleService } from "@/Services/RoleService";
 
-import {
-  CustomOptionsType,
-  PaginationType,
-  ResponseResult,
-} from "@/Types/Common.Types";
-import { DistrubitorType } from "@/Types/Distrubitor.Types";
+import { ResponseResult } from "@/Types/Common.Types";
 import { AddRoleType, RoleType } from "@/Types/Role.Types";
-import { AddUserType, UserType } from "@/Types/User.Types";
 
 import { cn } from "@/Utils";
 import { ExitIcon } from "@/Utils/IconList";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
@@ -69,13 +55,15 @@ export default function RoleDetailModal({
           })
         : await UpdateRoleService({ id: roleData.Id, data: newRoleData });
     if (result.IsSuccess) {
-      roleData == null
-        ? toast.success("Rol Eklendi", {
-            position: "top-right",
-          })
-        : toast.warn("Rol Bilgileri Güncellendi", {
-            position: "top-right",
-          });
+      if (roleData) {
+        toast.warn("Rol Bilgileri Güncellendi", {
+          position: "top-right",
+        });
+      } else {
+        toast.success("Rol Eklendi", {
+          position: "top-right",
+        });
+      }
       reset();
       clearErrors();
       toggleOpened();

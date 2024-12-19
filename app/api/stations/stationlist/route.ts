@@ -1,8 +1,5 @@
-import { GetCarList } from "@/Services/CarService";
 import { GetAllStationsService } from "@/Services/StationService";
-import { CarListType } from "@/Types/Car.Types";
 import { StationListType } from "@/Types/Station.Types";
-
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
