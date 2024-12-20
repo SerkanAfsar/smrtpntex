@@ -590,6 +590,16 @@ export const CompanySalesColumns = [
     sortable: true,
   },
   {
+    name: "Satış Miktarı (L)",
+    selector: (row: CompanySalesType) => row.Liter,
+    sortable: true,
+  },
+  {
+    name: "Satış Tutarı",
+    selector: (row: CompanySalesType) => row.Total,
+    sortable: true,
+  },
+  {
     name: "Satış Tarihi",
     selector: (row: CompanySalesType) =>
       formatDate(row.SaleDate, "dd.MM.yyy hh:MM"),

@@ -54,6 +54,7 @@ export type TankType = {
   TotalCapacity: number;
   FuellNess: string;
   IsActive: boolean;
+  ePumpId: string;
 };
 
 export type AddTankType = {
