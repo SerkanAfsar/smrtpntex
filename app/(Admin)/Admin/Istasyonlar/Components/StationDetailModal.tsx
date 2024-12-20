@@ -334,6 +334,7 @@ export default function StationDetailModal({
           type="button"
           onClick={() =>
             append({
+              ePumpId: "",
               IntegratorId: 1,
               Title: "",
               TankNumber: "",
