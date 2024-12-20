@@ -27,12 +27,14 @@ export const StationListHeaderColumns = (editCommand: any) => [
     sortable: true,
   },
   {
-    name: "Aktif",
+    name: "Durum",
     selector: (row: StationType) =>
       row.IsActive ? (
         <Image src={CheckIcon} width={40} height={40} alt="Aktif" />
       ) : (
-        "Pasif"
+        <div className="flex h-[40px] w-[40px] items-center justify-center">
+          ❌
+        </div>
       ),
     sortable: true,
     width: "70px",
