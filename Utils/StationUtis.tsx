@@ -6,19 +6,24 @@ import { format } from "date-fns";
 
 export const StationListHeaderColumns = (editCommand: any) => [
   {
-    name: "Ünvan",
+    name: "İstasyon Adı",
     selector: (row: StationType) => row.Title,
     sortable: true,
     width: "400px",
   },
   {
-    name: "Vergi No",
-    selector: (row: StationType) => row.TaxNumber,
+    name: "Marka",
+    selector: (row: StationType) => row.BrandName,
     sortable: true,
   },
   {
-    name: "Vergi Dairesi",
-    selector: (row: StationType) => row.TaxOffice,
+    name: "İstasyon Kodu",
+    selector: (row: StationType) => row.AffiliateCode,
+    sortable: true,
+  },
+  {
+    name: "İstasyon Numarası",
+    selector: (row: StationType) => row.StationNumber,
     sortable: true,
   },
   {
