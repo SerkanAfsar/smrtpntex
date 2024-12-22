@@ -33,6 +33,7 @@ jobs:
           app_build_command: "npm install --force"
           api_build_command: "npm install --force"
           output_location: "" # Built app content directory - optional
+          skip_app_build: true
           ###### End of Repository/Build Configurations ######
         env:
           NPM_CONFIG_LEGACY_PEER_DEPS: true
