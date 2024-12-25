@@ -41,7 +41,7 @@ export default function LeftSection() {
       onMouseOver={() => !isConstant && toggleOpened(true)}
       onMouseLeave={() => !isConstant && toggleOpened(false)}
       className={cn(
-        "fixed bottom-0 left-0 top-0 z-[100] border bg-white px-3 py-1 transition-all",
+        "fixed bottom-0 left-0 top-0 z-[100] overscroll-auto overscroll-contain border bg-white px-3 py-1 transition-all",
         isOpened ? "w-[244px]" : "w-[62px]",
       )}
     >

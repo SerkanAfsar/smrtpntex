@@ -5,6 +5,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  console.log("rendered");
   return <UsersContainer />;
 }

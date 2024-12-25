@@ -46,3 +46,65 @@ export type ExcelFirmalarFinansType = {};
 export type ExcelFirmalarOtorizasyonType = {};
 export type ExcelFirmalarKrediKartlariType = {};
 export type ExcelFirmalarFaturalarType = {};
+
+export type ExcelPetronetBayilerType = {
+  "Bayi Id": string;
+  "Lisans No": string;
+  "Bayi Ünvan": string;
+  Şehir: string;
+  Online: string;
+  "Kayıt Tarihi": string;
+};
+
+export type ExcelPetronetSatislarType = {
+  "Bayi Id": string;
+  "Lisans No": string;
+  "Bayi Ünvan": string;
+  Plaka: string;
+  Fiyat: string;
+  Litre: string;
+  "Kart Tip": string;
+  "Satış Tarihi": string;
+  "Kayıt Tarihi": string;
+};
+
+export type ExcelPetronetTankDurumlariType = {
+  "Bayi Adı": string;
+  "Lisans No": string;
+  "Tank Kapasitesi": string;
+  Kalibrasyon: string;
+  Sıcaklık: string;
+};
+
+export type ExcelPetronetTankHareketleriType = {
+  "Bayi Id": string;
+  "Lisans No": string;
+  "Bayi Ünvan": string;
+  "E.Yakıt": string;
+  "Yakıt Seviye": string;
+  "Yakıt Litre": string;
+  "Su Seviye": string;
+  "Su Litre": string;
+  Sıcaklık: string;
+  "Kayıt Tarihi": string;
+};
+
+export type ExcelPetronetTankDolulukOranlariType = {
+  "Bayi Adı": string;
+  "Tank Adı": string;
+  "Tank Kapasitesi": string;
+  "Yakıt Hacmi": string;
+  "Boş Hacim": string;
+  "Su Seviyesi": string;
+  "Su Hacmi": string;
+  Sıcaklık: string;
+};
+
+export type ExcelBpOrderType = {
+  "Sipariş No": string;
+  İstasyon: string;
+  Litre: string;
+  Durum: string;
+  "Sipariş Tarihi": string;
+  "Kayıt Tarihi": string;
+};

@@ -29,8 +29,7 @@ import { useRoleModal } from "@/store/useRoleModal";
 import RoleDetailModal from "../Components/RoleDetailModal";
 import { RoleType } from "@/Types/Role.Types";
 import { GetRoleByIdService } from "@/Services/RoleService";
-import { useExcel } from "@/store/useExcel";
-import { ExcelKullanicilarDataType } from "@/Types/Excel.Types";
+import { ExportExcelUserList, ExportUserList } from "@/Services/Excel.Service";
 
 export default function UsersContainer() {
   const isOpened = useLeftMenuStore((state) => state.isOpened);
@@ -69,13 +68,12 @@ export default function UsersContainer() {
       state.updated,
     ]),
   );
-  console.log("rendered");
 
   const [keywords, setKeywords] = useState<string>("");
   const [activeMenu, setActiveMenu] = useState<string>("Kullanıcılar");
   const [userData, setUserData] = useState<UserType | null>();
   const [roleData, setRoleData] = useState<RoleType | null>(null);
-  const getData = useExcel((state) => state.data);
+  const [excelLoading, setExcelLoading] = useState<boolean>(false);
 
   const UnBanFunc = useCallback(async ({ id }: { id: number }) => {
     const result: ResponseResult<any> = await RemoveBanService({ id });
@@ -194,19 +192,12 @@ export default function UsersContainer() {
               <CustomButton
                 className="gap-1 bg-green-100 p-2 text-green-600"
                 icon={ExportCsvIcon}
-                title="Dışa Aktar"
+                title={excelLoading ? "Excel Çıktısı Alınıyor" : "Dışa Aktar"}
+                disabled={excelLoading}
                 onClick={async () => {
-                  const result: UserType[] = await getData(GetAllUsersService);
-                  const resultData: ExcelKullanicilarDataType[] = result.map(
-                    (item: UserType) => ({
-                      "E-Posta": item.Email,
-                      "Kullanıcı Adı": item.UserName,
-                      Ad: item.FullName,
-                      "Rol İsmi": item.RoleName,
-                      Aktif: item.IsActive ? "Aktif" : "Pasif",
-                    }),
-                  );
-                  exportToExcel(resultData, "Kullanıcılar");
+                  setExcelLoading(true);
+                  await ExportExcelUserList({ keywords: keywords });
+                  setExcelLoading(false);
                 }}
               />
             )}

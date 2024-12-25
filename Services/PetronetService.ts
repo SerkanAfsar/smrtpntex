@@ -1,4 +1,5 @@
 import {
+  PetronetDealerSalesType,
   PetronetDealersType,
   PetronetSearchType,
   PetronetTankSimulesType,
@@ -29,7 +30,7 @@ export async function GetPetronetDealerSalesService({
     method: "POST",
     url: "adminApi/Petronet/dealer-sales",
     body: searchType,
-  })) as ResponseResult<PaginationType<PetronetDealersType>>;
+  })) as ResponseResult<PaginationType<PetronetDealerSalesType>>;
 }
 
 export async function GetPetronetTankStatusService({

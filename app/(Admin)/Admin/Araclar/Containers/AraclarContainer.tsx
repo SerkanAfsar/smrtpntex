@@ -2,7 +2,7 @@
 import AdminTopSection from "@/Components/Admin/TopSection";
 import CustomButton from "@/Components/UI/CustomButton";
 import { useLeftMenuStore } from "@/store/useLeftMenuStore";
-import { cn, exportToExcel } from "@/Utils";
+import { cn } from "@/Utils";
 import { ExportCsvIcon } from "@/Utils/IconList";
 import { AraclarDatatableProps } from "@/Utils/Variables";
 import AraclarCustomSearch from "../Components/AraclarCustomSearch";
@@ -10,13 +10,13 @@ import AraclarCustomSearch from "../Components/AraclarCustomSearch";
 import { useState } from "react";
 import CustomDatatable from "@/Components/UI/CustomDataTable";
 import { useExcel } from "@/store/useExcel";
-import { GetCarList } from "@/Services/CarService";
-import { ExcelAraclarDataType } from "@/Types/Excel.Types";
+
 import { ExcelAraclarResult } from "@/Services/Excel.Service";
 
 export default function AraclarContainer() {
   const isOpened = useLeftMenuStore((state) => state.isOpened);
   const [keywords, setKeywords] = useState<string>();
+  const [excelLoading, setExcelLoading] = useState<boolean>(false);
   const getData = useExcel((state) => state.data);
 
   return (
@@ -31,14 +31,17 @@ export default function AraclarContainer() {
         <CustomButton
           className="gap-1 bg-green-100 p-2 text-green-600"
           icon={ExportCsvIcon}
-          title="Dışa Aktar"
+          disabled={excelLoading}
+          title={excelLoading ? "Excel Çıktısı Alınıyor" : "Dışa Aktar"}
           onClick={async () => {
-            const result = await ExcelAraclarResult({
+            setExcelLoading(true);
+            await ExcelAraclarResult({
               startDate: "",
               endDate: "",
               keywords: keywords ?? "",
               plateNumber: "",
             });
+            setExcelLoading(false);
           }}
         />
       </AdminTopSection>

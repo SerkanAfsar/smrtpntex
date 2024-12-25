@@ -63,10 +63,10 @@ export default function CompaniesContainer({
   dataResult: PaginationType<CompanyType>;
 }) {
   const [keywords, setKeywords] = useState<string>();
-
   const [startDate, setStartDate] = useState<string>();
   const [endDate, setEndDate] = useState<string>();
   const [isActive, setIsActive] = useState<boolean | undefined>(undefined);
+  const [excelLoading, setExcelLoading] = useState<boolean>(false);
 
   const [activeMenu, setActiveMenu] = useState<string>("Şubeler");
   const [toggleOpened, selectedId, selectAction] = useCompanyModal(
@@ -78,7 +78,7 @@ export default function CompaniesContainer({
   );
   useEffect(() => {
     selectAction(undefined);
-  }, []);
+  }, [selectAction]);
 
   return (
     <>
@@ -125,14 +125,17 @@ export default function CompaniesContainer({
                 <CustomButton
                   className="gap-1 bg-green-100 p-2 text-green-600"
                   icon={ExportCsvIcon}
-                  title="Dışa Aktar"
+                  disabled={excelLoading}
+                  title={excelLoading ? "Excel Çıktısı Alınıyor" : "Dışa Aktar"}
                   onClick={async () => {
+                    setExcelLoading(true);
                     await types[activeMenu].excelCommand({
                       id: selectedId,
                       startDate: startDate ?? "",
                       endDate: endDate ?? "",
                       keywords: keywords ?? "",
                     });
+                    setExcelLoading(false);
                   }}
                 />
               )}

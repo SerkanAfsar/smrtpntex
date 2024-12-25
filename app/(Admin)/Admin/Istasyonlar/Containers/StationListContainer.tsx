@@ -14,14 +14,14 @@ import { useStationModal } from "@/store/useStationModal";
 import { useShallow } from "zustand/shallow";
 import StationDetailModal from "../Components/StationDetailModal";
 import { useExcel } from "@/store/useExcel";
-import { GetAllStationsService } from "@/Services/StationService";
-import { ExcelIstasyonlarDataType } from "@/Types/Excel.Types";
+
 import { ExcelIstasyonlarList } from "@/Services/Excel.Service";
 
 export default function StationListContainer() {
   const isOpened = useLeftMenuStore((state) => state.isOpened);
   const [keywords, setKeywords] = useState<string>("");
   const [isActive, setIsActive] = useState<boolean | undefined>(undefined);
+  const [excelLoading, setExcelLoading] = useState<boolean>(false);
   const [
     setSelectedStation,
     selectedStation,
@@ -64,12 +64,15 @@ export default function StationListContainer() {
             <CustomButton
               className="gap-1 bg-green-100 p-2 text-green-600"
               icon={ExportCsvIcon}
-              title="Dışa Aktar"
+              disabled={excelLoading}
+              title={excelLoading ? "Excel Çıktısı Alınıyor" : "Dışa Aktar"}
               onClick={async () => {
+                setExcelLoading(true);
                 await ExcelIstasyonlarList({
                   stationName: keywords ?? "",
                   status: isActive ?? undefined,
                 });
+                setExcelLoading(false);
               }}
             />
           </div>

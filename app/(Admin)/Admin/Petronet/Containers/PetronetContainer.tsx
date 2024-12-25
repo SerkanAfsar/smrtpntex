@@ -14,6 +14,13 @@ import {
   PetronetTankStatusHeaders,
   PetronetTransactionsColumns,
 } from "@/Utils/Variables";
+import {
+  ExcelPetronetBayilerList,
+  ExcelPetronetSatislarList,
+  ExcelPetronetTankDolulukOranlariList,
+  ExcelPetronetTankDurumlariList,
+  ExcelPetronetTankHareketleriList,
+} from "@/Services/Excel.Service";
 
 export type PetronetItemsType = {
   apiUrl: string;
@@ -30,26 +37,31 @@ const types: MenuType = {
     searchItems: ["aranacak", "status"],
     apiUrl: "/api/petronet/dealers",
     columns: PetronetDealerColumns,
+    excelCommand: ExcelPetronetBayilerList,
   },
   Satışlar: {
     apiUrl: "/api/petronet/dealer-sales",
     searchItems: ["aranacak", "baslangic", "bitis"],
     columns: PetronetDealerSalesColumns,
+    excelCommand: ExcelPetronetSatislarList,
   },
   "Tank Durumları": {
     apiUrl: "/api/petronet/tank-status",
     searchItems: ["aranacak", "baslangic", "bitis"],
     columns: PetronetTankStatusHeaders,
+    excelCommand: ExcelPetronetTankDurumlariList,
   },
   "Tank Hareketleri": {
     searchItems: ["aranacak", "baslangic", "bitis"],
     apiUrl: "/api/petronet/transactions",
     columns: PetronetTransactionsColumns,
+    excelCommand: ExcelPetronetTankHareketleriList,
   },
   "Tank Doluluk Oranları": {
     apiUrl: "/api/petronet/tank-simules",
     searchItems: ["aranacak", "baslangic", "bitis"],
     columns: PetronetTankSimulesColumns,
+    excelCommand: ExcelPetronetTankDolulukOranlariList,
   },
 };
 
@@ -60,6 +72,7 @@ export default function PetronetContainer() {
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [isActive, setIsActive] = useState<boolean | undefined>(undefined);
+  const [excelLoading, setExcelLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setKeywords("");
@@ -94,11 +107,24 @@ export default function PetronetContainer() {
           </div>
         </div>
         <div>
-          <CustomButton
-            className="gap-1 bg-green-100 p-2 text-green-600"
-            icon={ExportCsvIcon}
-            title="Dışa Aktar"
-          />
+          {types[activeMenu].excelCommand && (
+            <CustomButton
+              className="gap-1 bg-green-100 p-2 text-green-600"
+              icon={ExportCsvIcon}
+              disabled={excelLoading}
+              title={!excelLoading ? "Dışa Aktar" : "Excel Çıktısı Alınıyor"}
+              onClick={async () => {
+                setExcelLoading(true);
+                await types[activeMenu].excelCommand({
+                  keywords,
+                  status: isActive != undefined ? isActive : undefined,
+                  startDate,
+                  endDate,
+                });
+                setExcelLoading(false);
+              }}
+            />
+          )}
         </div>
       </AdminTopSection>
       <PetronetCustomSearch
