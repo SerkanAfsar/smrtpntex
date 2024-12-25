@@ -1,5 +1,5 @@
 "use client";
-import LoginImg from "../../public/images/login.png";
+
 import Image from "next/image";
 import { Poppins } from "next/font/google";
 import { cn } from "@/Utils";

@@ -2,7 +2,7 @@
 import AdminTopSection from "@/Components/Admin/TopSection";
 import CustomButton from "@/Components/UI/CustomButton";
 import { useLeftMenuStore } from "@/store/useLeftMenuStore";
-import { cn, exportToExcel } from "@/Utils";
+import { cn } from "@/Utils";
 import { ExportCsvIcon, PlusSmall } from "@/Utils/IconList";
 import { useCallback, useMemo, useState } from "react";
 import { MenuType } from "../../Petronet/Containers/PetronetContainer";
@@ -12,11 +12,7 @@ import {
   KullanicilarDataTableColumns,
   RollerDataTableColumns,
 } from "@/Utils/KullanicilarUtils";
-import {
-  GetAllUsersService,
-  GetUserByIdService,
-  RemoveBanService,
-} from "@/Services/UserService";
+import { GetUserByIdService, RemoveBanService } from "@/Services/UserService";
 import { ResponseResult } from "@/Types/Common.Types";
 import { toast } from "react-toastify";
 import UserDetailModal from "../Components/UserDetailModal";
@@ -29,7 +25,7 @@ import { useRoleModal } from "@/store/useRoleModal";
 import RoleDetailModal from "../Components/RoleDetailModal";
 import { RoleType } from "@/Types/Role.Types";
 import { GetRoleByIdService } from "@/Services/RoleService";
-import { ExportExcelUserList, ExportUserList } from "@/Services/Excel.Service";
+import { ExportExcelUserList } from "@/Services/Excel.Service";
 
 export default function UsersContainer() {
   const isOpened = useLeftMenuStore((state) => state.isOpened);

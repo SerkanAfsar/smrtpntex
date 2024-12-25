@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 import LeftSectionList from "./LeftSectionList";
-import { Logo, SmartPoint3Logo } from "@/Utils/IconList";
+import { SmartPoint3Logo } from "@/Utils/IconList";
 import { usePathname } from "next/navigation";
 import { MenuLinkItemType } from "@/Types/Common.Types";
 import { useLeftMenuStore } from "@/store/useLeftMenuStore";

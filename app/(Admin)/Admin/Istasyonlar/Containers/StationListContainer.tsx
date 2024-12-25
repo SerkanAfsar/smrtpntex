@@ -3,7 +3,7 @@ import AdminTopSection from "@/Components/Admin/TopSection";
 import CustomButton from "@/Components/UI/CustomButton";
 
 import { useLeftMenuStore } from "@/store/useLeftMenuStore";
-import { cn, exportToExcel } from "@/Utils";
+import { cn } from "@/Utils";
 import { ExportCsvIcon, PlusSmall } from "@/Utils/IconList";
 
 import { useState } from "react";
