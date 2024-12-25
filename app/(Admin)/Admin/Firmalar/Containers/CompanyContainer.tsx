@@ -15,6 +15,8 @@ import NotSelected from "@/Components/Admin/NotSelected";
 import CustomDatatable from "@/Components/UI/CustomDataTable";
 import { MenuType } from "../../Petronet/Containers/PetronetContainer";
 import PetronetCustomSearch from "../../Petronet/Components/PetronetCustomSearch";
+import { ExportCsvIcon } from "@/Utils/IconList";
+import { ExcelFirmalarSatisResult } from "@/Services/Excel.Service";
 
 const types: MenuType = {
   Şubeler: {
@@ -26,6 +28,7 @@ const types: MenuType = {
     searchItems: ["aranacak", "baslangic", "bitis"],
     apiUrl: "/api/companysales",
     columns: CompanySalesColumns,
+    excelCommand: ExcelFirmalarSatisResult,
   },
   Kullanıcılar: {
     searchItems: ["aranacak", "status"],
@@ -118,6 +121,21 @@ export default function CompaniesContainer({
                   ))}
                 </div>
               </div>
+              {types[activeMenu].excelCommand && (
+                <CustomButton
+                  className="gap-1 bg-green-100 p-2 text-green-600"
+                  icon={ExportCsvIcon}
+                  title="Dışa Aktar"
+                  onClick={async () => {
+                    await types[activeMenu].excelCommand({
+                      id: selectedId,
+                      startDate: startDate ?? "",
+                      endDate: endDate ?? "",
+                      keywords: keywords ?? "",
+                    });
+                  }}
+                />
+              )}
             </AdminTopSection>
 
             <PetronetCustomSearch

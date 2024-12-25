@@ -2,7 +2,7 @@
 import AdminTopSection from "@/Components/Admin/TopSection";
 import CustomButton from "@/Components/UI/CustomButton";
 import { useLeftMenuStore } from "@/store/useLeftMenuStore";
-import { cn } from "@/Utils";
+import { cn, exportToExcel } from "@/Utils";
 import { ExportCsvIcon, PlusSmall } from "@/Utils/IconList";
 import { useCallback, useMemo, useState } from "react";
 import { MenuType } from "../../Petronet/Containers/PetronetContainer";
@@ -12,7 +12,11 @@ import {
   KullanicilarDataTableColumns,
   RollerDataTableColumns,
 } from "@/Utils/KullanicilarUtils";
-import { GetUserByIdService, RemoveBanService } from "@/Services/UserService";
+import {
+  GetAllUsersService,
+  GetUserByIdService,
+  RemoveBanService,
+} from "@/Services/UserService";
 import { ResponseResult } from "@/Types/Common.Types";
 import { toast } from "react-toastify";
 import UserDetailModal from "../Components/UserDetailModal";
@@ -25,6 +29,8 @@ import { useRoleModal } from "@/store/useRoleModal";
 import RoleDetailModal from "../Components/RoleDetailModal";
 import { RoleType } from "@/Types/Role.Types";
 import { GetRoleByIdService } from "@/Services/RoleService";
+import { useExcel } from "@/store/useExcel";
+import { ExcelKullanicilarDataType } from "@/Types/Excel.Types";
 
 export default function UsersContainer() {
   const isOpened = useLeftMenuStore((state) => state.isOpened);
@@ -63,11 +69,13 @@ export default function UsersContainer() {
       state.updated,
     ]),
   );
+  console.log("rendered");
 
   const [keywords, setKeywords] = useState<string>("");
   const [activeMenu, setActiveMenu] = useState<string>("Kullanıcılar");
   const [userData, setUserData] = useState<UserType | null>();
   const [roleData, setRoleData] = useState<RoleType | null>(null);
+  const getData = useExcel((state) => state.data);
 
   const UnBanFunc = useCallback(async ({ id }: { id: number }) => {
     const result: ResponseResult<any> = await RemoveBanService({ id });
@@ -182,11 +190,26 @@ export default function UsersContainer() {
           </div>
           <div className="flex items-center gap-3">
             {types[activeMenu].addButton}
-            <CustomButton
-              className="gap-1 bg-green-100 p-2 text-green-600"
-              icon={ExportCsvIcon}
-              title="Dışa Aktar"
-            />
+            {activeMenu == "Kullanıcılar" && (
+              <CustomButton
+                className="gap-1 bg-green-100 p-2 text-green-600"
+                icon={ExportCsvIcon}
+                title="Dışa Aktar"
+                onClick={async () => {
+                  const result: UserType[] = await getData(GetAllUsersService);
+                  const resultData: ExcelKullanicilarDataType[] = result.map(
+                    (item: UserType) => ({
+                      "E-Posta": item.Email,
+                      "Kullanıcı Adı": item.UserName,
+                      Ad: item.FullName,
+                      "Rol İsmi": item.RoleName,
+                      Aktif: item.IsActive ? "Aktif" : "Pasif",
+                    }),
+                  );
+                  exportToExcel(resultData, "Kullanıcılar");
+                }}
+              />
+            )}
           </div>
         </AdminTopSection>
         <UserRoleCustomSearch

@@ -10,9 +10,11 @@
     "lint:fix": "next lint --fix"
   },
   "dependencies": {
+    "@types/xlsx": "^0.0.35",
     "chart.js": "^4.4.7",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "file-saver": "^2.0.5",
     "gridjs": "^6.2.0",
     "gridjs-react": "^6.1.1",
     "gridjs-selection": "^4.0.0",
@@ -26,10 +28,12 @@
     "react-toastify": "^10.0.6",
     "tailwind-merge": "^2.5.5",
     "uuid": "^11.0.3",
+    "xlsx": "^0.18.5",
     "zustand": "^5.0.2"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
+    "@types/file-saver": "^2.0.7",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

@@ -2,6 +2,11 @@ import { GetAllCategories } from "@/Services/CategoryService";
 import ProductsContainer from "./Containers/ProductsContainer";
 import { GenericType2, PaginationType } from "@/Types/Common.Types";
 import { CategoryType } from "@/Types/Category.Types";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Ürünler",
+};
 
 export default async function Page() {
   const result = await GetAllCategories({

@@ -1,5 +1,7 @@
 import clsx, { type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { saveAs } from "file-saver";
+import { utils, write } from "xlsx";
 
 export const cn = (...args: ClassValue[]) => {
   return twMerge(clsx(args));
@@ -18,3 +20,17 @@ export function makeNullable<T extends object>(obj: T): Nullable<T> {
   }
   return result as Nullable<T>;
 }
+
+export const exportToExcel = (data: any, fileName: string) => {
+  if (data) {
+    const worksheet = utils.json_to_sheet(data);
+    const workbook = utils.book_new();
+    utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    const excelBuffer = write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+    saveAs(blob, `${fileName}.xlsx`);
+  }
+};

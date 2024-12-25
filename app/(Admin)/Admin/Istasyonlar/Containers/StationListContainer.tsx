@@ -3,7 +3,7 @@ import AdminTopSection from "@/Components/Admin/TopSection";
 import CustomButton from "@/Components/UI/CustomButton";
 
 import { useLeftMenuStore } from "@/store/useLeftMenuStore";
-import { cn } from "@/Utils";
+import { cn, exportToExcel } from "@/Utils";
 import { ExportCsvIcon, PlusSmall } from "@/Utils/IconList";
 
 import { useState } from "react";
@@ -13,6 +13,10 @@ import StationCustomSearch from "../Components/StationCustomSearch";
 import { useStationModal } from "@/store/useStationModal";
 import { useShallow } from "zustand/shallow";
 import StationDetailModal from "../Components/StationDetailModal";
+import { useExcel } from "@/store/useExcel";
+import { GetAllStationsService } from "@/Services/StationService";
+import { ExcelIstasyonlarDataType } from "@/Types/Excel.Types";
+import { ExcelIstasyonlarList } from "@/Services/Excel.Service";
 
 export default function StationListContainer() {
   const isOpened = useLeftMenuStore((state) => state.isOpened);
@@ -35,6 +39,7 @@ export default function StationListContainer() {
       state.setUpdated,
     ]),
   );
+  const getDAta = useExcel((state) => state.data);
 
   return (
     <>
@@ -44,7 +49,7 @@ export default function StationListContainer() {
           isOpened ? "ml-[244px]" : "ml-[62px]",
         )}
       >
-        <AdminTopSection className="border-none">
+        <AdminTopSection>
           <h2>İstasyonlar</h2>
           <div className="flex items-center gap-3">
             <CustomButton
@@ -60,6 +65,12 @@ export default function StationListContainer() {
               className="gap-1 bg-green-100 p-2 text-green-600"
               icon={ExportCsvIcon}
               title="Dışa Aktar"
+              onClick={async () => {
+                await ExcelIstasyonlarList({
+                  stationName: keywords ?? "",
+                  status: isActive ?? undefined,
+                });
+              }}
             />
           </div>
         </AdminTopSection>

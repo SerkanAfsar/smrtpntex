@@ -20,6 +20,7 @@ export type PetronetItemsType = {
   searchItems: string[];
   columns?: any;
   addButton?: any;
+  excelCommand?: any;
 };
 
 export type MenuType = Record<string, PetronetItemsType>;

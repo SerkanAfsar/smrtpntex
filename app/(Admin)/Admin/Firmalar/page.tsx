@@ -2,6 +2,11 @@ import { PaginationType } from "@/Types/Common.Types";
 import CompaniesContainer from "./Containers/CompanyContainer";
 import { CompanyType } from "@/Types/Company.Types";
 import { GetAllCompanies } from "@/Services/CompanyService";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Firmalar",
+};
 
 export default async function Page() {
   const result = await GetAllCompanies({

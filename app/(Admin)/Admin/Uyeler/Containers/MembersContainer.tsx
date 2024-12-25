@@ -46,7 +46,7 @@ export default function MembersContainer() {
         isOpened ? "ml-[244px]" : "ml-[62px]",
       )}
     >
-      <AdminTopSection className="border-none">
+      <AdminTopSection className="border-b-0">
         <div className="flex items-center justify-center">
           <div className="mr-3 flex items-center justify-between gap-3">
             {Object.keys(types).map((key: string, index: number) => (

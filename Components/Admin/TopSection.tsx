@@ -9,7 +9,7 @@ const AdminTopSection = React.forwardRef<
     <section
       ref={ref}
       className={cn(
-        "flex items-center justify-between border-b bg-white px-6 py-3 transition-all",
+        "flex items-center justify-between border-b border-t bg-white px-6 py-3 transition-all",
         className,
       )}
       {...rest}

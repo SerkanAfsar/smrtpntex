@@ -59,7 +59,7 @@ export default function ContentSubLeftSearch({
   }, [searchKey, selectedType, variables]);
 
   return (
-    <section className="ml-[62px] flex w-[320px] flex-col border-r bg-white">
+    <section className="ml-[62px] flex w-[320px] flex-col border-r border-t bg-white">
       <div className="flex w-full flex-col gap-3 p-4">
         <div className="mb-4 flex items-center justify-between gap-3">
           <h3>{title}</h3>

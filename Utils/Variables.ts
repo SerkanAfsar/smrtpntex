@@ -11,8 +11,6 @@ import {
   LogsIcon,
   PetronetIcon,
   ProductsIcon,
-  SettingsIcon,
-  TopluIslemlerIcon,
   UsersIcon,
 } from "./IconList";
 import {
@@ -53,23 +51,7 @@ export const AdminMenuList: MenuLinkGroupType[] = [
       },
     ],
   },
-  {
-    sectionName: "Two",
-    menus: [
-      {
-        title: "BP Siparişleri",
-        icon: BpIcon,
-        url: "/Admin/BpOrders",
-        isOpenedForce: true,
-      },
-      {
-        title: "Petronet",
-        icon: PetronetIcon,
-        url: "/Admin/Petronet",
-        isOpenedForce: true,
-      },
-    ],
-  },
+
   {
     sectionName: "Three",
     menus: [
@@ -90,11 +72,11 @@ export const AdminMenuList: MenuLinkGroupType[] = [
         url: "/Admin/Istasyonlar",
         isOpenedForce: true,
       },
-      {
-        title: "Ayarlar",
-        icon: SettingsIcon,
-        url: "/Admin/Ayarlar",
-      },
+      // {
+      //   title: "Ayarlar",
+      //   icon: SettingsIcon,
+      //   url: "/Admin/Ayarlar",
+      // },
       {
         title: "Loglar",
         icon: LogsIcon,
@@ -113,16 +95,33 @@ export const AdminMenuList: MenuLinkGroupType[] = [
         url: "/Admin/Uyeler",
         isOpenedForce: true,
       },
-      {
-        title: "Toplu İşlemler",
-        icon: TopluIslemlerIcon,
-        url: "/Admin/TopluIslemler",
-        isOpenedForce: true,
-      },
+      // {
+      //   title: "Toplu İşlemler",
+      //   icon: TopluIslemlerIcon,
+      //   url: "/Admin/TopluIslemler",
+      //   isOpenedForce: true,
+      // },
       {
         title: "Yardım",
         icon: HelperIcon,
         url: "/Admin/Yardim",
+        isOpenedForce: true,
+      },
+    ],
+  },
+  {
+    sectionName: "Two",
+    menus: [
+      {
+        title: "BP Siparişleri",
+        icon: BpIcon,
+        url: "/Admin/BpOrders",
+        isOpenedForce: true,
+      },
+      {
+        title: "Petronet",
+        icon: PetronetIcon,
+        url: "/Admin/Petronet",
         isOpenedForce: true,
       },
     ],
@@ -275,16 +274,6 @@ export const AraclarDatatableProps = {
       selector: (row: any) => row.CreatedDate,
       sortable: true,
     },
-  ],
-  data: [
-    ["35 XYZ 456", "Ayşe Demir", "750.00", "02.11.2024 14:50:10"],
-    ["35 XYZ 123", "Ayşe Demir2", "750.00", "02.11.2024 14:50:10"],
-    ["35 XYZ 222", "Ayşe Demir3", "750.00", "02.11.2024 14:50:10"],
-    ["35 XYZ 333", "Ayşe Demir4", "750.00", "02.11.2024 14:50:10"],
-    ["35 XYZ 444", "Ayşe Demir5", "750.00", "02.11.2024 14:50:10"],
-    ["35 XYZ 555", "Ayşe Demir6", "750.00", "02.11.2024 14:50:10"],
-    ["35 XYZ 666", "Ayşe Demir7", "750.00", "02.11.2024 14:50:10"],
-    ["35 XYZ 777", "Ayşe Demir8", "750.00", "02.11.2024 14:50:10"],
   ],
 };
 

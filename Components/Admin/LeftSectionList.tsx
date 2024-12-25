@@ -13,7 +13,7 @@ export default function LeftSectionList({
 }) {
   const pathName = usePathname();
   return (
-    <ul className="flex flex-col gap-1 border-b py-2">
+    <ul className="flex flex-col gap-1 border-b py-2 last:border-none">
       {menuList.map((menu, indexNo) => (
         <li
           key={indexNo}
