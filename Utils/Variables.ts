@@ -22,6 +22,7 @@ import {
 import { format, formatDate } from "date-fns";
 import { CompanySalesType } from "@/Types/Company.Types";
 import { MemberType, MemberTypeType } from "@/Types/Member.Types";
+import { CarType } from "@/Types/Car.Types";
 
 export const AdminMenuList: MenuLinkGroupType[] = [
   {
@@ -256,22 +257,27 @@ export const AraclarDatatableProps = {
   columns: [
     {
       name: "Plaka",
-      selector: (row: any) => row.PlateNumber,
+      selector: (row: CarType) => row.PlateNumber,
+      sortable: true,
+    },
+    {
+      name: "GSM",
+      selector: (row: CarType) => "",
       sortable: true,
     },
     {
       name: "Üye Adı",
-      selector: (row: any) => row.FirstName,
+      selector: (row: CarType) => row.UserName,
       sortable: true,
     },
     {
-      name: "Tutar",
-      selector: (row: any) => row.Amount,
+      name: "Firma",
+      selector: (row: CarType) => row.CompanyName,
       sortable: true,
     },
     {
       name: "Kayıt Tarihi",
-      selector: (row: any) => row.CreatedDate,
+      selector: (row: any) => format(row.CreatedDate, "dd/MM/yyyy HH:ss"),
       sortable: true,
     },
   ],

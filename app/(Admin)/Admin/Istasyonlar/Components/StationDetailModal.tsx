@@ -107,11 +107,11 @@ export default function StationDetailModal({
   return (
     <div
       className={cn(
-        "fixed -right-[100%] z-50 h-screen w-[440px] overflow-auto overscroll-contain border-l bg-white p-4 shadow-2xl transition-all duration-700 ease-in-out",
+        "fixed -right-[100%] z-50 h-screen w-[440px] overflow-auto overscroll-contain border-l bg-white p-4 pt-0 shadow-2xl transition-all duration-700 ease-in-out",
         isOpenedModal ? "right-0" : "-right-[100%]",
       )}
     >
-      <div className="flex items-center justify-between">
+      <div className="sticky inset-0 z-50 flex items-center justify-between rounded bg-white py-5 pt-4">
         <h1 className="text-lg font-medium">{title}</h1>
         <Image
           src={ExitIcon}
@@ -120,10 +120,7 @@ export default function StationDetailModal({
           onClick={() => toggleOpened()}
         />
       </div>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="mt-8 flex flex-col gap-4"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <div className="flex flex-col gap-4 rounded-md border p-4">
           <h2 className="text-sm font-bold">İstasyon Bilgileri</h2>
           <CustomTextbox
@@ -266,7 +263,7 @@ export default function StationDetailModal({
                   field.Id ? "bg-red-600" : "bg-red-500",
                 )}
               >
-                {field.Id ? "Tankı Sil!" : "Kaldır"}
+                {field.Id ? "Tankı Sil" : "Kaldır"}
               </button>
             </h2>
             <CustomSelect

@@ -19,11 +19,11 @@ import { ExportCsvIcon } from "@/Utils/IconList";
 import { ExcelFirmalarSatisResult } from "@/Services/Excel.Service";
 
 const types: MenuType = {
-  Şubeler: {
-    searchItems: ["aranacak", "status"],
-    apiUrl: "/api/companysales1",
-    // columns: CompanySalesColumns,
-  },
+  // Şubeler: {
+  //   searchItems: ["aranacak", "status"],
+  //   apiUrl: "/api/companysales1",
+  //   // columns: CompanySalesColumns,
+  // },
   Satışlar: {
     searchItems: ["aranacak", "baslangic", "bitis"],
     apiUrl: "/api/companysales",
@@ -68,7 +68,7 @@ export default function CompaniesContainer({
   const [isActive, setIsActive] = useState<boolean | undefined>(undefined);
   const [excelLoading, setExcelLoading] = useState<boolean>(false);
 
-  const [activeMenu, setActiveMenu] = useState<string>("Şubeler");
+  const [activeMenu, setActiveMenu] = useState<string>("Satışlar");
   const [toggleOpened, selectedId, selectAction] = useCompanyModal(
     useShallow((state) => [
       state.toggleOpened,

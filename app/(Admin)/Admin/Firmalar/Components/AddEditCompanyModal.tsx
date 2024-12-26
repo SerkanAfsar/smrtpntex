@@ -3,15 +3,11 @@ import CustomCheckbox from "@/Components/UI/CustomCheckbox";
 import CustomSelect from "@/Components/UI/CustomSelect";
 import { CustomTextbox } from "@/Components/UI/CustomTextbox";
 import { AddCompanyService } from "@/Services/CompanyService";
-import {
-  GetPaymentMethodTypes,
-} from "@/Services/DistrubitorsService";
+import { GetPaymentMethodTypes } from "@/Services/DistrubitorsService";
 import { useCompanyModal } from "@/store/useCompanyModal";
 import { CustomOptionsType, ResponseResult } from "@/Types/Common.Types";
 import { AddCompanyType } from "@/Types/Company.Types";
-import {
-  PaymentMethodType,
-} from "@/Types/Distrubitor.Types";
+import { PaymentMethodType } from "@/Types/Distrubitor.Types";
 import { cn } from "@/Utils";
 import { ExitIcon } from "@/Utils/IconList";
 import Image from "next/image";
@@ -100,16 +96,31 @@ export default function AddEditCompanyModal() {
           err={errors.paymentMethodId?.message}
         />
         <CustomTextbox
-          {...register("title", { required: "Ünvan Giriniz.." })}
+          {...register("title", { required: "Tam Ünvan Giriniz.." })}
           className="rounded-md border p-3 outline-none"
-          title="Ünvan"
+          title="Tam Ünvan"
           err={errors.title?.message}
         />
         <CustomTextbox
-          {...register("taxNumber", { required: "Vergi Numarası Giriniz.." })}
+          {...register("taxNumber", {
+            required: "Vergi Numarası Giriniz..",
+            max: {
+              value: 10,
+              message: "Vergi Numarası 10 Haneden Oluşmalıdır.",
+            },
+            min: {
+              value: 10,
+              message: "Vergi Numarası 10 Haneden Oluşmalıdır.",
+            },
+          })}
           title="Vergi Numarası"
           className="rounded-md border p-3 outline-none"
           err={errors.taxNumber?.message}
+          onChange={(e) => {
+            if (e.target.value.length > 10) {
+              return false;
+            }
+          }}
         />
         <CustomTextbox
           {...register("taxOffice", { required: "Vergi Dairesi Giriniz.." })}
@@ -120,21 +131,23 @@ export default function AddEditCompanyModal() {
 
         <CustomTextbox
           {...register("alertLimit", {
-            required: "Uyarı Limiti Giriniz..",
+            required: "Uyarı Limiti ( TL )  Giriniz..",
             valueAsNumber: true,
           })}
+          defaultValue={0}
           type="number"
-          title="Uyarı Limiti"
+          title="Uyarı Limiti ( TL ) "
           className="rounded-md border p-3 outline-none"
           err={errors.alertLimit?.message}
         />
         <CustomTextbox
           {...register("riskLimit", {
-            required: "Risk Limiti Giriniz..",
+            required: "Toplam Risk Limiti ( TL ) Giriniz..",
             valueAsNumber: true,
           })}
+          defaultValue={0}
           type="number"
-          title="Risk Limiti"
+          title="Toplam Risk Limiti ( TL )"
           className="rounded-md border p-3 outline-none"
           err={errors.riskLimit?.message}
         />

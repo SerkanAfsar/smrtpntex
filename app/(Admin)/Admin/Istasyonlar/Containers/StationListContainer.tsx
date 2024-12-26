@@ -13,7 +13,6 @@ import StationCustomSearch from "../Components/StationCustomSearch";
 import { useStationModal } from "@/store/useStationModal";
 import { useShallow } from "zustand/shallow";
 import StationDetailModal from "../Components/StationDetailModal";
-import { useExcel } from "@/store/useExcel";
 
 import { ExcelIstasyonlarList } from "@/Services/Excel.Service";
 
@@ -39,7 +38,7 @@ export default function StationListContainer() {
       state.setUpdated,
     ]),
   );
-  const getDAta = useExcel((state) => state.data);
+  // const getDAta = useExcel((state) => state.data);
 
   return (
     <>

@@ -37,6 +37,8 @@ export default function RoleDetailModal({
   title: string;
   permissionPages: PermissionPageDataType;
 }) {
+  const [isUpdated, setIsUpdated] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [rolePermissionList, setRolePermissionList] = useState<
     PermissionPageType[]
   >([]);
@@ -94,6 +96,7 @@ export default function RoleDetailModal({
   // };
 
   const getRoleClaimsByRoleId = async ({ id }: { id: number }) => {
+    setIsLoading(true);
     const result = await GetRolePermissionsByRoleId({ roleId: id });
     if (result.IsSuccess) {
       const responseData = result.Data as PermissionPageDataType;
@@ -101,19 +104,21 @@ export default function RoleDetailModal({
     } else {
       return toast.error(result.Message || "Hata", { position: "top-right" });
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
     if (roleData) {
       getRoleClaimsByRoleId({ id: roleData.Id });
     }
-  }, [roleData]);
+  }, [roleData, isUpdated]);
 
   return (
     <div
       className={cn(
         "fixed -right-[100%] z-50 h-screen w-[340px] overflow-auto overscroll-contain border-l bg-white p-4 shadow-2xl transition-all duration-700 ease-in-out",
         isOpenedModal ? "right-0" : "-right-[100%]",
+        isLoading ? "bg-slate-400" : "bg-white",
       )}
     >
       <div className="flex items-center justify-between">
@@ -154,6 +159,7 @@ export default function RoleDetailModal({
               item={item}
               key={index}
               roleItem={roleData ?? null}
+              setIsUpdated={setIsUpdated}
             />
           ))}
 

@@ -17,41 +17,49 @@ export default function CustomRoleDetailBox({
   item,
   rolePermissionList,
   roleItem,
+  setIsUpdated,
 }: {
   item: PermissionPageType;
   rolePermissionList: PermissionPageType[];
   roleItem: RoleType | null;
+  setIsUpdated: any;
 }) {
   const [isOpened, setIsOpened] = useState<boolean>(false);
 
   const handleCheckProperty = useCallback(
-    async ({ roleId, pageId }: { roleId: number; pageId: number }) => {
+    async ({ pageId }: { pageId: number }) => {
       if (pageId != 0) {
-        const result = await AddPropertyToRoleService({ pageId, roleId });
-        if (result) {
-          toast.success(`'${roleItem?.Name}' Rolüne Özellik  Atandı `, {
+        const result = await AddPropertyToRoleService({
+          pageId,
+          roleId: roleItem?.Id as number,
+        });
+        if (result.IsSuccess) {
+          toast.success(`'${roleItem?.Name}' Rolüne Özellik Atandı `, {
             position: "top-right",
           });
-          return true;
+          setIsUpdated((prev: boolean) => !prev);
         } else {
-          toast.error(result || "Hata", { position: "top-right" });
-          return false;
+          toast.error(result.Message || "Hata", { position: "top-right" });
         }
       }
     },
-    [],
+    [roleItem?.Name, roleItem?.Id, setIsUpdated],
   );
 
-  const handleRemoveProperty = useCallback(async ({ id }: { id: number }) => {
-    const result = await DeletePropertFromRoleService({ id });
-    if (result.IsSuccess) {
-      toast.success("Özellik Kaldırıldı", { position: "top-right" });
-      return false;
-    } else {
-      toast.error(result.Message || "Hata", { position: "top-right" });
-      return true;
-    }
-  }, []);
+  const handleRemoveProperty = useCallback(
+    async ({ id }: { id: number }) => {
+      if (id) {
+        const result = await DeletePropertFromRoleService({ id });
+        if (result.IsSuccess) {
+          toast.success("Özellik Kaldırıldı", { position: "top-right" });
+          setIsUpdated((prev: boolean) => !prev);
+        } else {
+          toast.error(result.Message || "Hata", { position: "top-right" });
+        }
+      }
+    },
+    [setIsUpdated],
+  );
 
   useEffect(() => {
     return () => {
@@ -66,17 +74,16 @@ export default function CustomRoleDetailBox({
           checked={!!rolePermissionList.find((a) => a.PageId === item.PageId)}
           title={mainItem?.PageName}
           onChange={async (e) => {
-            const result = e.target.checked
-              ? await handleCheckProperty({
-                  roleId: mainItem?.Id as number,
-                  pageId: mainItem?.PageId as number,
-                })
-              : await handleRemoveProperty({
-                  id: rolePermissionList.find(
-                    (a) => a.PageId == mainItem?.PageId,
-                  )?.Id as number,
-                });
-            e.target.checked = result as boolean;
+            if (e.target.checked) {
+              await handleCheckProperty({
+                pageId: mainItem?.PageId as number,
+              });
+            } else {
+              await handleRemoveProperty({
+                id: rolePermissionList.find((a) => a.PageId == mainItem?.PageId)
+                  ?.Id as number,
+              });
+            }
           }}
         />
       );
@@ -91,17 +98,18 @@ export default function CustomRoleDetailBox({
                 !!rolePermissionList.find((a) => a.PageId == innerItem.PageId)
               }
               onChange={async (e) => {
-                const result = e.target.checked
-                  ? await handleCheckProperty({
-                      roleId: innerItem?.Id as number,
-                      pageId: innerItem?.PageId as number,
-                    })
-                  : await handleRemoveProperty({
-                      id: rolePermissionList.find(
-                        (a) => a.PageId == innerItem?.PageId,
-                      )?.Id as number,
-                    });
-                e.target.checked = result as boolean;
+                if (e.target.checked) {
+                  await handleCheckProperty({
+                    pageId: innerItem?.PageId as number,
+                  });
+                  e.target.checked = true;
+                } else {
+                  await handleRemoveProperty({
+                    id: rolePermissionList.find(
+                      (a) => a.PageId == innerItem?.PageId,
+                    )?.Id as number,
+                  });
+                }
               }}
             />
             {innerItem.Childrens && returnRecursive(innerItem)}
