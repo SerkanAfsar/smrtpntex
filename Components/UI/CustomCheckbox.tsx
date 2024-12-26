@@ -1,7 +1,7 @@
 import { cn } from "@/Utils";
 import * as React from "react";
 
-type CustomCheckboxType = React.HTMLAttributes<HTMLInputElement> & {
+type CustomCheckboxType = React.InputHTMLAttributes<HTMLInputElement> & {
   title?: string;
   name?: string;
 };
@@ -26,7 +26,7 @@ export const CustomCheckbox = React.forwardRef<
         {...rest}
       />
       {title && (
-        <label htmlFor={id} className="text-sm">
+        <label htmlFor={id} className="cursor-pointer text-sm">
           {title}
         </label>
       )}

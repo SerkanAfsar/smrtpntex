@@ -17,4 +17,5 @@ export type RoleType = {
   IsDeleted: boolean;
   CreatedDate: string;
   Id: number;
+  permissionList?: number[];
 };

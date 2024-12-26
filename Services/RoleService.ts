@@ -42,3 +42,45 @@ export async function UpdateRoleService({
     body: data,
   })) as ResponseResult<RoleType>;
 }
+
+export async function GetPermissionPagesService() {
+  return (await BaseFetch({
+    method: "GET",
+    url: `adminApi/User/permission-pages`,
+  })) as ResponseResult<any>;
+}
+
+export async function GetRolePermissionsByRoleId({
+  roleId,
+}: {
+  roleId: number;
+}) {
+  return (await BaseFetch({
+    method: "GET",
+    url: `adminApi/User/role-permissions/${roleId}`,
+  })) as ResponseResult<any>;
+}
+
+export async function AddPropertyToRoleService({
+  roleId,
+  pageId,
+}: {
+  roleId: number;
+  pageId: number;
+}) {
+  return (await BaseFetch({
+    method: "POST",
+    body: {
+      roleId,
+      pageId,
+    },
+    url: `adminApi/User/permission-add`,
+  })) as ResponseResult<any>;
+}
+
+export async function DeletePropertFromRoleService({ id }: { id: number }) {
+  return (await BaseFetch({
+    method: "POST",
+    url: `adminApi/User/permission-delete/${id}`,
+  })) as ResponseResult<any>;
+}

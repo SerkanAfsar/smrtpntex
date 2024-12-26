@@ -2,7 +2,11 @@ import CustomButton from "@/Components/UI/CustomButton";
 import CustomCheckbox from "@/Components/UI/CustomCheckbox";
 import { CustomTextbox } from "@/Components/UI/CustomTextbox";
 
-import { AddRoleService, UpdateRoleService } from "@/Services/RoleService";
+import {
+  AddRoleService,
+  GetRolePermissionsByRoleId,
+  UpdateRoleService,
+} from "@/Services/RoleService";
 
 import { ResponseResult } from "@/Types/Common.Types";
 import { AddRoleType, RoleType } from "@/Types/Role.Types";
@@ -11,9 +15,12 @@ import { cn } from "@/Utils";
 import { ExitIcon } from "@/Utils/IconList";
 import Image from "next/image";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { PermissionPageDataType } from "../page";
+import CustomRoleDetailBox from "./CustomRoleDetailBox";
+import { PermissionPageType } from "@/Types/Permission.Types";
 
 export default function RoleDetailModal({
   toggleOpened,
@@ -21,13 +28,18 @@ export default function RoleDetailModal({
   setUpdated,
   roleData,
   title,
+  permissionPages,
 }: {
   toggleOpened: any;
   isOpenedModal: boolean;
   setUpdated: any;
   roleData: RoleType | null;
   title: string;
+  permissionPages: PermissionPageDataType;
 }) {
+  const [rolePermissionList, setRolePermissionList] = useState<
+    PermissionPageType[]
+  >([]);
   const {
     register,
     reset,
@@ -71,6 +83,32 @@ export default function RoleDetailModal({
     }
   };
 
+  // const recursiveFunc = (permissions: PermissionPageType[]): number[] => {
+  //   return permissions.reduce((acc: number[], next) => {
+  //     acc.push(next.PageId);
+  //     if (next.Childrens && next.Childrens.length) {
+  //       return [...acc, ...recursiveFunc(next.Childrens)];
+  //     }
+  //     return acc;
+  //   }, []);
+  // };
+
+  const getRoleClaimsByRoleId = async ({ id }: { id: number }) => {
+    const result = await GetRolePermissionsByRoleId({ roleId: id });
+    if (result.IsSuccess) {
+      const responseData = result.Data as PermissionPageDataType;
+      setRolePermissionList(responseData.Permissions);
+    } else {
+      return toast.error(result.Message || "Hata", { position: "top-right" });
+    }
+  };
+
+  useEffect(() => {
+    if (roleData) {
+      getRoleClaimsByRoleId({ id: roleData.Id });
+    }
+  }, [roleData]);
+
   return (
     <div
       className={cn(
@@ -109,6 +147,15 @@ export default function RoleDetailModal({
           defaultValue={roleData?.Description ?? undefined}
           err={errors.Description?.message}
         />
+        {roleData &&
+          permissionPages.Permissions.map((item, index) => (
+            <CustomRoleDetailBox
+              rolePermissionList={rolePermissionList}
+              item={item}
+              key={index}
+              roleItem={roleData ?? null}
+            />
+          ))}
 
         <CustomCheckbox
           title="Aktif mi?"

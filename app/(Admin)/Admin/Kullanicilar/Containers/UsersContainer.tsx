@@ -26,8 +26,13 @@ import RoleDetailModal from "../Components/RoleDetailModal";
 import { RoleType } from "@/Types/Role.Types";
 import { GetRoleByIdService } from "@/Services/RoleService";
 import { ExportExcelUserList } from "@/Services/Excel.Service";
+import { PermissionPageDataType } from "../page";
 
-export default function UsersContainer() {
+export default function UsersContainer({
+  permissionPages,
+}: {
+  permissionPages: PermissionPageDataType;
+}) {
   const isOpened = useLeftMenuStore((state) => state.isOpened);
   const [
     toggleOpened,
@@ -224,6 +229,7 @@ export default function UsersContainer() {
         toggleOpened={toggleOpenedRole}
         roleData={roleData ?? null}
         title={selectedIdRole ? "Rol Güncelle" : "Rol Ekle"}
+        permissionPages={permissionPages}
       />
     </>
   );

@@ -26,8 +26,10 @@ import ExitIcon from "../public/icons/cross.svg?url";
 import NotSelectedIcon from "../public/icons/company-filled.svg?url";
 import SmartPoint2Logo from "../public/icons/Logo_Smartpoint2.svg?url";
 import SmartPoint3Logo from "../public/icons/Logo_Smartpoint3.svg?url";
+import ArrowRight from "../public/icons/arrowright.svg?url";
 
 export {
+  ArrowRight,
   SmartPoint2Logo,
   SmartPoint3Logo,
   AnasayfaIcon,
