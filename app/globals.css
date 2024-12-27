@@ -6,44 +6,6 @@ html,
 body {
   @apply m-0 min-h-screen p-0;
 }
-.gridjs-wrapper {
-  @apply !rounded-none !shadow-none;
-}
-.gridjs-wrapper th {
-  position: relative;
-  color: #6b7280;
-  background-color: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-top: none;
-  padding: 14px 24px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-  box-sizing: border-box;
-  white-space: nowrap;
-  outline: none;
-  font-size: 12px;
-  vertical-align: middle;
-}
-.gridjs-wrapper tr td {
-  font-size: 14px;
-}
-.gridjs-footer {
-  @apply !rounded-none !border-none !bg-inherit !shadow-none;
-}
-.gridjs-pages button {
-  font-size: 12px !important;
-}
-.gridjs-summary {
-  font-size: 14px;
-}
-
-.gridjs-container {
-  @apply !border-none !p-0;
-}
-.gridjs-th-content {
-  @apply mt-1 !flex !h-full !items-center !text-black;
-}
 
 .table-container {
   overflow: auto; /* Taşma sorunlarını engeller */
