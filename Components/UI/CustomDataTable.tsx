@@ -1,6 +1,7 @@
 "use client";
 
 import { PaginationType, ResponseResult } from "@/Types/Common.Types";
+import { cn } from "@/Utils";
 
 import { useCallback, useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
@@ -15,6 +16,7 @@ export type CustomDataTableProps = {
   isActive?: boolean;
   id?: number;
   gsm?: string;
+  extraClass?: string;
 };
 export default function CustomDatatable({
   apiUrl,
@@ -26,6 +28,7 @@ export default function CustomDatatable({
   isActive,
   id,
   gsm,
+  extraClass,
 }: CustomDataTableProps) {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -102,7 +105,7 @@ export default function CustomDatatable({
         paginationTotalRows={totalRows}
         onChangeRowsPerPage={handlePerRowsChange}
         onChangePage={handlePageChange}
-        className="custom-table"
+        className={cn("custom-table", extraClass && extraClass)}
         customStyles={{
           table: {
             style: {

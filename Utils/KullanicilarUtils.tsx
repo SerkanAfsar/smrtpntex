@@ -75,6 +75,42 @@ export const KullanicilarDataTableColumns = (
   },
 ];
 
+export const DashboardKullanicilarDataTableColumns = [
+  {
+    name: "E-Posta",
+    selector: (row: UserType) => row.Email,
+    sortable: true,
+    width: "250px",
+  },
+  {
+    name: "Kullanıcı Adı",
+    selector: (row: UserType) => row.UserName,
+    sortable: true,
+  },
+  {
+    name: "Ad",
+    selector: (row: UserType) => row.FullName,
+    sortable: true,
+  },
+  {
+    name: "Rol İsmi",
+    selector: (row: UserType) => row.RoleName,
+    sortable: true,
+  },
+
+  {
+    name: "Aktif",
+    selector: (row: UserType) =>
+      row.IsActive ? (
+        <Image src={CheckIcon} width={40} height={40} alt="Aktif" />
+      ) : (
+        "Pasif"
+      ),
+    sortable: true,
+    width: "80px",
+  },
+];
+
 export const RollerDataTableColumns = (editCommand: any) => [
   {
     name: "Ad",

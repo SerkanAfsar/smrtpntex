@@ -45,3 +45,10 @@ export async function DeleteTankByIdService({ tankId }: { tankId: number }) {
     url: `adminApi/Station/tank-delete/${tankId}`,
   })) as ResponseResult<TankType>;
 }
+
+export async function GetAllQrCodeListByTankId({ tankId }: { tankId: number }) {
+  return (await BaseFetch({
+    method: "GET",
+    url: `adminApi/Station/tank-qr/${tankId}`,
+  })) as ResponseResult<TankQrType>;
+}

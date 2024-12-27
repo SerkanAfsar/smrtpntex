@@ -324,6 +324,22 @@ export default function StationDetailModal({
                 err={errors.tanks?.[index]?.TotalCapacity?.message}
               />
             </div>
+            <div className="flex flex-wrap gap-3 rounded-md border p-3 outline-none">
+              {/* <Image
+                width={200}
+                height={100}
+                src={`https://smartpoint.tr${field.tankQrList[0].PictureUrl}`}
+                alt="deneme"
+              /> */}
+              {field.tankQrList?.map((item, index) => (
+                <img
+                  key={index}
+                  src={`https://smartpoint.tr${item.PictureUrl}`}
+                  alt={`${field.TankNumber.toString()}-${item.TankId.toString()}`}
+                  className="h-[150px] w-[150px]"
+                />
+              ))}
+            </div>
           </div>
         ))}
 

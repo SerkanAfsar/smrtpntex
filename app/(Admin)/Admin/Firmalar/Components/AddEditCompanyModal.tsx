@@ -12,6 +12,7 @@ import { cn } from "@/Utils";
 import { ExitIcon } from "@/Utils/IconList";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useMask } from "@react-input/mask";
 
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -25,10 +26,38 @@ export default function AddEditCompanyModal() {
     register,
     reset,
     handleSubmit,
+    getValues,
+    watch,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm<AddCompanyType>({
     mode: "onChange",
   });
+
+  const inputRef = useMask({
+    mask: "+1 (___) ___-__-__",
+    replacement: { _: /\d/ },
+  });
+
+  useEffect(() => {
+    const { unsubscribe } = watch((value) => {
+      console.log(value);
+      if (
+        value.alertLimit &&
+        value.riskLimit &&
+        value.alertLimit > value.riskLimit
+      ) {
+        setError("alertLimit", {
+          type: "value",
+          message: "Uyarı Limiti Risk Limitinden Fazla Olamaz",
+        });
+      } else {
+        clearErrors("alertLimit");
+      }
+    });
+    return () => unsubscribe();
+  }, [watch, setError, clearErrors]);
 
   useEffect(() => {
     const process = async () => {
@@ -104,11 +133,11 @@ export default function AddEditCompanyModal() {
         <CustomTextbox
           {...register("taxNumber", {
             required: "Vergi Numarası Giriniz..",
-            max: {
+            minLength: {
               value: 10,
               message: "Vergi Numarası 10 Haneden Oluşmalıdır.",
             },
-            min: {
+            maxLength: {
               value: 10,
               message: "Vergi Numarası 10 Haneden Oluşmalıdır.",
             },
@@ -116,9 +145,9 @@ export default function AddEditCompanyModal() {
           title="Vergi Numarası"
           className="rounded-md border p-3 outline-none"
           err={errors.taxNumber?.message}
-          onChange={(e) => {
-            if (e.target.value.length > 10) {
-              return false;
+          onKeyDown={(e) => {
+            if (e.currentTarget.value.length > 10) {
+              e.currentTarget.value = e.currentTarget.value.substring(0, 10);
             }
           }}
         />
@@ -139,6 +168,11 @@ export default function AddEditCompanyModal() {
           title="Uyarı Limiti ( TL ) "
           className="rounded-md border p-3 outline-none"
           err={errors.alertLimit?.message}
+          // onChange={(e) => {
+          //   if (e.target.value.length > 7) {
+          //     e.currentTarget.value = e.target.value.substring(0, 7);
+          //   }
+          // }}
         />
         <CustomTextbox
           {...register("riskLimit", {
@@ -150,6 +184,11 @@ export default function AddEditCompanyModal() {
           title="Toplam Risk Limiti ( TL )"
           className="rounded-md border p-3 outline-none"
           err={errors.riskLimit?.message}
+          onKeyDown={(e) => {
+            if (e.currentTarget.value.length > 7) {
+              e.currentTarget.value = e.currentTarget.value.substring(0, 7);
+            }
+          }}
         />
 
         <CustomCheckbox

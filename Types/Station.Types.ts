@@ -55,6 +55,7 @@ export type TankType = {
   FuellNess: string;
   IsActive: boolean;
   ePumpId: string;
+  tankQrList?: TankQrType[];
 };
 
 export type AddTankType = {

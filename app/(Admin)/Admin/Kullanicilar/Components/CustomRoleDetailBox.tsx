@@ -98,6 +98,7 @@ export default function CustomRoleDetailBox({
                 !!rolePermissionList.find((a) => a.PageId == innerItem.PageId)
               }
               onChange={async (e) => {
+                setIsUpdated((prev: boolean) => !prev);
                 if (e.target.checked) {
                   await handleCheckProperty({
                     pageId: innerItem?.PageId as number,

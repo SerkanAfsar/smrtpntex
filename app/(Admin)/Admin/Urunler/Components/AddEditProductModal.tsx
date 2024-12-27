@@ -83,11 +83,11 @@ export default function AddEditProductModal() {
   return (
     <div
       className={cn(
-        "fixed -right-[100%] z-50 h-screen w-[340px] overflow-auto overscroll-contain border-l bg-white p-4 shadow-2xl transition-all duration-700 ease-in-out",
+        "fixed -right-[100%] z-50 h-screen w-[340px] overflow-auto overscroll-contain border-l bg-white p-4 pt-0 shadow-2xl transition-all duration-700 ease-in-out",
         isOpened ? "right-0" : "-right-[100%]",
       )}
     >
-      <div className="flex items-center justify-between">
+      <div className="sticky inset-0 z-50 flex items-center justify-between bg-white pt-4">
         <h1 className="text-lg font-medium">Ürün Ekle</h1>
         <Image
           src={ExitIcon}

@@ -96,7 +96,6 @@ export default function RoleDetailModal({
   // };
 
   const getRoleClaimsByRoleId = async ({ id }: { id: number }) => {
-    setIsLoading(true);
     const result = await GetRolePermissionsByRoleId({ roleId: id });
     if (result.IsSuccess) {
       const responseData = result.Data as PermissionPageDataType;

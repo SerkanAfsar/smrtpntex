@@ -1,23 +1,15 @@
-import CustomButton from "@/Components/UI/CustomButton";
-import CustomGrid from "@/Components/UI/CustomGrid";
-import { PlusSmall } from "@/Utils/IconList";
-import { DashboardDataTableProps } from "@/Utils/Variables";
+import CustomDatatable from "@/Components/UI/CustomDataTable";
+import { DashboardKullanicilarDataTableColumns } from "@/Utils/KullanicilarUtils";
 
 export default function DashboardSectionThree() {
   return (
-    <CustomGrid
-      columns={DashboardDataTableProps.columns}
-      data={DashboardDataTableProps.data}
-      pagination={true}
-    >
-      <div className="flex items-center justify-between">
-        <h4 className="text-lg font-bold">Müşteriler</h4>
-        <CustomButton
-          title="Müşteri Ekle"
-          className="bg-adminDarkBlueBg text-adminDarkBlue"
-          icon={PlusSmall}
-        />
-      </div>
-    </CustomGrid>
+    <div className="flex w-full flex-col gap-2">
+      <h4 className="text-lg font-bold">Kayıtlı Kullanıcılar</h4>
+      <CustomDatatable
+        extraClass="border border-b-0"
+        columns={DashboardKullanicilarDataTableColumns}
+        apiUrl={"/api/users/userlist"}
+      />
+    </div>
   );
 }
