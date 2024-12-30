@@ -17,6 +17,22 @@ export type CompanySalesListType = PageIndexType & {
   endDate?: string;
 };
 
+export type CompanyUserListType = PageIndexType & {
+  keywords?: string;
+};
+
+export type CurrentAccountListType = PageIndexType & {
+  keywords?: string;
+  startDate?: string;
+  endDate?: string;
+};
+
+export type OtorizationsListType = PageIndexType & {
+  keywords?: string;
+  startDate?: string;
+  endDate?: string;
+};
+
 export type AddCompanyType = {
   paymentMethodId: number;
   title: string;
@@ -50,4 +66,54 @@ export type CompanySalesType = {
   SaleDate: string;
   CreatedDate: string;
   Id: number;
+};
+
+export type CompanyUserType = {
+  Id: number;
+  MemberTypeName: string;
+  UserName: string;
+  CompanyName: string;
+  Email: string;
+  Gsm: string;
+  DisplayName: string;
+  IsActive: boolean;
+  CreatedDate: string;
+};
+
+export type CurrentAccountType = {
+  PaymentMethodName: string;
+  MemberName: string;
+  CompanyName: string;
+  UserName: string;
+  PaymentMethodId: number;
+  DistributorId: number;
+  CompanyId: number;
+  MemberId: number;
+  Revenue: number;
+  Expense: number;
+  Description: string;
+  IsDeleted: boolean;
+  DeletedById: string | number;
+  DeletedDate: string | number;
+  CreatedById: string | number;
+  CreatedDate: string;
+  Id: number;
+};
+
+export type OtorizationType = {
+  CreditCardId: number;
+  OrderId: number;
+  ActionName: string;
+  Amount: number;
+  Alias: string;
+  RefNo: string;
+  ReturnCode: string;
+  ReturnMessage: string;
+  StatusText: string;
+  ResponseText: string;
+  CreatedDate: string;
+  CardMask: string;
+  OrderNumber: string;
+  UserName: string;
+  CompanyName: string;
 };

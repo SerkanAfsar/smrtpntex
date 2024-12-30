@@ -33,3 +33,10 @@ export async function AddBpOrderService({ data }: { data: AddBpOrderType }) {
     body: data,
   })) as ResponseResult<AddBpOrderType>;
 }
+
+export async function DeleteBpOrderService({ id }: { id: number }) {
+  return (await BaseFetch({
+    method: "POST",
+    url: `adminApi/BpOrder/delete/${id}`,
+  })) as ResponseResult<AddBpOrderType>;
+}

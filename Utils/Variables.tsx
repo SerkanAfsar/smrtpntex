@@ -1,10 +1,13 @@
 import { tr } from "date-fns/locale";
 import { MenuLinkGroupType } from "@/Types/Common.Types";
+import Image from "next/image";
 import {
   AnasayfaIcon,
   AraclarIcon,
   BpIcon,
+  Delete2,
   DistribitorlerIcon,
+  Edit2,
   FirmalarIcon,
   HelperIcon,
   IcerikYonetimiIcon,
@@ -20,9 +23,15 @@ import {
   PetronetTankTransactionsType,
 } from "@/Types/Petronet.Types";
 import { format, formatDate } from "date-fns";
-import { CompanySalesType } from "@/Types/Company.Types";
+import {
+  CompanySalesType,
+  CompanyUserType,
+  CurrentAccountType,
+  OtorizationType,
+} from "@/Types/Company.Types";
 import { MemberType, MemberTypeType } from "@/Types/Member.Types";
 import { CarType } from "@/Types/Car.Types";
+import { DistributorSaleType } from "@/Types/Distrubitor.Types";
 
 export const AdminMenuList: MenuLinkGroupType[] = [
   {
@@ -283,50 +292,63 @@ export const AraclarDatatableProps = {
   ],
 };
 
-export const BpDatatableProps = {
-  columns: [
-    {
-      name: "Sipariş No",
-      selector: (row: any) => row.OrderCode,
-      sortable: true,
-    },
-    {
-      name: "İstasyon",
-      selector: (row: any) => row.StationName,
-      sortable: true,
-    },
-    {
-      name: "Litre",
-      selector: (row: any) => row.Quantity,
-      sortable: true,
-    },
-    {
-      name: "Durum",
-      selector: (row: any) => row.StateMessage,
-      sortable: true,
-    },
-    {
-      name: "Sipariş Tarihi",
-      selector: (row: any) => row.OrderDate,
-      sortable: true,
-    },
-    {
-      name: "Kayıt Tarihi",
-      selector: (row: any) => row.CreatedDate,
-      sortable: true,
-    },
-  ],
-  data: [
-    [
-      "SIP12345",
-      "İstanbul İstasyon	",
-      "500",
-      "Aktif",
-      "01.11.2024 10:20:30",
-      "01.11.2024 10:20:30",
-    ],
-  ],
-};
+export const BpDatatableProps = (editFunc: any, deleteFunc: any) => [
+  {
+    name: "Sipariş No",
+    selector: (row: any) => row.OrderCode,
+    sortable: true,
+  },
+  {
+    name: "İstasyon",
+    selector: (row: any) => row.StationName,
+    sortable: true,
+  },
+  {
+    name: "Litre",
+    selector: (row: any) => row.Quantity,
+    sortable: true,
+  },
+  {
+    name: "Durum",
+    selector: (row: any) => row.StateMessage,
+    sortable: true,
+  },
+  {
+    name: "Sipariş Tarihi",
+    selector: (row: any) => format(row.OrderDate, "dd/MM/yyyy HH:ss"),
+    sortable: true,
+  },
+  {
+    name: "Kayıt Tarihi",
+    selector: (row: any) => format(row.CreatedDate, "dd/MM/yyyy HH:ss"),
+    sortable: true,
+  },
+  {
+    name: "İşlemler",
+    width: "80px",
+    selector: (row: any) => (
+      <div className="flex items-center justify-center gap-3">
+        <Image
+          src={Edit2}
+          width={20}
+          height={20}
+          alt="Edit"
+          className="cursor-pointer"
+          onClick={async () => editFunc({ id: row.Id })}
+        />
+        <Image
+          src={Delete2}
+          width={20}
+          height={20}
+          alt="Delete"
+          className="cursor-pointer"
+          onClick={async () => deleteFunc({ id: row.Id })}
+        />
+      </div>
+    ),
+    sortable: false,
+  },
+];
 
 export const PetronetDealerColumns = [
   {
@@ -608,6 +630,122 @@ export const CompanySalesColumns = [
   },
 ];
 
+export const CompanyUserListColumns = [
+  {
+    name: "Üye Adı",
+    selector: (row: CompanyUserType) => row.UserName,
+    sortable: true,
+  },
+  {
+    name: "Üye Tipi",
+    selector: (row: CompanyUserType) => row.MemberTypeName,
+    sortable: true,
+  },
+  {
+    name: "Firma Adı",
+    selector: (row: CompanyUserType) => row.CompanyName,
+    sortable: true,
+  },
+  {
+    name: "E-Mail",
+    selector: (row: CompanyUserType) => row.Email,
+    sortable: true,
+  },
+  {
+    name: "Gsm",
+    selector: (row: CompanyUserType) => row.Gsm,
+    sortable: true,
+  },
+  {
+    name: "Gösterim Adı",
+    selector: (row: CompanyUserType) => row.DisplayName,
+    sortable: true,
+  },
+
+  {
+    name: "Kayıt Tarihi",
+    selector: (row: CompanyUserType) =>
+      formatDate(row.CreatedDate, "dd.MM.yyy hh:MM"),
+    sortable: true,
+  },
+];
+
+export const CompanyCurrentAccountListColumns = [
+  {
+    name: "Ödeme Tipi",
+    selector: (row: CurrentAccountType) => row.PaymentMethodName,
+    sortable: true,
+  },
+  {
+    name: "Kullanıcı Adı",
+    selector: (row: CurrentAccountType) => row.UserName,
+    sortable: true,
+  },
+  {
+    name: "Üye Adı",
+    selector: (row: CurrentAccountType) => row.MemberName,
+    sortable: true,
+  },
+  {
+    name: "Firma Adı",
+    selector: (row: CurrentAccountType) => row.CompanyName,
+    sortable: true,
+    width: "300px",
+  },
+  {
+    name: "Kullanıcı Adı",
+    selector: (row: CurrentAccountType) => row.UserName,
+    sortable: true,
+  },
+  {
+    name: "Açıklama",
+    selector: (row: CurrentAccountType) => row.Description,
+    sortable: true,
+  },
+  {
+    name: "Kayıt Tarihi",
+    selector: (row: CurrentAccountType) =>
+      formatDate(row.CreatedDate, "dd.MM.yyy hh:MM"),
+    sortable: true,
+  },
+];
+
+export const CompanyOtorizationsListColumns = [
+  {
+    name: "Takma Adı",
+    selector: (row: OtorizationType) => row.Alias,
+    sortable: true,
+  },
+  {
+    name: "İşlem",
+    selector: (row: OtorizationType) => row.ActionName,
+    sortable: true,
+  },
+  {
+    name: "Tutar",
+    selector: (row: OtorizationType) => row.Amount,
+    sortable: true,
+  },
+  {
+    name: "Mesaj",
+    selector: (row: OtorizationType) => row.ReturnMessage,
+    sortable: true,
+    width: "300px",
+  },
+  {
+    name: "Statü",
+    selector: (row: OtorizationType) => row.StatusText,
+    sortable: true,
+  },
+
+  {
+    name: "Kayıt Tarihi",
+    selector: (row: OtorizationType) =>
+      formatDate(row.CreatedDate, "dd.MM.yyy hh:MM"),
+    sortable: true,
+  },
+];
+
 export const MemberColumnHeaders = [
   {
     name: "Üye Tipi",
@@ -651,6 +789,51 @@ export const MemberTypeColumnHeaders = [
   {
     name: "Üye Tipi",
     selector: (row: MemberTypeType) => row.Description,
+    sortable: true,
+  },
+];
+
+export const DistributorSatisColumnHeaders = [
+  {
+    name: "Firma Adı",
+    selector: (row: DistributorSaleType) => row.CompanyName,
+    sortable: true,
+  },
+  {
+    name: "Ad",
+    selector: (row: DistributorSaleType) => row.DisplayName,
+    sortable: true,
+  },
+  {
+    name: "İstasyon Adı",
+    selector: (row: DistributorSaleType) => row.StationName,
+    sortable: true,
+  },
+  {
+    name: "Tank Adı",
+    selector: (row: DistributorSaleType) => row.TankName,
+    sortable: true,
+  },
+  {
+    name: "Tank Adı",
+    selector: (row: DistributorSaleType) => row.TankName,
+    sortable: true,
+  },
+  {
+    name: "Toplam",
+    selector: (row: DistributorSaleType) => row.Total,
+    sortable: true,
+  },
+  {
+    name: "Satış Tarihi",
+    selector: (row: DistributorSaleType) =>
+      formatDate(row.SaleDate, "dd.MM.yyy hh:MM"),
+    sortable: true,
+  },
+  {
+    name: "Kayıt Tarihi",
+    selector: (row: DistributorSaleType) =>
+      formatDate(row.CreatedDate, "dd.MM.yyy hh:MM"),
     sortable: true,
   },
 ];

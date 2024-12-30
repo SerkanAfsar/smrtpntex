@@ -19,7 +19,7 @@ export default function PetronetCustomSearch({
   setKeywords: React.Dispatch<string>;
   setStartDate: React.Dispatch<string>;
   setEndDate: React.Dispatch<string>;
-  setIsActive: React.Dispatch<boolean | undefined>;
+  setIsActive?: React.Dispatch<boolean | undefined>;
   startDate?: string | null;
   endDate?: string | null;
 }) {
@@ -75,12 +75,14 @@ export default function PetronetCustomSearch({
       {types[activeMenu].searchItems.includes("status") && (
         <CustomSelect
           onChange={(e) => {
-            if (e.currentTarget.value == "true") {
-              setIsActive(true);
-            } else if (e.currentTarget.value == "false") {
-              setIsActive(false);
-            } else {
-              setIsActive(undefined);
+            if (setIsActive) {
+              if (e.currentTarget.value == "true") {
+                setIsActive(true);
+              } else if (e.currentTarget.value == "false") {
+                setIsActive(false);
+              } else {
+                setIsActive(undefined);
+              }
             }
           }}
           className="rounded-md border px-3 py-2"

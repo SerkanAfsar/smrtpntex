@@ -1,12 +1,20 @@
 "use client";
-import CustomButton from "@/Components/UI/CustomButton";
+
 import { CustomTextbox } from "@/Components/UI/CustomTextbox";
 import { useEffect, useState } from "react";
 
 export default function DistributorsCustomSearch({
   setKeywords,
+  setStartDate,
+  setEndDate,
+  startDate,
+  endDate,
 }: {
   setKeywords: React.Dispatch<string | undefined>;
+  setStartDate: React.Dispatch<string>;
+  setEndDate: React.Dispatch<string>;
+  startDate?: string;
+  endDate?: string;
 }) {
   const [keyValue, setKeyValue] = useState<string>();
 
@@ -29,6 +37,8 @@ export default function DistributorsCustomSearch({
         type="text"
         isFull={false}
         placeholder="Başlangıç Tarihi"
+        value={startDate as string}
+        onChange={(e) => setStartDate(e.target.value)}
         onFocus={(e) => (e.target.type = "date")}
         onBlur={(e) => (e.target.type = "text")}
         className="inline-block w-auto rounded-md border border-border-primary p-2.5 text-xs placeholder:text-xs"
@@ -36,14 +46,12 @@ export default function DistributorsCustomSearch({
       <CustomTextbox
         type="text"
         isFull={false}
+        value={endDate as string}
+        onChange={(e) => setEndDate(e.target.value)}
         placeholder="Bitiş Tarihi"
         onFocus={(e) => (e.target.type = "date")}
         onBlur={(e) => (e.target.type = "text")}
         className="inline-block w-auto rounded-md border border-border-primary p-2.5 text-xs placeholder:text-xs"
-      />
-      <CustomButton
-        title="Statüs"
-        className="bg-gray-900 p-2 px-3 text-white"
       />
     </section>
   );

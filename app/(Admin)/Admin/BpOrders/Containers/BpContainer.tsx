@@ -7,12 +7,14 @@ import { CheckIcon, ExportCsvIcon, PlusSmall } from "@/Utils/IconList";
 
 import BpCustomSearch from "../Components/BpCustomSearch";
 import { BpDatatableProps } from "@/Utils/Variables";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useBpOrderModal } from "@/store/useBpOderModal";
 import BpOrderEditModal from "../Components/BpOrderEditModal";
 import { useShallow } from "zustand/shallow";
 import CustomDatatable from "@/Components/UI/CustomDataTable";
 import { ExcelBPList } from "@/Services/Excel.Service";
+import { DeleteBpOrderService } from "@/Services/BpOrderService";
+import { toast } from "react-toastify";
 
 export default function BpContainer() {
   const { isOpened } = useLeftMenuStore();
@@ -27,6 +29,23 @@ export default function BpContainer() {
       state.isOpened,
     ]),
   );
+
+  const deleteFunc = useCallback(async ({ id }: { id: number }) => {
+    const confirmMessage = confirm(
+      "Bu Kaydı Silmek İstediğinizden Emin misiniz?",
+    );
+    if (confirmMessage) {
+      const result = await DeleteBpOrderService({ id });
+      if (result.IsSuccess) {
+        setUpdated();
+        return toast.success("Veri Silindi!", { position: "top-right" });
+      } else {
+        return toast.error(result.Message || "Hata", {
+          position: "top-right",
+        });
+      }
+    }
+  }, []);
 
   return (
     <div
@@ -68,7 +87,7 @@ export default function BpContainer() {
       </AdminTopSection>
       <BpCustomSearch setStartDate={setStartDate} setEndDate={setEndDate} />
       <CustomDatatable
-        columns={BpDatatableProps.columns}
+        columns={BpDatatableProps(null, deleteFunc)}
         apiUrl="/api/bporder/getlist"
         updated={updated}
       />

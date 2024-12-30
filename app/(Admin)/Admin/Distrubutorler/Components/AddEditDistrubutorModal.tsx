@@ -5,6 +5,7 @@ import { CustomTextbox } from "@/Components/UI/CustomTextbox";
 import {
   AddDistributorService,
   GetPaymentMethodTypes,
+  UpdateDistributorService,
 } from "@/Services/DistrubitorsService";
 import { useDistrubutorModal } from "@/store/useDistrubutorModal";
 import { CustomOptionsType, ResponseResult } from "@/Types/Common.Types";
@@ -20,10 +21,18 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { useShallow } from "zustand/shallow";
 
-export default function AddEditDistrubutorModal() {
+export default function AddEditDistrubutorModal({
+  dataModel,
+}: {
+  dataModel: AddDistributerType;
+}) {
   const router = useRouter();
-  const { isOpened, toggleOpened } = useDistrubutorModal();
+  const [isOpened, toggleOpened] = useDistrubutorModal(
+    useShallow((state) => [state.isOpened, state.toggleOpened]),
+  );
+
   const [paymentMethods, setPaymentMethods] = useState<CustomOptionsType[]>([]);
   const {
     register,
@@ -32,6 +41,7 @@ export default function AddEditDistrubutorModal() {
     formState: { errors },
   } = useForm<AddDistributerType>({
     mode: "onChange",
+    defaultValues: dataModel,
   });
 
   useEffect(() => {
@@ -52,14 +62,28 @@ export default function AddEditDistrubutorModal() {
     process();
   }, []);
 
+  useEffect(() => {
+    reset(dataModel);
+  }, [reset, dataModel]);
+
   const onSubmit: SubmitHandler<AddDistributerType> = async (data) => {
-    const result = await AddDistributorService({ data });
+    const result =
+      dataModel.id != 0
+        ? await UpdateDistributorService({ id: dataModel.id, data })
+        : await AddDistributorService({ data });
     if (result.IsSuccess) {
-      toast.success("Distribütör Eklendi", {
-        position: "top-right",
-      });
+      if (dataModel.id != 0) {
+        toast.warning("Distribütör Güncellendi", {
+          position: "top-right",
+        });
+      } else {
+        toast.success("Distribütör Eklendi", {
+          position: "top-right",
+        });
+      }
+
       reset();
-      toggleOpened();
+      toggleOpened(false);
       return router.refresh();
     } else {
       return toast.error(result.Message || "Hata", {
@@ -81,7 +105,7 @@ export default function AddEditDistrubutorModal() {
           src={ExitIcon}
           alt="Exit"
           className="cursor-pointer"
-          onClick={() => toggleOpened()}
+          onClick={() => toggleOpened(false)}
         />
       </div>
       <form

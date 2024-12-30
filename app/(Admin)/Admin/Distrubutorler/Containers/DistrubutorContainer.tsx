@@ -5,7 +5,7 @@ import CustomButton from "@/Components/UI/CustomButton";
 import { ExportCsvIcon } from "@/Utils/IconList";
 
 import DistributorsCustomSearch from "../Components/DistributorsCustomSearch";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import ContentWithInfoSection from "@/Components/Admin/ContentWithInfoSection";
 import ContentSubLeftSearch from "@/Components/Admin/ContentSubLeftSearch";
@@ -16,6 +16,17 @@ import { useDistrubutorModal } from "@/store/useDistrubutorModal";
 import { useShallow } from "zustand/shallow";
 import AddEditDistrubutorModal from "../Components/AddEditDistrubutorModal";
 import NotSelected from "@/Components/Admin/NotSelected";
+import { MenuType } from "../../Petronet/Containers/PetronetContainer";
+import { DistributorSatisColumnHeaders } from "@/Utils/Variables";
+import CustomDatatable from "@/Components/UI/CustomDataTable";
+
+const types: MenuType = {
+  Satışlar: {
+    searchItems: ["aranacak", "baslangic", "bitis"],
+    apiUrl: "/api/distributors/sales",
+    columns: DistributorSatisColumnHeaders,
+  },
+};
 
 export default function DistrubutorContainer({
   dataResult,
@@ -23,14 +34,22 @@ export default function DistrubutorContainer({
   dataResult: PaginationType<DistrubitorType>;
 }) {
   const [keywords, setKeywords] = useState<string>();
+  const [activeMenu, setActiveMenu] = useState<string>("Satışlar");
+  const [startDate, setStartDate] = useState<string>();
+  const [endDate, setEndDate] = useState<string>();
 
-  const [toggleOpened, selectedId, selectAction] = useDistrubutorModal(
-    useShallow((state) => [
-      state.toggleOpened,
-      state.selectedId,
-      state.setSelectedDistributor,
-    ]),
-  );
+  const [toggleOpened, selectedDistributor, setSelectedDistributor] =
+    useDistrubutorModal(
+      useShallow((state) => [
+        state.toggleOpened,
+        state.selectedDistributor,
+        state.setSelectedDistributor,
+      ]),
+    );
+  useEffect(() => {
+    setSelectedDistributor(undefined);
+  }, [setSelectedDistributor]);
+
   return (
     <>
       <ContentSubLeftSearch
@@ -38,7 +57,9 @@ export default function DistrubutorContainer({
           alert("test");
         }}
         addAction={() => {
-          toggleOpened();
+          toggleOpened(false);
+          setSelectedDistributor(undefined);
+          toggleOpened(true);
         }}
         addTitle="Distribütör Ekle"
         placeholder="Distribütör Ara"
@@ -50,16 +71,17 @@ export default function DistrubutorContainer({
             active: item.IsActive,
           }),
         )}
-        selectAction={selectAction}
-        selectedId={selectedId ?? undefined}
+        selectAction={setSelectedDistributor}
+        selectedId={selectedDistributor?.Id ?? undefined}
+        toggleOpened={toggleOpened}
       />
       <ContentWithInfoSection>
-        {selectedId ? (
+        {selectedDistributor?.Id ? (
           <>
             <AdminTopSection className="border-b">
               <CustomButton
                 className="gap-1 bg-gray-900 p-2 text-white"
-                title="Tüm Satışlar"
+                title="Satışlar"
               />
               <CustomButton
                 className="gap-1 bg-green-100 p-2 text-green-600"
@@ -67,22 +89,65 @@ export default function DistrubutorContainer({
                 title="Dışa Aktar"
               />
             </AdminTopSection>
-            <DistributorsCustomSearch setKeywords={setKeywords} />
+            <DistributorsCustomSearch
+              startDate={startDate}
+              endDate={endDate}
+              setStartDate={setStartDate}
+              setEndDate={setEndDate}
+              setKeywords={setKeywords}
+            />
+            {/* {types[activeMenu].excelCommand && (
+              <CustomButton
+                className="gap-1 bg-green-100 p-2 text-green-600"
+                icon={ExportCsvIcon}
+                disabled={excelLoading}
+                title={excelLoading ? "Excel Çıktısı Alınıyor" : "Dışa Aktar"}
+                onClick={async () => {
+                  setExcelLoading(true);
+                  await types[activeMenu].excelCommand({
+                    id: selectedCompany?.Id,
+                    startDate: startDate ?? "",
+                    endDate: endDate ?? "",
+                    keywords: keywords ?? "",
+                  });
+                  setExcelLoading(false);
+                }}
+              />
+            )} */}
 
-            <div>
-              Buraya distribitörlere ait satışlar tablosu gelicek ama nerden
-              çekicek belli değil
-            </div>
+            {types[activeMenu].columns && (
+              <CustomDatatable
+                apiUrl={types[activeMenu].apiUrl}
+                columns={types[activeMenu].columns}
+                id={selectedDistributor?.Id}
+                startDate={startDate}
+                endDate={endDate}
+                keywords={keywords}
+              />
+            )}
           </>
         ) : (
           <NotSelected
             title="Distribütör"
-            action={() => toggleOpened()}
+            action={() => toggleOpened(true)}
             buttonTitle="Distribütör Ekle"
           />
         )}
       </ContentWithInfoSection>
-      <AddEditDistrubutorModal />
+      <AddEditDistrubutorModal
+        dataModel={{
+          id: selectedDistributor?.Id ?? 0,
+          alertLimit: selectedDistributor?.AlertLimit ?? 0,
+          isActive: selectedDistributor?.IsActive ?? false,
+          purchasePrice: selectedDistributor?.PurchasePrice ?? 0,
+          taxOffice: selectedDistributor?.TaxOffice ?? "",
+          title: selectedDistributor?.Title ?? "",
+          riskLimit: selectedDistributor?.RiskLimit ?? 0,
+          taxNumber: selectedDistributor?.TaxNumber ?? "",
+          paymentMethodId: selectedDistributor?.PaymentMethodId ?? 0,
+          limitId: selectedDistributor?.AlertLimit ?? 0,
+        }}
+      />
     </>
   );
 }

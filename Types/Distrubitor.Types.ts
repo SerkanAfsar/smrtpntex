@@ -5,6 +5,12 @@ export type DistrubitorListType = PageIndexType & {
   keywords?: string;
 };
 
+export type DistrubitorSaleListType = PageIndexType & {
+  keywords?: string;
+  startDate?: string;
+  endDate?: string;
+};
+
 export type DistrubitorType = {
   DistributorGuid: string;
   PaymentMethodId: number;
@@ -22,7 +28,8 @@ export type DistrubitorType = {
 };
 
 export type AddDistributerType = {
-  paymentMethodId: null;
+  id: number;
+  paymentMethodId: number;
   title: string;
   taxNumber: string;
   taxOffice: string;
@@ -37,5 +44,31 @@ export type PaymentMethodType = {
   PaymentMethodId: number;
   LanguageId: number;
   Name: string;
+  Id: number;
+};
+
+export type DistributorSaleType = {
+  UserName: string;
+  DisplayName: string;
+  CompanyName: string;
+  StationName: string;
+  TankName: string;
+  DistributorId: number | null;
+  MemberId: number;
+  StationId: number;
+  TankId: number;
+  UniqueId: number;
+  ProductId: number;
+  PaymentMethodId: number;
+  ProvisionId: number;
+  PlateNumber: string;
+  UnitPrice: number;
+  DistributorPrice: string | number | null;
+  Liter: number;
+  NewAmount: number;
+  DiscountRatio: number;
+  Total: number;
+  SaleDate: string;
+  CreatedDate: string;
   Id: number;
 };

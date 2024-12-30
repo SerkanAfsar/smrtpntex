@@ -26,6 +26,7 @@ export type ContentSubLeftSearchType = {
   variables: VariablesType[];
   selectAction: (id?: number) => void;
   selectedId: number | undefined;
+  toggleOpened?: any;
 };
 export type SelectTypes = "all" | "true" | "false";
 export default function ContentSubLeftSearch({
@@ -37,6 +38,7 @@ export default function ContentSubLeftSearch({
   variables,
   selectAction,
   selectedId,
+  toggleOpened,
 }: ContentSubLeftSearchType) {
   const [searchKey, setSearchKey] = useState<string>();
   const [selectedType, setSelectedType] = useState<SelectTypes>("all");
@@ -116,7 +118,11 @@ export default function ContentSubLeftSearch({
               selectedId && selectedId == Number(item.value) && "bg-blue-100",
             )}
             key={index}
-            onClick={() => selectAction(Number(item.value))}
+            onClick={async () => {
+              toggleOpened(false);
+              await selectAction(Number(item.value));
+              toggleOpened(true);
+            }}
           >
             {item.name}
             <Image

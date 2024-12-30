@@ -2,6 +2,7 @@ import { PaginationType, ResponseResult } from "@/Types/Common.Types";
 import {
   AddDistributerType,
   DistrubitorListType,
+  DistrubitorSaleListType,
   DistrubitorType,
   PaymentMethodType,
 } from "@/Types/Distrubitor.Types";
@@ -17,6 +18,13 @@ export async function GetAllDistrubitors({
     url: "adminApi/Distributor/List",
     body: searchType,
   })) as ResponseResult<PaginationType<DistrubitorType>>;
+}
+
+export async function GetDistributorByIdService({ id }: { id: number }) {
+  return (await BaseFetch({
+    method: "GET",
+    url: `adminApi/Distributor/getbyid/${id}`,
+  })) as ResponseResult<DistrubitorType>;
 }
 
 export async function GetPaymentMethodTypes() {
@@ -38,6 +46,20 @@ export async function AddDistributorService({
   })) as ResponseResult<DistrubitorType>;
 }
 
+export async function UpdateDistributorService({
+  id,
+  data,
+}: {
+  id: number;
+  data: AddDistributerType;
+}) {
+  return (await BaseFetch({
+    method: "PUT",
+    url: `adminApi/Distributor/edit/${id}`,
+    body: data,
+  })) as ResponseResult<DistrubitorType>;
+}
+
 // export async function GetDistributorById({ id }: { id: number }) {
 //   return (await BaseFetch({
 //     method: "POST",
@@ -45,3 +67,17 @@ export async function AddDistributorService({
 //     body: data,
 //   })) as ResponseResult<DistrubitorType>;
 // }
+
+export async function GetDistributorSalesListService({
+  distributorId,
+  searchType,
+}: {
+  distributorId: number;
+  searchType: DistrubitorSaleListType;
+}) {
+  return (await BaseFetch({
+    method: "POST",
+    url: `adminApi/Distributor/sales/${distributorId}`,
+    body: searchType,
+  })) as ResponseResult<DistrubitorType>;
+}

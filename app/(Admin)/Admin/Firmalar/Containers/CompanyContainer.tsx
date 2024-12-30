@@ -2,7 +2,12 @@
 import AdminTopSection from "@/Components/Admin/TopSection";
 import CustomButton from "@/Components/UI/CustomButton";
 import { cn } from "@/Utils";
-import { CompanySalesColumns } from "@/Utils/Variables";
+import {
+  CompanyCurrentAccountListColumns,
+  CompanyOtorizationsListColumns,
+  CompanySalesColumns,
+  CompanyUserListColumns,
+} from "@/Utils/Variables";
 import { useEffect, useState } from "react";
 import ContentWithInfoSection from "@/Components/Admin/ContentWithInfoSection";
 import ContentSubLeftSearch from "@/Components/Admin/ContentSubLeftSearch";
@@ -19,11 +24,6 @@ import { ExportCsvIcon } from "@/Utils/IconList";
 import { ExcelFirmalarSatisResult } from "@/Services/Excel.Service";
 
 const types: MenuType = {
-  // Şubeler: {
-  //   searchItems: ["aranacak", "status"],
-  //   apiUrl: "/api/companysales1",
-  //   // columns: CompanySalesColumns,
-  // },
   Satışlar: {
     searchItems: ["aranacak", "baslangic", "bitis"],
     apiUrl: "/api/companysales",
@@ -31,19 +31,19 @@ const types: MenuType = {
     excelCommand: ExcelFirmalarSatisResult,
   },
   Kullanıcılar: {
-    searchItems: ["aranacak", "status"],
-    apiUrl: "/api/companysales2",
-    // columns: CompanySalesColumns,
+    searchItems: ["aranacak", "baslangic", "bitis"],
+    apiUrl: "/api/Company/userlist",
+    columns: CompanyUserListColumns,
   },
   Finans: {
-    searchItems: ["aranacak", "status"],
-    apiUrl: "/api/companysale3",
-    // columns: CompanySalesColumns,
+    searchItems: ["aranacak", "baslangic", "bitis"],
+    apiUrl: "/api/Company/currentaccount",
+    columns: CompanyCurrentAccountListColumns,
   },
   Otorizasyonlar: {
-    searchItems: ["aranacak", "status"],
-    apiUrl: "/api/companysale4",
-    // columns: CompanySalesColumns,
+    searchItems: ["aranacak", "baslangic", "bitis"],
+    apiUrl: "/api/Company/otorizations",
+    columns: CompanyOtorizationsListColumns,
   },
   "Kredi Kartları": {
     searchItems: ["aranacak", "status"],
@@ -62,23 +62,22 @@ export default function CompaniesContainer({
 }: {
   dataResult: PaginationType<CompanyType>;
 }) {
-  const [keywords, setKeywords] = useState<string>();
+  const [keywords, setKeywords] = useState<string>("");
   const [startDate, setStartDate] = useState<string>();
   const [endDate, setEndDate] = useState<string>();
-  const [isActive, setIsActive] = useState<boolean | undefined>(undefined);
   const [excelLoading, setExcelLoading] = useState<boolean>(false);
 
   const [activeMenu, setActiveMenu] = useState<string>("Satışlar");
-  const [toggleOpened, selectedId, selectAction] = useCompanyModal(
+  const [toggleOpened, selectedCompany, setSelectedCompany] = useCompanyModal(
     useShallow((state) => [
       state.toggleOpened,
-      state.selectedId,
+      state.selectedCompany,
       state.setSelectedCompany,
     ]),
   );
   useEffect(() => {
-    selectAction(undefined);
-  }, [selectAction]);
+    setSelectedCompany(undefined);
+  }, [setSelectedCompany]);
 
   return (
     <>
@@ -87,7 +86,9 @@ export default function CompaniesContainer({
           alert("test");
         }}
         addAction={() => {
-          toggleOpened();
+          toggleOpened(false);
+          setSelectedCompany(undefined);
+          toggleOpened(true);
         }}
         addTitle="Firma Ekle"
         placeholder="Firma Ara"
@@ -97,11 +98,12 @@ export default function CompaniesContainer({
           value: item.Id.toString(),
           active: item.IsActive,
         }))}
-        selectAction={selectAction}
-        selectedId={selectedId ?? undefined}
+        toggleOpened={toggleOpened}
+        selectAction={setSelectedCompany}
+        selectedId={selectedCompany?.Id ?? undefined}
       />
       <ContentWithInfoSection>
-        {selectedId ? (
+        {selectedCompany?.Id ? (
           <>
             <AdminTopSection className="border-b">
               <div className="flex items-center justify-center">
@@ -130,7 +132,7 @@ export default function CompaniesContainer({
                   onClick={async () => {
                     setExcelLoading(true);
                     await types[activeMenu].excelCommand({
-                      id: selectedId,
+                      id: selectedCompany?.Id,
                       startDate: startDate ?? "",
                       endDate: endDate ?? "",
                       keywords: keywords ?? "",
@@ -147,7 +149,6 @@ export default function CompaniesContainer({
               setKeywords={setKeywords}
               setStartDate={setStartDate}
               setEndDate={setEndDate}
-              setIsActive={setIsActive}
               startDate={startDate}
               endDate={endDate}
             />
@@ -155,23 +156,32 @@ export default function CompaniesContainer({
               <CustomDatatable
                 apiUrl={types[activeMenu].apiUrl}
                 columns={types[activeMenu].columns}
-                id={selectedId}
+                id={selectedCompany?.Id}
                 startDate={startDate}
                 endDate={endDate}
                 keywords={keywords}
-                isActive={isActive}
               />
             )}
           </>
         ) : (
           <NotSelected
             title="Firma"
-            action={() => toggleOpened()}
+            action={() => toggleOpened(true)}
             buttonTitle="Firma Ekle"
           />
         )}
       </ContentWithInfoSection>
-      <AddEditCompanyModal />
+      <AddEditCompanyModal
+        editData={{
+          alertLimit: selectedCompany?.AlertLimit ?? 0,
+          isActive: selectedCompany?.IsActive ?? false,
+          paymentMethodId: selectedCompany?.PaymentMethodId ?? 0,
+          riskLimit: selectedCompany?.RiskLimit ?? 0,
+          taxNumber: selectedCompany?.TaxNumber ?? "",
+          taxOffice: selectedCompany?.TaxOffice ?? "",
+          title: selectedCompany?.Title ?? "",
+        }}
+      />
     </>
   );
 }

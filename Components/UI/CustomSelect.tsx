@@ -2,7 +2,7 @@ import { CustomOptionsType } from "@/Types/Common.Types";
 import { cn } from "@/Utils";
 import * as React from "react";
 
-type CustomSelectProps = React.HTMLAttributes<HTMLSelectElement> & {
+type CustomSelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
   options: CustomOptionsType[];
   isFull?: boolean;
   title?: string;

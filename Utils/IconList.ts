@@ -27,8 +27,12 @@ import NotSelectedIcon from "../public/icons/company-filled.svg?url";
 import SmartPoint2Logo from "../public/icons/Logo_Smartpoint2.svg?url";
 import SmartPoint3Logo from "../public/icons/Logo_Smartpoint3.svg?url";
 import ArrowRight from "../public/icons/arrowright.svg?url";
+import Edit2 from "../public/icons/edit2.svg?url";
+import Delete2 from "../public/icons/delete2.svg?url";
 
 export {
+  Edit2,
+  Delete2,
   ArrowRight,
   SmartPoint2Logo,
   SmartPoint3Logo,

@@ -2,7 +2,7 @@ import CustomButton from "@/Components/UI/CustomButton";
 import CustomCheckbox from "@/Components/UI/CustomCheckbox";
 import CustomSelect from "@/Components/UI/CustomSelect";
 import { CustomTextbox } from "@/Components/UI/CustomTextbox";
-import { AddCompanyService } from "@/Services/CompanyService";
+
 import { GetPaymentMethodTypes } from "@/Services/DistrubitorsService";
 import { useCompanyModal } from "@/store/useCompanyModal";
 import { CustomOptionsType, ResponseResult } from "@/Types/Common.Types";
@@ -16,9 +16,12 @@ import { useMask } from "@react-input/mask";
 
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "react-toastify";
 
-export default function AddEditCompanyModal() {
+export default function AddEditCompanyModal({
+  editData,
+}: {
+  editData: AddCompanyType;
+}) {
   const router = useRouter();
   const { isOpened, toggleOpened } = useCompanyModal();
   const [paymentMethods, setPaymentMethods] = useState<CustomOptionsType[]>([]);
@@ -26,13 +29,13 @@ export default function AddEditCompanyModal() {
     register,
     reset,
     handleSubmit,
-    getValues,
     watch,
     setError,
     clearErrors,
     formState: { errors },
   } = useForm<AddCompanyType>({
     mode: "onChange",
+    defaultValues: editData,
   });
 
   const inputRef = useMask({
@@ -41,8 +44,11 @@ export default function AddEditCompanyModal() {
   });
 
   useEffect(() => {
+    reset(editData);
+  }, [reset, editData]);
+
+  useEffect(() => {
     const { unsubscribe } = watch((value) => {
-      console.log(value);
       if (
         value.alertLimit &&
         value.riskLimit &&
@@ -78,19 +84,20 @@ export default function AddEditCompanyModal() {
   }, []);
 
   const onSubmit: SubmitHandler<AddCompanyType> = async (data) => {
-    const result = await AddCompanyService({ data });
-    if (result.IsSuccess) {
-      toast.success("Firma Eklendi", {
-        position: "top-right",
-      });
-      reset();
-      toggleOpened();
-      return router.refresh();
-    } else {
-      return toast.error(result.Message || "Hata", {
-        position: "top-right",
-      });
-    }
+    console.log(data);
+    // const result = await AddCompanyService({ data });
+    // if (result.IsSuccess) {
+    //   toast.success("Firma Eklendi", {
+    //     position: "top-right",
+    //   });
+    //   reset();
+    //   toggleOpened();
+    //   return router.refresh();
+    // } else {
+    //   return toast.error(result.Message || "Hata", {
+    //     position: "top-right",
+    //   });
+    // }
   };
 
   return (
@@ -106,7 +113,7 @@ export default function AddEditCompanyModal() {
           src={ExitIcon}
           alt="Exit"
           className="cursor-pointer"
-          onClick={() => toggleOpened()}
+          onClick={() => toggleOpened(false)}
         />
       </div>
       <form
@@ -163,11 +170,11 @@ export default function AddEditCompanyModal() {
             required: "Uyarı Limiti ( TL )  Giriniz..",
             valueAsNumber: true,
           })}
-          defaultValue={0}
           type="number"
           title="Uyarı Limiti ( TL ) "
           className="rounded-md border p-3 outline-none"
           err={errors.alertLimit?.message}
+
           // onChange={(e) => {
           //   if (e.target.value.length > 7) {
           //     e.currentTarget.value = e.target.value.substring(0, 7);
@@ -179,7 +186,6 @@ export default function AddEditCompanyModal() {
             required: "Toplam Risk Limiti ( TL ) Giriniz..",
             valueAsNumber: true,
           })}
-          defaultValue={0}
           type="number"
           title="Toplam Risk Limiti ( TL )"
           className="rounded-md border p-3 outline-none"
