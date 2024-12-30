@@ -24,6 +24,7 @@ import {
 } from "@/Types/Petronet.Types";
 import { format, formatDate } from "date-fns";
 import {
+  CompanyCarType,
   CompanySalesType,
   CompanyUserType,
   CurrentAccountType,
@@ -830,6 +831,42 @@ export const DistributorSatisColumnHeaders = [
       formatDate(row.SaleDate, "dd.MM.yyy hh:MM"),
     sortable: true,
   },
+  {
+    name: "Kayıt Tarihi",
+    selector: (row: DistributorSaleType) =>
+      formatDate(row.CreatedDate, "dd.MM.yyy hh:MM"),
+    sortable: true,
+  },
+];
+
+export const CompanyCarListTypeHeaders = [
+  {
+    name: "Plaka",
+    selector: (row: CompanyCarType) => row.PlateNumber,
+    sortable: true,
+  },
+  {
+    name: "Marka",
+    selector: (row: CompanyCarType) => row.BrandName,
+    sortable: true,
+  },
+  {
+    name: "Model",
+    selector: (row: CompanyCarType) => row.ModelName,
+    sortable: true,
+  },
+  {
+    name: "Firma",
+    selector: (row: CompanyCarType) => row.CompanyName,
+    sortable: true,
+    width: "300px",
+  },
+  {
+    name: "Üye Ad Soyad",
+    selector: (row: CompanyCarType) => `${row.FirstName} ${row.LastName}`,
+    sortable: true,
+  },
+
   {
     name: "Kayıt Tarihi",
     selector: (row: DistributorSaleType) =>

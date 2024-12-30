@@ -1,6 +1,8 @@
 import { PaginationType, ResponseResult } from "@/Types/Common.Types";
 import {
   AddCompanyType,
+  CompanyCarListType,
+  CompanyCarType,
   CompanyListType,
   CompanySalesListType,
   CompanySalesType,
@@ -95,4 +97,18 @@ export async function CompanyOtorizationListService({
     url: `adminApi/Company/financials/${companyId}`,
     body: searchType,
   })) as ResponseResult<PaginationType<OtorizationType>>;
+}
+
+export async function CompanyCarListService({
+  companyId,
+  searchType,
+}: {
+  companyId: number;
+  searchType: CompanyCarListType;
+}) {
+  return (await BaseFetch({
+    method: "POST",
+    url: `adminApi/Company/cars/${companyId}`,
+    body: searchType,
+  })) as ResponseResult<PaginationType<CompanyCarType>>;
 }

@@ -178,9 +178,8 @@ export default function AddEditDistrubutorModal({
             valueAsNumber: true,
           })}
           options={[
-            { name: "Deneme 1", value: 1 },
-            { name: "Deneme 2", value: 2 },
-            { name: "Deneme 3", value: 3 },
+            { name: "Tahsilatı peşin al", value: 0 },
+            { name: "Tahsilatı alımlara göre yap", value: 1 },
           ]}
           className="rounded-md border p-3"
           title="Limit Tipi Seçiniz"

@@ -3,6 +3,7 @@ import AdminTopSection from "@/Components/Admin/TopSection";
 import CustomButton from "@/Components/UI/CustomButton";
 import { cn } from "@/Utils";
 import {
+  CompanyCarListTypeHeaders,
   CompanyCurrentAccountListColumns,
   CompanyOtorizationsListColumns,
   CompanySalesColumns,
@@ -54,6 +55,11 @@ const types: MenuType = {
     searchItems: ["aranacak", "status"],
     apiUrl: "/api/companysales6",
     // columns: CompanySalesColumns,
+  },
+  Araçlar: {
+    searchItems: ["aranacak"],
+    apiUrl: "/api/Company/cars",
+    columns: CompanyCarListTypeHeaders,
   },
 };
 

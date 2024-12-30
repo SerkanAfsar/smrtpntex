@@ -21,6 +21,10 @@ export type CompanyUserListType = PageIndexType & {
   keywords?: string;
 };
 
+export type CompanyCarListType = PageIndexType & {
+  keywords?: string;
+};
+
 export type CurrentAccountListType = PageIndexType & {
   keywords?: string;
   startDate?: string;
@@ -116,4 +120,28 @@ export type OtorizationType = {
   OrderNumber: string;
   UserName: string;
   CompanyName: string;
+};
+
+export type CompanyCarType = {
+  FirstName: string;
+  LastName: string;
+  CompanyName: string;
+  UserName: string;
+  Title: string;
+  BrandName: string;
+  ModelName: string;
+  ClassName: string;
+  MemberId: number;
+  CarBrandId: number;
+  CarModelId: number;
+  PlateNumber: string;
+  Amount: number;
+  ExtraLimit: number;
+  IsActive: boolean;
+  IsDeleted: boolean;
+  DeletedById: string | number | null;
+  DeletedDate: string | number | null;
+  CreatedById: string | number | null;
+  CreatedDate: string;
+  Id: number;
 };

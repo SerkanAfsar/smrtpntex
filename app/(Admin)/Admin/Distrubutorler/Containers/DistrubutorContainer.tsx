@@ -19,9 +19,25 @@ import NotSelected from "@/Components/Admin/NotSelected";
 import { MenuType } from "../../Petronet/Containers/PetronetContainer";
 import { DistributorSatisColumnHeaders } from "@/Utils/Variables";
 import CustomDatatable from "@/Components/UI/CustomDataTable";
+import { cn } from "@/Utils";
 
 const types: MenuType = {
   Satışlar: {
+    searchItems: ["aranacak", "baslangic", "bitis"],
+    apiUrl: "/api/distributors/sales",
+    columns: DistributorSatisColumnHeaders,
+  },
+  Firlamalar: {
+    searchItems: ["aranacak", "baslangic", "bitis"],
+    apiUrl: "/api/distributors/sales",
+    columns: DistributorSatisColumnHeaders,
+  },
+  Araçlar: {
+    searchItems: ["aranacak", "baslangic", "bitis"],
+    apiUrl: "/api/distributors/sales",
+    columns: DistributorSatisColumnHeaders,
+  },
+  Faturalar: {
     searchItems: ["aranacak", "baslangic", "bitis"],
     apiUrl: "/api/distributors/sales",
     columns: DistributorSatisColumnHeaders,
@@ -79,10 +95,23 @@ export default function DistrubutorContainer({
         {selectedDistributor?.Id ? (
           <>
             <AdminTopSection className="border-b">
-              <CustomButton
-                className="gap-1 bg-gray-900 p-2 text-white"
-                title="Satışlar"
-              />
+              <div className="flex items-center justify-center">
+                <div className="mr-3 flex items-center justify-between gap-3">
+                  {Object.keys(types).map((key: string, index: number) => (
+                    <CustomButton
+                      key={index}
+                      className={cn(
+                        "gap-1 rounded-md border p-2 px-3",
+                        activeMenu == key
+                          ? "border-black bg-gray-900 text-white"
+                          : "bg-white text-black",
+                      )}
+                      onClick={() => setActiveMenu(key)}
+                      title={key}
+                    />
+                  ))}
+                </div>
+              </div>
               <CustomButton
                 className="gap-1 bg-green-100 p-2 text-green-600"
                 icon={ExportCsvIcon}
