@@ -11,9 +11,8 @@ services:
     build:
       context: .
       dockerfile: ../smartpoint-dist/SmartPoint-Dist/Dockerfile
+    # dockerfile: ../smart-point-dist/Dockerfile
     container_name: appdist
- expose:
-      - "3001"
     ports:
       - "3001:3001"
 
