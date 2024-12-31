@@ -10,7 +10,7 @@ services:
   appdist:
     build:
       context: .
-      dockerfile: ../smartpoint-dist/Dockerfile
+      dockerfile: ./smartpoint-dist/Dockerfile
     container_name: appdist
     ports:
       - "3001:3001"
