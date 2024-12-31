@@ -13,7 +13,7 @@ services:
       dockerfile: ../smartpoint-dist/SmartPoint-Dist/Dockerfile
     container_name: appdist
     ports:
-      - "3001:3001"
+      - "3001:3000"
 
   nginx:
     image: nginx:alpine
