@@ -27,11 +27,11 @@ const types: MenuType = {
     apiUrl: "/api/distributors/sales",
     columns: DistributorSatisColumnHeaders,
   },
-  Firlamalar: {
-    searchItems: ["aranacak", "baslangic", "bitis"],
-    apiUrl: "/api/distributors/sales",
-    columns: DistributorSatisColumnHeaders,
-  },
+  // Firlamalar: {
+  //   searchItems: ["aranacak", "baslangic", "bitis"],
+  //   apiUrl: "/api/distributors/sales",
+  //   columns: DistributorSatisColumnHeaders,
+  // },
   Araçlar: {
     searchItems: ["aranacak", "baslangic", "bitis"],
     apiUrl: "/api/distributors/sales",
