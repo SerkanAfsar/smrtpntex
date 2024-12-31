@@ -102,6 +102,7 @@ export default function CustomDatatable({
         progressComponent={<LoadingComponent />}
         pagination
         paginationServer
+        noDataComponent={"Gösterilecek Kayıt Bulunmamaktadır..."}
         paginationTotalRows={totalRows}
         onChangeRowsPerPage={handlePerRowsChange}
         onChangePage={handlePageChange}

@@ -17,7 +17,6 @@ export async function GET(req: NextRequest) {
     searchType.keywords = keywords;
   }
 
-  console.log(searchType);
   const result = await CompanyCarListService({
     companyId: id,
     searchType,

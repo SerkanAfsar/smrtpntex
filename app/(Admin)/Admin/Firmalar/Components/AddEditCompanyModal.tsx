@@ -84,7 +84,7 @@ export default function AddEditCompanyModal({
   }, []);
 
   const onSubmit: SubmitHandler<AddCompanyType> = async (data) => {
-    console.log(data);
+    // console.log(data);
     // const result = await AddCompanyService({ data });
     // if (result.IsSuccess) {
     //   toast.success("Firma Eklendi", {

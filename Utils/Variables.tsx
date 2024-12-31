@@ -815,14 +815,18 @@ export const DistributorSatisColumnHeaders = [
     selector: (row: DistributorSaleType) => row.TankName,
     sortable: true,
   },
+
   {
-    name: "Tank Adı",
-    selector: (row: DistributorSaleType) => row.TankName,
-    sortable: true,
-  },
-  {
-    name: "Toplam",
-    selector: (row: DistributorSaleType) => row.Total,
+    name: "Toplam (TL)",
+    selector: (row: DistributorSaleType) =>
+      new Intl.NumberFormat("tr-TR", {
+        style: "currency",
+        currency: "TRY",
+        currencyDisplay: "code",
+      })
+        .format(row.Total)
+        .replace("TRY", "")
+        .trim(),
     sortable: true,
   },
   {
