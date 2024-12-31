@@ -7,11 +7,20 @@ services:
     ports:
       - "3000:3000"
 
+  appdist:
+    build:
+      context: .
+      dockerfile: ../smartpoint-dist/Dockerfile
+    container_name: appdist
+    ports:
+      - "3001:3001"
+
   nginx:
     image: nginx:alpine
     container_name: nginx
     depends_on:
       - app
+      - appdist
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
       - /etc/letsencrypt:/etc/letsencrypt:ro
