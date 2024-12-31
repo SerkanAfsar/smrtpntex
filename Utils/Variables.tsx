@@ -272,24 +272,24 @@ export const AraclarDatatableProps = {
     },
     {
       name: "GSM",
-      selector: (row: CarType) => "",
-      sortable: true,
-    },
-    {
-      name: "Üye Adı",
       selector: (row: CarType) => row.UserName,
       sortable: true,
     },
     {
-      name: "Firma",
-      selector: (row: CarType) => row.CompanyName,
+      name: "Üye Adı",
+      selector: (row: CarType) => `${row.FirstName} ${row.LastName}`,
       sortable: true,
     },
-    {
-      name: "Kayıt Tarihi",
-      selector: (row: any) => format(row.CreatedDate, "dd/MM/yyyy HH:ss"),
-      sortable: true,
-    },
+    // {
+    //   name: "Firma",
+    //   selector: (row: CarType) => row.CompanyName,
+    //   sortable: true,
+    // },
+    // {
+    //   name: "Kayıt Tarihi",
+    //   selector: (row: any) => format(row.CreatedDate, "dd/MM/yyyy HH:ss"),
+    //   sortable: true,
+    // },
   ],
 };
 
