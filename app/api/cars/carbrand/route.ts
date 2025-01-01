@@ -1,5 +1,5 @@
-import { GetCarBrandList, GetCarList } from "@/Services/CarService";
-import { CarBrandSearchType, CarListType } from "@/Types/Car.Types";
+import { GetCarBrandList } from "@/Services/CarService";
+import { CarBrandSearchType } from "@/Types/Car.Types";
 
 import { NextRequest, NextResponse } from "next/server";
 

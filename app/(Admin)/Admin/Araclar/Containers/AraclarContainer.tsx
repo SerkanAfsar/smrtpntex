@@ -10,7 +10,7 @@ import {
 } from "@/Utils/Variables";
 import AraclarCustomSearch from "../Components/AraclarCustomSearch";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CustomDatatable from "@/Components/UI/CustomDataTable";
 
 import { ExcelAraclarResult } from "@/Services/Excel.Service";

@@ -12,7 +12,7 @@ export default function DistributorsCustomSearch({
   activeMenu,
   keywords,
 }: {
-  setKeywords: React.Dispatch<string | undefined>;
+  setKeywords: React.Dispatch<string>;
   setStartDate: React.Dispatch<string>;
   setEndDate: React.Dispatch<string>;
   startDate?: string;

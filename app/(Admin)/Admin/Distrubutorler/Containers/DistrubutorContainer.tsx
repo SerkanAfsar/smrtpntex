@@ -65,10 +65,10 @@ export default function DistrubutorContainer({
 }: {
   dataResult: PaginationType<DistrubitorType>;
 }) {
-  const [keywords, setKeywords] = useState<string>();
+  const [keywords, setKeywords] = useState<string>("");
   const [activeMenu, setActiveMenu] = useState<string>("Satışlar");
-  const [startDate, setStartDate] = useState<string>();
-  const [endDate, setEndDate] = useState<string>();
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
 
   const [toggleOpened, selectedDistributor, setSelectedDistributor] =
     useDistrubutorModal(
@@ -142,7 +142,6 @@ export default function DistrubutorContainer({
               setKeywords={setKeywords}
               activeMenu={activeMenu}
               keywords={keywords}
-              startDate={startDate}
             />
             {/* {types[activeMenu].excelCommand && (
               <CustomButton

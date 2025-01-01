@@ -11,7 +11,7 @@ import {
   CarBrandType,
   CarModelCategoryType,
 } from "@/Types/Car.Types";
-import { CategoryListType } from "@/Types/Category.Types";
+
 import {
   CustomOptionsType,
   PaginationType,

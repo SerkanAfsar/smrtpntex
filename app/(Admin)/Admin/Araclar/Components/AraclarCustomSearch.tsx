@@ -1,6 +1,6 @@
 "use client";
 import { CustomTextbox } from "@/Components/UI/CustomTextbox";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { PetronetItemsType } from "../../Petronet/Containers/PetronetContainer";
 
 export default function AraclarCustomSearch({

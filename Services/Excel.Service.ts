@@ -94,7 +94,7 @@ export const ExcelAraclarResult = async ({
   keywords: string;
   plateNumber: string;
 }) => {
-  const result: ResponseResult<CarType> = await GetCarList({
+  const result: ResponseResult<PaginationType<CarType>> = await GetCarList({
     searchType: {
       pageIndex: 1,
       pageSize: 99999,
