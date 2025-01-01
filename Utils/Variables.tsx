@@ -31,7 +31,7 @@ import {
   OtorizationType,
 } from "@/Types/Company.Types";
 import { MemberType, MemberTypeType } from "@/Types/Member.Types";
-import { CarType } from "@/Types/Car.Types";
+import { CarBrandType, CarType } from "@/Types/Car.Types";
 import {
   DistributorCarType,
   DistributorCompanyType,
@@ -807,8 +807,8 @@ export const DistributorSatisColumnHeaders = [
     sortable: true,
   },
   {
-    name: "Ad",
-    selector: (row: DistributorSaleType) => row.DisplayName,
+    name: "Üye Adı",
+    selector: (row: DistributorSaleType) => row.MemberId,
     sortable: true,
   },
   {
@@ -817,8 +817,28 @@ export const DistributorSatisColumnHeaders = [
     sortable: true,
   },
   {
-    name: "Tank Adı",
-    selector: (row: DistributorSaleType) => row.TankName,
+    name: "Plaka",
+    selector: (row: DistributorSaleType) => row.PlateNumber,
+    sortable: true,
+  },
+  {
+    name: "Ödeme",
+    selector: (row: DistributorSaleType) => row.PaymentMethodId,
+    sortable: true,
+  },
+  {
+    name: "Birim Fiyatı",
+    selector: (row: DistributorSaleType) => row.UnitPrice,
+    sortable: true,
+  },
+  {
+    name: "Miktar",
+    selector: (row: DistributorSaleType) => row.Liter,
+    sortable: true,
+  },
+  {
+    name: "İskonto",
+    selector: (row: DistributorSaleType) => row.DiscountRatio,
     sortable: true,
   },
 
@@ -841,15 +861,9 @@ export const DistributorSatisColumnHeaders = [
       formatDate(row.SaleDate, "dd.MM.yyy hh:MM"),
     sortable: true,
   },
-  {
-    name: "Kayıt Tarihi",
-    selector: (row: DistributorSaleType) =>
-      formatDate(row.CreatedDate, "dd.MM.yyy hh:MM"),
-    sortable: true,
-  },
 ];
 
-export const CompanyCarListTypeHeaders = [
+export const CompanyCarListTypeHeaders = (editFunc: any, deleteFunc: any) => [
   {
     name: "Plaka",
     selector: (row: CompanyCarType) => row.PlateNumber,
@@ -882,6 +896,31 @@ export const CompanyCarListTypeHeaders = [
     selector: (row: CompanyCarType) =>
       formatDate(row.CreatedDate, "dd.MM.yyy hh:MM"),
     sortable: true,
+  },
+  {
+    name: "İşlemler",
+    width: "80px",
+    selector: (row: any) => (
+      <div className="flex items-center justify-center gap-3">
+        <Image
+          src={Edit2}
+          width={20}
+          height={20}
+          alt="Edit"
+          className="cursor-pointer"
+          onClick={async () => editFunc({ id: row.Id })}
+        />
+        <Image
+          src={Delete2}
+          width={20}
+          height={20}
+          alt="Delete"
+          className="cursor-pointer"
+          onClick={async () => deleteFunc({ id: row.Id })}
+        />
+      </div>
+    ),
+    sortable: false,
   },
 ];
 
@@ -1034,5 +1073,48 @@ export const DistributorCurrentAccountsTypeHeaders = [
     selector: (row: DistributorCurrentAccountType) =>
       formatDate(row.CreatedDate, "dd.MM.yyy hh:MM"),
     sortable: true,
+  },
+];
+
+export const CarBrandHeaderColumns = (editFunc: any, deleteFunc: any) => [
+  {
+    name: "Marka Adı",
+    selector: (row: CarBrandType) => row.Title,
+    sortable: true,
+  },
+  {
+    name: "Aktif mi?",
+    selector: (row: CarBrandType) => (row.IsActive ? "Aktif" : "Pasif"),
+    sortable: true,
+  },
+  {
+    name: "Kayıt Tarihi",
+    selector: (row: CarBrandType) =>
+      formatDate(row.CreatedDate, "dd.MM.yyy hh:MM"),
+    sortable: true,
+  },
+  {
+    width: "80px",
+    name: "İşlemler",
+    selector: (row: any) => (
+      <div className="flex items-center justify-center gap-3">
+        <Image
+          src={Edit2}
+          width={20}
+          height={20}
+          alt="Edit"
+          className="cursor-pointer"
+          onClick={async () => editFunc({ id: row.Id })}
+        />
+        <Image
+          src={Delete2}
+          width={20}
+          height={20}
+          alt="Delete"
+          className="cursor-pointer"
+          onClick={async () => deleteFunc({ id: row.Id })}
+        />
+      </div>
+    ),
   },
 ];

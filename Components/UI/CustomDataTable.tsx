@@ -17,6 +17,7 @@ export type CustomDataTableProps = {
   id?: number;
   gsm?: string;
   extraClass?: string;
+  plateNumber?: string;
 };
 export default function CustomDatatable({
   apiUrl,
@@ -29,6 +30,7 @@ export default function CustomDatatable({
   id,
   gsm,
   extraClass,
+  plateNumber,
 }: CustomDataTableProps) {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -65,6 +67,9 @@ export default function CustomDatatable({
       if (gsm) {
         newUrl.searchParams.append("gsm", gsm.toString());
       }
+      if (plateNumber) {
+        newUrl.searchParams.append("plateNumber", plateNumber.toString());
+      }
 
       const response = await fetch(newUrl.toString());
       const result: ResponseResult<PaginationType<any>> = await response.json();
@@ -79,7 +84,18 @@ export default function CustomDatatable({
       }
       setLoading(false);
     },
-    [apiUrl, endDate, keywords, startDate, perPage, updated, isActive, id, gsm],
+    [
+      apiUrl,
+      endDate,
+      keywords,
+      startDate,
+      perPage,
+      updated,
+      isActive,
+      id,
+      gsm,
+      plateNumber,
+    ],
   );
 
   const handlePageChange = async (page: number) => {

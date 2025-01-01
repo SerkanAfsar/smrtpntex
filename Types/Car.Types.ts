@@ -6,7 +6,7 @@ export type CarListType = PageIndexType & {
 };
 
 export type CarBrandSearchType = PageIndexType & {
-  keywords: string;
+  keywords?: string;
 };
 
 export type CarAddEditBrandType = {
@@ -33,4 +33,49 @@ export type CarType = {
   IsDeleted: boolean;
   CreatedDate: string;
   Id: number;
+};
+
+export type CarBrandType = {
+  Title: string;
+  IsActive: boolean;
+  IsDeleted: boolean;
+  DeletedById: string | number | null;
+  DeletedDate: string | number | null;
+  CreatedById: string | number | null;
+  CreatedDate: string;
+  Id: number;
+  models?: CarBrandModelType[];
+};
+
+export type AddCarBrandType = {
+  title: string;
+  isActive: boolean;
+  models?: AddCarBrandModelType[];
+};
+
+export type CarBrandModelType = {
+  CarCategoryId: number;
+  CarBrandId: number;
+  Title: string;
+  IsActive: boolean;
+  IsDeleted: boolean;
+  DeletedById: string | number | null;
+  DeletedDate: string | number | null;
+  CreatedById: string | number | null;
+  CreatedDate: string;
+  Id: number;
+};
+
+export type AddCarBrandModelType = {
+  brandId: number;
+  categoryId: number;
+  title: string;
+};
+
+export type CarModelCategoryType = {
+  Id: number;
+  Title: string;
+  ClassName: string;
+  Liter: number;
+  CreatedDate: string;
 };

@@ -1,5 +1,5 @@
-import { GetCarList } from "@/Services/CarService";
-import { CarListType } from "@/Types/Car.Types";
+import { GetCarBrandList, GetCarList } from "@/Services/CarService";
+import { CarBrandSearchType, CarListType } from "@/Types/Car.Types";
 
 import { NextRequest, NextResponse } from "next/server";
 
@@ -8,9 +8,8 @@ export async function GET(req: NextRequest) {
   const pageIndex = Number(searchParams.get("pageIndex"));
   const pageSize = Number(searchParams.get("pageSize"));
   const keywords = searchParams.get("keywords");
-  const plateNumber = searchParams.get("plateNumber");
 
-  const searchType: CarListType = {
+  const searchType: CarBrandSearchType = {
     pageSize,
     pageIndex,
   };
@@ -19,11 +18,7 @@ export async function GET(req: NextRequest) {
     searchType.keywords = keywords;
   }
 
-  if (plateNumber && plateNumber != "undefined") {
-    searchType.plateNumber = plateNumber;
-  }
-
-  const result = await GetCarList({
+  const result = await GetCarBrandList({
     searchType,
   });
 
