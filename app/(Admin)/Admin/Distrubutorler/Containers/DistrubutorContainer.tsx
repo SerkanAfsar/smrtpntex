@@ -17,7 +17,13 @@ import { useShallow } from "zustand/shallow";
 import AddEditDistrubutorModal from "../Components/AddEditDistrubutorModal";
 import NotSelected from "@/Components/Admin/NotSelected";
 import { MenuType } from "../../Petronet/Containers/PetronetContainer";
-import { DistributorSatisColumnHeaders } from "@/Utils/Variables";
+import {
+  DistributorCarsTypeHeaders,
+  DistributorCompaniesTypeHeaders,
+  DistributorCurrentAccountsTypeHeaders,
+  DistributorSatisColumnHeaders,
+  DistributorUserTypeHeaders,
+} from "@/Utils/Variables";
 import CustomDatatable from "@/Components/UI/CustomDataTable";
 import { cn } from "@/Utils";
 
@@ -27,20 +33,30 @@ const types: MenuType = {
     apiUrl: "/api/distributors/sales",
     columns: DistributorSatisColumnHeaders,
   },
-  // Firlamalar: {
-  //   searchItems: ["aranacak", "baslangic", "bitis"],
-  //   apiUrl: "/api/distributors/sales",
-  //   columns: DistributorSatisColumnHeaders,
-  // },
+  Firmalar: {
+    searchItems: ["aranacak", "status"],
+    apiUrl: "/api/distributors/companies",
+    columns: DistributorCompaniesTypeHeaders,
+  },
   Araçlar: {
-    searchItems: ["aranacak", "baslangic", "bitis"],
-    apiUrl: "/api/distributors/sales",
-    columns: DistributorSatisColumnHeaders,
+    searchItems: ["aranacak"],
+    apiUrl: "/api/distributors/cars",
+    columns: DistributorCarsTypeHeaders,
   },
   Faturalar: {
     searchItems: ["aranacak", "baslangic", "bitis"],
     apiUrl: "/api/distributors/sales",
     columns: DistributorSatisColumnHeaders,
+  },
+  Kullanıcılar: {
+    searchItems: ["aranacak"],
+    apiUrl: "/api/distributors/sales",
+    columns: DistributorUserTypeHeaders,
+  },
+  Ödemeler: {
+    searchItems: ["aranacak"],
+    apiUrl: "/api/distributors/current-accounts",
+    columns: DistributorCurrentAccountsTypeHeaders,
   },
 };
 

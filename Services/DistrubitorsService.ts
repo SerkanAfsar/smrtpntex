@@ -1,9 +1,18 @@
 import { PaginationType, ResponseResult } from "@/Types/Common.Types";
 import {
   AddDistributerType,
+  DistributorCarType,
+  DistributorCompanyType,
+  DistributorCurrentAccountType,
+  DistributorSaleType,
+  DistributorUserType,
+  DistrubitorCarsListType,
+  DistrubitorCompanyListType,
+  DistrubitorCurrentAccountsListType,
   DistrubitorListType,
   DistrubitorSaleListType,
   DistrubitorType,
+  DistrubitorUsersListType,
   PaymentMethodType,
 } from "@/Types/Distrubitor.Types";
 import BaseFetch from "./BaseService";
@@ -60,14 +69,6 @@ export async function UpdateDistributorService({
   })) as ResponseResult<DistrubitorType>;
 }
 
-// export async function GetDistributorById({ id }: { id: number }) {
-//   return (await BaseFetch({
-//     method: "POST",
-//     url: "adminApi/Distributor/add",
-//     body: data,
-//   })) as ResponseResult<DistrubitorType>;
-// }
-
 export async function GetDistributorSalesListService({
   distributorId,
   searchType,
@@ -79,5 +80,61 @@ export async function GetDistributorSalesListService({
     method: "POST",
     url: `adminApi/Distributor/sales/${distributorId}`,
     body: searchType,
-  })) as ResponseResult<DistrubitorType>;
+  })) as ResponseResult<PaginationType<DistributorSaleType>>;
+}
+
+export async function GetDistributorCompaniesListService({
+  distributorId,
+  searchType,
+}: {
+  distributorId: number;
+  searchType: DistrubitorCompanyListType;
+}) {
+  return (await BaseFetch({
+    method: "POST",
+    url: `adminApi/Distributor/companies/${distributorId}`,
+    body: searchType,
+  })) as ResponseResult<PaginationType<DistributorCompanyType>>;
+}
+
+export async function GetDistributorCarsListService({
+  distributorId,
+  searchType,
+}: {
+  distributorId: number;
+  searchType: DistrubitorCarsListType;
+}) {
+  return (await BaseFetch({
+    method: "POST",
+    url: `adminApi/Distributor/cars/${distributorId}`,
+    body: searchType,
+  })) as ResponseResult<PaginationType<DistributorCarType>>;
+}
+
+export async function GetDistributorUsersListService({
+  distributorId,
+  searchType,
+}: {
+  distributorId: number;
+  searchType: DistrubitorUsersListType;
+}) {
+  return (await BaseFetch({
+    method: "POST",
+    url: `adminApi/Distributor/user/${distributorId}`,
+    body: searchType,
+  })) as ResponseResult<PaginationType<DistributorUserType>>;
+}
+
+export async function GetDistributorCurrentAccountsTypeListService({
+  distributorId,
+  searchType,
+}: {
+  distributorId: number;
+  searchType: DistrubitorCurrentAccountsListType;
+}) {
+  return (await BaseFetch({
+    method: "POST",
+    url: `adminApi/Distributor/current-accounts/${distributorId}`,
+    body: searchType,
+  })) as ResponseResult<PaginationType<DistributorCurrentAccountType>>;
 }

@@ -32,7 +32,13 @@ import {
 } from "@/Types/Company.Types";
 import { MemberType, MemberTypeType } from "@/Types/Member.Types";
 import { CarType } from "@/Types/Car.Types";
-import { DistributorSaleType } from "@/Types/Distrubitor.Types";
+import {
+  DistributorCarType,
+  DistributorCompanyType,
+  DistributorCurrentAccountType,
+  DistributorSaleType,
+  DistributorUserType,
+} from "@/Types/Distrubitor.Types";
 
 export const AdminMenuList: MenuLinkGroupType[] = [
   {
@@ -873,7 +879,159 @@ export const CompanyCarListTypeHeaders = [
 
   {
     name: "Kayıt Tarihi",
-    selector: (row: DistributorSaleType) =>
+    selector: (row: CompanyCarType) =>
+      formatDate(row.CreatedDate, "dd.MM.yyy hh:MM"),
+    sortable: true,
+  },
+];
+
+export const DistributorCompaniesTypeHeaders = [
+  {
+    name: "Başlık",
+    selector: (row: DistributorCompanyType) => row.Title,
+    sortable: true,
+  },
+
+  {
+    name: "Vergi Dairesi",
+    selector: (row: DistributorCompanyType) => row.TaxOffice,
+    sortable: true,
+  },
+  {
+    name: "Vergi Numarası",
+    selector: (row: DistributorCompanyType) => row.TaxNumber,
+    sortable: true,
+  },
+
+  {
+    name: "Uyarı Limiti",
+    selector: (row: DistributorCompanyType) =>
+      new Intl.NumberFormat("tr-TR", {
+        style: "currency",
+        currency: "TRY",
+        currencyDisplay: "code",
+      })
+        .format(row.AlertLimit)
+        .replace("TRY", "")
+        .trim(),
+    sortable: true,
+  },
+  {
+    name: "Risk Limiti",
+    selector: (row: DistributorCompanyType) =>
+      new Intl.NumberFormat("tr-TR", {
+        style: "currency",
+        currency: "TRY",
+        currencyDisplay: "code",
+      })
+        .format(row.RiskLimit)
+        .replace("TRY", "")
+        .trim(),
+    sortable: true,
+  },
+
+  {
+    name: "Kayıt Tarihi",
+    selector: (row: DistributorCompanyType) =>
+      formatDate(row.CreatedDate, "dd.MM.yyy hh:MM"),
+    sortable: true,
+  },
+];
+
+export const DistributorCarsTypeHeaders = [
+  {
+    name: "Başlık",
+    selector: (row: DistributorCarType) => row.Title,
+    sortable: true,
+  },
+
+  {
+    name: "Ad Soyad",
+    selector: (row: DistributorCarType) => `${row.FirstName} ${row.LastName}`,
+    sortable: true,
+  },
+  {
+    name: "Firma Adı",
+    selector: (row: DistributorCarType) => row.CompanyName,
+    sortable: true,
+  },
+  {
+    name: "Marka Adı",
+    selector: (row: DistributorCarType) => row.BrandName,
+    sortable: true,
+  },
+  {
+    name: "Model Adı",
+    selector: (row: DistributorCarType) => row.ModelName,
+    sortable: true,
+  },
+  {
+    name: "Klas",
+    selector: (row: DistributorCarType) => row.ClassName,
+    sortable: true,
+  },
+  {
+    name: "Plaka No",
+    selector: (row: DistributorCarType) => row.PlateNumber,
+    sortable: true,
+  },
+  {
+    name: "Kayıt Tarihi",
+    selector: (row: DistributorCarType) =>
+      formatDate(row.CreatedDate, "dd.MM.yyy hh:MM"),
+    sortable: true,
+  },
+];
+
+export const DistributorUserTypeHeaders = [
+  {
+    name: "Gösterim Adı",
+    selector: (row: DistributorUserType) => row.DisplayName,
+    sortable: true,
+  },
+  {
+    name: "Üye Tipi",
+    selector: (row: DistributorUserType) => row.MemberTypeName,
+    sortable: true,
+  },
+  {
+    name: "E-Mail",
+    selector: (row: DistributorUserType) => row.Email,
+    sortable: true,
+  },
+  {
+    name: "GSM",
+    selector: (row: DistributorUserType) => row.UserName,
+    sortable: true,
+  },
+
+  {
+    name: "Kayıt Tarihi",
+    selector: (row: DistributorUserType) =>
+      formatDate(row.CreatedDate, "dd.MM.yyy hh:MM"),
+    sortable: true,
+  },
+];
+
+export const DistributorCurrentAccountsTypeHeaders = [
+  {
+    name: "Firma Adı",
+    selector: (row: DistributorCurrentAccountType) => row.CompanyName,
+    sortable: true,
+  },
+  {
+    name: "Ödeme Tipi",
+    selector: (row: DistributorCurrentAccountType) => row.PaymentMethodName,
+    sortable: true,
+  },
+  {
+    name: "Açıklama",
+    selector: (row: DistributorCurrentAccountType) => row.Description,
+    sortable: true,
+  },
+  {
+    name: "Kayıt Tarihi",
+    selector: (row: DistributorCurrentAccountType) =>
       formatDate(row.CreatedDate, "dd.MM.yyy hh:MM"),
     sortable: true,
   },

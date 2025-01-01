@@ -7,15 +7,14 @@ services:
     ports:
       - "3000:3000"
 
-  appdist:
-    build:
-      context: .
-      dockerfile: ../smartpoint-dist/SmartPoint-Dist/Dockerfile
-    # dockerfile: ../smart-point-dist/Dockerfile
-    container_name: appdist
-    ports:
-      - "3001:3001"
-
+  # appdist:
+  #   build:
+  #     context: .
+  #     # dockerfile: ../smartpoint-dist/SmartPoint-Dist/Dockerfile
+  #     dockerfile: ../smart-point-dist/Dockerfile
+  #   container_name: appdist
+  #   ports:
+  #     - "3000:3001"
   nginx:
     image: nginx:alpine
     container_name: nginx
@@ -30,6 +29,7 @@ services:
       - "80:80"
       - "443:443"
     restart: always
+
   letsencrypt:
     container_name: "certbot"
     image: certbot/certbot
