@@ -59,7 +59,7 @@ const types: MenuType = {
   Araçlar: {
     searchItems: ["aranacak"],
     apiUrl: "/api/Company/cars",
-    columns: CompanyCarListTypeHeaders,
+    columns: CompanyCarListTypeHeaders(null, null),
   },
 };
 

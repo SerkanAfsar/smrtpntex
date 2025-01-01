@@ -1,7 +1,7 @@
 "use client";
 
 import { CustomTextbox } from "@/Components/UI/CustomTextbox";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export default function DistributorsCustomSearch({
   setKeywords,
@@ -9,28 +9,39 @@ export default function DistributorsCustomSearch({
   setEndDate,
   startDate,
   endDate,
+  activeMenu,
+  keywords,
 }: {
   setKeywords: React.Dispatch<string | undefined>;
   setStartDate: React.Dispatch<string>;
   setEndDate: React.Dispatch<string>;
   startDate?: string;
   endDate?: string;
+  activeMenu: string;
+  keywords: string;
 }) {
-  const [keyValue, setKeyValue] = useState<string>();
+  // const [keyValue, setKeyValue] = useState<string>();
+
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setKeywords(keyValue);
+  //   }, 1000);
+  //   return () => clearTimeout(timer);
+  // }, [keyValue, setKeywords]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setKeywords(keyValue);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [keyValue, setKeywords]);
+    setKeywords("");
+    setStartDate("");
+    setEndDate("");
+  }, [activeMenu, setKeywords, setStartDate, setEndDate]);
 
   return (
     <section className="flex w-full items-center justify-start gap-3 border-b bg-adminBgColor p-3">
       <CustomTextbox
         placeholder="Arama Yapın"
         isFull={false}
-        onChange={(e) => setKeyValue(e.target.value)}
+        value={keywords}
+        onChange={(e) => setKeywords(e.target.value)}
         className="inline-block w-[290px] rounded-md border border-border-primary p-2 text-sm placeholder:text-xs"
       />
       <CustomTextbox

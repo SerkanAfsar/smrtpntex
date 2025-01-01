@@ -140,6 +140,9 @@ export default function DistrubutorContainer({
               setStartDate={setStartDate}
               setEndDate={setEndDate}
               setKeywords={setKeywords}
+              activeMenu={activeMenu}
+              keywords={keywords}
+              startDate={startDate}
             />
             {/* {types[activeMenu].excelCommand && (
               <CustomButton
