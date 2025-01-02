@@ -25,7 +25,17 @@ export type CompanyCarListType = PageIndexType & {
   keywords?: string;
 };
 
+export type CompanyCreditCartListType = PageIndexType & {
+  keywords?: string;
+};
+
 export type CurrentAccountListType = PageIndexType & {
+  keywords?: string;
+  startDate?: string;
+  endDate?: string;
+};
+
+export type CompanyInvoiceListType = PageIndexType & {
   keywords?: string;
   startDate?: string;
   endDate?: string;
@@ -142,6 +152,60 @@ export type CompanyCarType = {
   DeletedById: string | number | null;
   DeletedDate: string | number | null;
   CreatedById: string | number | null;
+  CreatedDate: string;
+  Id: number;
+};
+
+export type CreditCartType = {
+  FirstName: string;
+  LastName: string;
+  CompanyName: string;
+  UserName: string;
+  Title: string;
+  MemberId: number;
+  CardToken: string;
+  CardMask: string;
+  BinNumber: string;
+  BankIssuer: string;
+  BrandName: string;
+  ProgramName: string;
+  BankCode: string;
+  IsDefault: boolean;
+  IsActive: boolean;
+  IsDeleted: boolean;
+  DeletedById: string | number | null;
+  DeletedDate: string | number | null;
+  CreatedById: string | number | null;
+  CreatedDate: string;
+  Id: number;
+};
+
+export type CompanyInvoiceType = {
+  CompanyId: string | number | null;
+  MemberId: string | number | null;
+  Title: string;
+  Vkn: string;
+  TaxOffice: string | number | null;
+  Email: string | number | null;
+  Gsm: string | number | null;
+  BillingAddress: string | null;
+  BillingCity: string | null;
+  BillingTown: string | null;
+  LineName: string;
+  TaxRatio: number;
+  Total: number;
+  TrackingNumber: string;
+  InvoiceType: string | number | null;
+  InvoiceDate: string;
+  InvoiceNumber: string;
+  Ettn: string;
+  ResultCode: string | number | null;
+  ResultMessage: string;
+  IsSuccess: boolean;
+  SendTries: number;
+  SendStatus: number;
+  ScheduledSendingDate: string;
+  SendingDate: string | null;
   CreatedDate: string;
   Id: number;
 };

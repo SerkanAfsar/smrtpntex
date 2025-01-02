@@ -2,17 +2,25 @@ import CustomButton from "@/Components/UI/CustomButton";
 import CustomCheckbox from "@/Components/UI/CustomCheckbox";
 import CustomSelect from "@/Components/UI/CustomSelect";
 import { CustomTextbox } from "@/Components/UI/CustomTextbox";
-import { AddTotalTankService } from "@/Services/StationService";
+import {
+  AddTotalTankService,
+  GetStationBrandTypesService,
+} from "@/Services/StationService";
 import { DeleteTankByIdService } from "@/Services/TankService";
-import { ResponseResult } from "@/Types/Common.Types";
+import { CustomOptionsType, ResponseResult } from "@/Types/Common.Types";
 
-import { AddStationType, StationType, TankType } from "@/Types/Station.Types";
+import {
+  AddStationType,
+  StationBrandType,
+  StationType,
+  TankType,
+} from "@/Types/Station.Types";
 
 import { cn } from "@/Utils";
 import { ExitIcon } from "@/Utils/IconList";
 import Image from "next/image";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
@@ -29,19 +37,31 @@ export default function StationDetailModal({
   stationData: StationType | null;
   title: string;
 }) {
+  const [brandList, setBrandList] = useState<CustomOptionsType[]>([]);
+
+  useEffect(() => {
+    const process = async () => {
+      const result = await GetStationBrandTypesService();
+      if (result.IsSuccess) {
+        const resultData = result.Data as StationBrandType[];
+        setBrandList(
+          resultData.map((item: StationBrandType) => ({
+            name: item.Title,
+            value: item.Id,
+          })),
+        );
+      }
+    };
+    process();
+  }, []);
   const {
     register,
     reset,
     handleSubmit,
     clearErrors,
     control,
-
     formState: { errors, isSubmitting },
-  } = useForm<StationType>({
-    defaultValues: {
-      tanks: stationData?.tanks,
-    },
-  });
+  } = useForm<StationType>();
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -50,17 +70,40 @@ export default function StationDetailModal({
 
   useEffect(() => {
     clearErrors();
-    reset({ tanks: stationData?.tanks });
     if (stationData == null) {
       remove();
+      reset(
+        {
+          Title: "",
+          AffiliateCode: "",
+          CreatedById: "",
+          CreatedDate: "",
+          DeletedById: "",
+          DeletedDate: "",
+          Id: 0,
+          IsActive: false,
+          IsDeleted: false,
+          Latitude: "",
+          Longitude: "",
+          StationBrandId: 0,
+          StationGuid: "",
+          StationIP: "",
+          StationNumber: "",
+          tanks: undefined,
+          TaxNumber: "",
+          TaxOffice: "",
+        },
+        { keepValues: false },
+      );
+    } else {
+      reset({ ...stationData, tanks: stationData?.tanks });
     }
   }, [stationData, reset, clearErrors, remove]);
 
   const onSubmit: SubmitHandler<StationType> = async (data) => {
     const newStationData: AddStationType = {
       affiliateCode: data.AffiliateCode,
-      brandName: data.BrandName,
-      imageUrl: data.ImageUrl,
+      brandId: data.StationBrandId,
       isActive: data.IsActive,
       latitude: data.Latitude,
       longitude: data.Longitude,
@@ -129,10 +172,20 @@ export default function StationDetailModal({
             })}
             className="rounded-md border p-3 outline-none"
             title="Ünvan"
-            defaultValue={stationData?.Title}
             err={errors.Title?.message}
           />
-          <CustomTextbox
+          <CustomSelect
+            {...register(`StationBrandId`, {
+              required: "Marka Seçiniz",
+              valueAsNumber: true,
+            })}
+            setFirst={true}
+            options={brandList}
+            className="rounded-md border p-3"
+            title="Marka"
+            err={errors.StationBrandId?.message}
+          />
+          {/* <CustomTextbox
             {...register("BrandName", {
               required: "Marka Giriniz..",
             })}
@@ -140,8 +193,8 @@ export default function StationDetailModal({
             title="Marka"
             defaultValue={stationData?.BrandName}
             err={errors.BrandName?.message}
-          />
-          <CustomTextbox
+          /> */}
+          {/* <CustomTextbox
             {...register("ImageUrl", {
               required: "Marka Logo Giriniz..",
             })}
@@ -149,7 +202,7 @@ export default function StationDetailModal({
             title="Marka Logo"
             defaultValue={stationData?.ImageUrl}
             err={errors.ImageUrl?.message}
-          />
+          /> */}
           <div className="flex items-center justify-between gap-4">
             <CustomTextbox
               {...register("TaxNumber", {
@@ -157,7 +210,6 @@ export default function StationDetailModal({
               })}
               className="rounded-md border p-3 outline-none"
               title="Vergi Numarası"
-              defaultValue={stationData?.TaxNumber}
               err={errors.TaxNumber?.message}
             />
             <CustomTextbox
@@ -166,7 +218,7 @@ export default function StationDetailModal({
               })}
               className="rounded-md border p-3 outline-none"
               title="Vergi Dairesi"
-              defaultValue={stationData?.TaxOffice}
+              // defaultValue={stationData?.TaxOffice}
               err={errors.TaxOffice?.message}
             />
           </div>
@@ -177,7 +229,7 @@ export default function StationDetailModal({
             })}
             className="rounded-md border p-3 outline-none"
             title="Müşteri Özel Kodu"
-            defaultValue={stationData?.AffiliateCode}
+            // defaultValue={stationData?.AffiliateCode}
             err={errors.AffiliateCode?.message}
           />
           <div className="flex items-center justify-between gap-4">
@@ -187,7 +239,7 @@ export default function StationDetailModal({
               })}
               className="rounded-md border p-3 outline-none"
               title="Enlem"
-              defaultValue={stationData?.Latitude}
+              // defaultValue={stationData?.Latitude}
               err={errors.Latitude?.message}
             />
             <CustomTextbox
@@ -196,7 +248,7 @@ export default function StationDetailModal({
               })}
               className="rounded-md border p-3 outline-none"
               title="Boylam"
-              defaultValue={stationData?.Longitude}
+              // defaultValue={stationData?.Longitude}
               err={errors.Longitude?.message}
             />
           </div>
@@ -206,7 +258,7 @@ export default function StationDetailModal({
             })}
             className="rounded-md border p-3 outline-none"
             title="İstasyon No"
-            defaultValue={stationData?.StationNumber}
+            // defaultValue={stationData?.StationNumber}
             err={errors.StationNumber?.message}
           />
           <CustomTextbox
@@ -215,7 +267,7 @@ export default function StationDetailModal({
             })}
             className="rounded-md border p-3 outline-none"
             title="İstasyon IP"
-            defaultValue={stationData?.StationIP}
+            // defaultValue={stationData?.StationIP}
             err={errors.StationIP?.message}
           />
 
@@ -223,7 +275,7 @@ export default function StationDetailModal({
             title="Aktif mi?"
             {...register("IsActive")}
             name="IsActive"
-            defaultChecked={stationData?.IsActive ?? false}
+            // defaultChecked={stationData?.IsActive ?? false}
           />
         </div>
         {fields.length > 0 && (

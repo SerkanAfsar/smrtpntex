@@ -79,15 +79,21 @@ export async function AddTotalTankService({ data }: { data: AddStationType }) {
       return null;
     }
     const tankResultData = tankResult.Data as TankType;
-    const qrResult = await AddTankQRCodeService({
-      tankId: tankResultData.Id,
-    });
-    if (!qrResult.IsSuccess) {
-      await DeleteStationService({ id: resultData.Id });
-      toast.error(`qr error ${qrResult.Message}` || "Tank Qr Oluşturma Hata", {
-        position: "top-right",
+
+    if (elem.id == 0 || !elem.id) {
+      const qrResult = await AddTankQRCodeService({
+        tankId: tankResultData.Id,
       });
-      return null;
+      if (!qrResult.IsSuccess) {
+        await DeleteStationService({ id: resultData.Id });
+        toast.error(
+          `qr error ${qrResult.Message}` || "Tank Qr Oluşturma Hata",
+          {
+            position: "top-right",
+          },
+        );
+        return null;
+      }
     }
   }
   return result;
@@ -112,4 +118,11 @@ export async function DeleteStationService({ id }: { id: number }) {
     method: "POST",
     url: `adminApi/Station/delete/${id}`,
   })) as ResponseResult<StationType>;
+}
+
+export async function GetStationBrandTypesService() {
+  return (await BaseFetch({
+    method: "GET",
+    url: `adminApi/Station/brands`,
+  })) as ResponseResult<any>;
 }

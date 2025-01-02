@@ -1,5 +1,5 @@
-import { GetDistributorCurrentAccountsTypeListService } from "@/Services/DistrubitorsService";
-import { DistrubitorCurrentAccountsListType } from "@/Types/Distrubitor.Types";
+import { GetCompanyInvoiceList } from "@/Services/CompanyService";
+import { CompanyInvoiceListType } from "@/Types/Company.Types";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
   const endDate = searchParams.get("endDate");
   const id = Number(searchParams.get("id"));
 
-  const searchType: DistrubitorCurrentAccountsListType = {
+  const searchType: CompanyInvoiceListType = {
     pageSize,
     pageIndex,
   };
@@ -28,8 +28,8 @@ export async function GET(req: NextRequest) {
     searchType.endDate = endDate;
   }
 
-  const result = await GetDistributorCurrentAccountsTypeListService({
-    distributorId: id,
+  const result = await GetCompanyInvoiceList({
+    companyId: id,
     searchType,
   });
 

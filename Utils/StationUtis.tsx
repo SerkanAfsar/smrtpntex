@@ -13,7 +13,7 @@ export const StationListHeaderColumns = (editCommand: any) => [
   },
   {
     name: "Marka",
-    selector: (row: StationType) => row.BrandName,
+    selector: (row: StationType) => row.StationBrandId,
     sortable: true,
   },
   {

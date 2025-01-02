@@ -25,8 +25,10 @@ import {
 import { format, formatDate } from "date-fns";
 import {
   CompanyCarType,
+  CompanyInvoiceType,
   CompanySalesType,
   CompanyUserType,
+  CreditCartType,
   CurrentAccountType,
   OtorizationType,
 } from "@/Types/Company.Types";
@@ -858,7 +860,7 @@ export const DistributorSatisColumnHeaders = [
   {
     name: "Satış Tarihi",
     selector: (row: DistributorSaleType) =>
-      formatDate(row.SaleDate, "dd.MM.yyy hh:MM"),
+      row.SaleDate ? formatDate(row.SaleDate, "dd.MM.yyy hh:MM") : "",
     sortable: true,
   },
 ];
@@ -879,12 +881,12 @@ export const CompanyCarListTypeHeaders = (editFunc: any, deleteFunc: any) => [
     selector: (row: CompanyCarType) => row.ModelName,
     sortable: true,
   },
-  {
-    name: "Firma",
-    selector: (row: CompanyCarType) => row.CompanyName,
-    sortable: true,
-    width: "300px",
-  },
+  // {
+  //   name: "Firma",
+  //   selector: (row: CompanyCarType) => row.CompanyName,
+  //   sortable: true,
+  //   width: "300px",
+  // },
   {
     name: "Üye Ad Soyad",
     selector: (row: CompanyCarType) => `${row.FirstName} ${row.LastName}`,
@@ -1116,5 +1118,80 @@ export const CarBrandHeaderColumns = (editFunc: any, deleteFunc: any) => [
         />
       </div>
     ),
+  },
+];
+
+export const CreditCardHeaderColumns = [
+  {
+    name: "Ad Soyad",
+    selector: (row: CreditCartType) => `${row.FirstName} ${row.LastName}`,
+    sortable: true,
+  },
+  {
+    name: "Firma Adı",
+    selector: (row: CreditCartType) => row.CompanyName,
+    sortable: true,
+  },
+  {
+    name: "GSMı",
+    selector: (row: CreditCartType) => row.UserName,
+    sortable: true,
+  },
+  {
+    name: "Card Numarası",
+    selector: (row: CreditCartType) => row.CardMask,
+    sortable: true,
+  },
+  {
+    name: "Banka",
+    selector: (row: CreditCartType) => row.BankIssuer,
+    sortable: true,
+  },
+  {
+    name: "Kart Tipi",
+    selector: (row: CreditCartType) => row.BrandName,
+    sortable: true,
+  },
+];
+
+export const CompanyInvoiceHeaderColumns = [
+  {
+    name: "Title",
+    selector: (row: CompanyInvoiceType) => row.Title,
+    sortable: true,
+  },
+  {
+    name: "LineName",
+    selector: (row: CompanyInvoiceType) => row.LineName,
+    sortable: true,
+  },
+  {
+    name: "Total",
+    selector: (row: CompanyInvoiceType) =>
+      new Intl.NumberFormat("tr-TR", {
+        style: "currency",
+        currency: "TRY",
+        currencyDisplay: "code",
+      })
+        .format(row.Total)
+        .replace("TRY", "")
+        .trim(),
+    sortable: true,
+  },
+  {
+    name: "TrackingNumber",
+    selector: (row: CompanyInvoiceType) => row.TrackingNumber,
+    sortable: true,
+  },
+  {
+    name: "ResultMessage",
+    selector: (row: CompanyInvoiceType) => row.ResultMessage,
+    sortable: true,
+  },
+  {
+    name: "CreatedDate",
+    selector: (row: CompanyInvoiceType) =>
+      format(row.CreatedDate, "dd/MM/yyyy HH:ss"),
+    sortable: true,
   },
 ];

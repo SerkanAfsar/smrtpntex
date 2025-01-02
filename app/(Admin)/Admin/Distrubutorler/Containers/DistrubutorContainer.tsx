@@ -18,45 +18,58 @@ import AddEditDistrubutorModal from "../Components/AddEditDistrubutorModal";
 import NotSelected from "@/Components/Admin/NotSelected";
 import { MenuType } from "../../Petronet/Containers/PetronetContainer";
 import {
+  CompanyInvoiceHeaderColumns,
+  CreditCardHeaderColumns,
   DistributorCarsTypeHeaders,
-  DistributorCompaniesTypeHeaders,
   DistributorCurrentAccountsTypeHeaders,
   DistributorSatisColumnHeaders,
   DistributorUserTypeHeaders,
 } from "@/Utils/Variables";
 import CustomDatatable from "@/Components/UI/CustomDataTable";
 import { cn } from "@/Utils";
+import DistributorCompanies from "../Components/DistributorCompanies";
+import { useCompanyModal } from "@/store/useCompanyModal";
 
 const types: MenuType = {
   Satışlar: {
     searchItems: ["aranacak", "baslangic", "bitis"],
-    apiUrl: "/api/distributors/sales",
+    apiUrl: "/api/Company/sales",
     columns: DistributorSatisColumnHeaders,
   },
-  Firmalar: {
-    searchItems: ["aranacak", "status"],
-    apiUrl: "/api/distributors/companies",
-    columns: DistributorCompaniesTypeHeaders,
-  },
+  // Firmalar: {
+  //   searchItems: ["aranacak", "status"],
+  //   apiUrl: "/api/distributors/companies",
+  //   columns: DistributorCompaniesTypeHeaders,
+  // },
   Araçlar: {
     searchItems: ["aranacak"],
-    apiUrl: "/api/distributors/cars",
+    apiUrl: "/api/Company/cars",
     columns: DistributorCarsTypeHeaders,
+  },
+  Finans: {
+    searchItems: ["aranacak", "baslangic", "bitis"],
+    apiUrl: "/api/Company/current-account",
+    columns: DistributorCurrentAccountsTypeHeaders,
   },
   Faturalar: {
     searchItems: ["aranacak", "baslangic", "bitis"],
-    apiUrl: "/api/distributors/sales",
-    columns: DistributorSatisColumnHeaders,
+    apiUrl: "/api/Company/invoices",
+    columns: CompanyInvoiceHeaderColumns,
   },
   Kullanıcılar: {
     searchItems: ["aranacak"],
-    apiUrl: "/api/distributors/sales",
+    apiUrl: "/api/Company/userlist",
     columns: DistributorUserTypeHeaders,
   },
-  Ödemeler: {
+  "Kredi Kartları": {
     searchItems: ["aranacak"],
-    apiUrl: "/api/distributors/current-accounts",
-    columns: DistributorCurrentAccountsTypeHeaders,
+    apiUrl: "/api/Company/credit-cards",
+    columns: CreditCardHeaderColumns,
+  },
+  Otozirasyonlar: {
+    searchItems: ["aranacak"],
+    apiUrl: "/api/Company/credit-cards",
+    columns: CreditCardHeaderColumns,
   },
 };
 
@@ -69,6 +82,10 @@ export default function DistrubutorContainer({
   const [activeMenu, setActiveMenu] = useState<string>("Satışlar");
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
+
+  const [selectedCompany, setSelectedCompany] = useCompanyModal(
+    useShallow((state) => [state.selectedCompany, state.setSelectedCompany]),
+  );
 
   const [toggleOpened, selectedDistributor, setSelectedDistributor] =
     useDistrubutorModal(
@@ -84,29 +101,40 @@ export default function DistrubutorContainer({
 
   return (
     <>
-      <ContentSubLeftSearch
-        actionOne={() => {
-          alert("test");
-        }}
-        addAction={() => {
-          toggleOpened(false);
-          setSelectedDistributor(undefined);
-          toggleOpened(true);
-        }}
-        addTitle="Distribütör Ekle"
-        placeholder="Distribütör Ara"
-        title="Distribütörler"
-        variables={(dataResult.records as DistrubitorType[]).map(
-          (item: DistrubitorType) => ({
-            name: item.Title,
-            value: item.Id.toString(),
-            active: item.IsActive,
-          }),
-        )}
-        selectAction={setSelectedDistributor}
-        selectedId={selectedDistributor?.Id ?? undefined}
-        toggleOpened={toggleOpened}
-      />
+      {selectedDistributor?.Id ? (
+        <DistributorCompanies
+          selectedDistributor={selectedDistributor}
+          setSelectedDistributor={setSelectedDistributor}
+          toggleOpened={toggleOpened}
+          selectedCompany={selectedCompany}
+          setSelectedCompany={setSelectedCompany}
+        />
+      ) : (
+        <ContentSubLeftSearch
+          actionOne={() => {
+            alert("test");
+          }}
+          addAction={() => {
+            toggleOpened(false);
+            setSelectedDistributor(undefined);
+            toggleOpened(true);
+          }}
+          addTitle="Distribütör Ekle"
+          placeholder="Distribütör Ara"
+          title="Distribütörler"
+          variables={(dataResult.records as DistrubitorType[]).map(
+            (item: DistrubitorType) => ({
+              name: item.Title,
+              value: item.Id.toString(),
+              active: item.IsActive,
+            }),
+          )}
+          selectAction={setSelectedDistributor}
+          selectedId={selectedDistributor?.Id ?? undefined}
+          toggleOpened={toggleOpened}
+        />
+      )}
+
       <ContentWithInfoSection>
         {selectedDistributor?.Id ? (
           <>
@@ -162,16 +190,18 @@ export default function DistrubutorContainer({
               />
             )} */}
 
-            {types[activeMenu].columns && (
-              <CustomDatatable
-                apiUrl={types[activeMenu].apiUrl}
-                columns={types[activeMenu].columns}
-                id={selectedDistributor?.Id}
-                startDate={startDate}
-                endDate={endDate}
-                keywords={keywords}
-              />
-            )}
+            {types[activeMenu].columns &&
+              selectedCompany &&
+              selectedCompany?.Id != 0 && (
+                <CustomDatatable
+                  apiUrl={types[activeMenu].apiUrl}
+                  columns={types[activeMenu].columns}
+                  id={selectedCompany?.Id}
+                  startDate={startDate}
+                  endDate={endDate}
+                  keywords={keywords}
+                />
+              )}
           </>
         ) : (
           <NotSelected

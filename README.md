@@ -35,3 +35,42 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+istasyonların arasında img logo kalktı station brands (markalar liste oluyor) den dropdown ı yükle
+
+distlerde üyeler sayfası oluşturulacak ve üye ekle üye edit olucak (yusuf yapıcak endpointi)
+
+distribütör seçiminde firmalar listelenicek sonra ona ait yukarıdaki menüler doldurulucak
+
+finans=cari
+finans a cari ekleme endpointi yapılıcak
+
+firmalara yeni kullanıcı eklerken firma yetkilisi eklerken firma seçmesi lazım istasyon yetkilisi seçerken istasyon seçmesi lazım
+
+helpdesc endpointi ekli onları da yap
+
+log kısmı geldi. sistem logları ve user logları var
+
+purchase genel şu anlık gerek yok
+
+purchase request yap
+
+[19:34, 02.01.2025] DK Yusuf, Backend: Financial son otorizasyon
+[19:35, 02.01.2025] DK Yusuf, Backend: Aslında finans diye Türkçe isim verdiğiniz finans yönetimindeki cari
+
+public int CreditCardId { get; set; }
+public int OrderId { get; set; }
+public string ActionName { get; set; }
+public decimal Amount { get; set; }
+public string Alias { get; set; }
+public string RefNo { get; set; }
+public string ReturnCode { get; set; }
+public string ReturnMessage { get; set; }
+public string StatusText { get; set; }
+public string ResponseText { get; set; }
+public DateTime CreatedDate { get; set; }
+public string CardMask { get; set; }
+public string OrderNumber { get; set; }
+public string UserName { get; set; }
+public string DisplayName { get; set; }
+public string CompanyName { get; set; }

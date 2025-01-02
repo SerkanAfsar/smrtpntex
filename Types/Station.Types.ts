@@ -7,8 +7,7 @@ export type StationListType = PageIndexType & {
 
 export type AddStationType = {
   title: string;
-  brandName: string;
-  imageUrl: string;
+  brandId: number;
   taxNumber: string;
   taxOffice: string;
   affiliateCode: string;
@@ -26,8 +25,7 @@ export type StationType = {
   StationNumber: string;
   StationIP: string;
   Title: string;
-  BrandName: string;
-  ImageUrl: string;
+  StationBrandId: number;
   TaxNumber: string;
   TaxOffice: string;
   AffiliateCode: string;
@@ -76,4 +74,16 @@ export type TankQrType = {
   PictureId: number;
   PictureUrl: string;
   Scan: number;
+};
+
+export type StationBrandType = {
+  Title: string;
+  ImageUrl: string;
+  IsActive: boolean;
+  IsDeleted: boolean;
+  DeletedById: string | number | null;
+  DeletedDate: string | number | null;
+  CreatedById: string | number | null;
+  CreatedDate: string;
+  Id: number;
 };

@@ -1,3 +1,5 @@
+import { GetCompanySalesListService } from "@/Services/CompanyService";
+
 import { DistrubitorSaleListType } from "@/Types/Distrubitor.Types";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -27,10 +29,10 @@ export async function GET(req: NextRequest) {
     searchType.endDate = endDate;
   }
 
-  // const result = await GetDistributorSalesListService({
-  //   distributorId: id,
-  //   searchType,
-  // });
+  const result = await GetCompanySalesListService({
+    companyId: id,
+    searchType,
+  });
 
-  return NextResponse.json(null);
+  return NextResponse.json(result);
 }

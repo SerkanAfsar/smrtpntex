@@ -25,6 +25,11 @@ import { ExportCsvIcon } from "@/Utils/IconList";
 import { ExcelFirmalarSatisResult } from "@/Services/Excel.Service";
 
 const types: MenuType = {
+  Araçlar: {
+    searchItems: ["aranacak"],
+    apiUrl: "/api/Company/cars",
+    columns: CompanyCarListTypeHeaders(null, null),
+  },
   Satışlar: {
     searchItems: ["aranacak", "baslangic", "bitis"],
     apiUrl: "/api/companysales",
@@ -56,11 +61,6 @@ const types: MenuType = {
     apiUrl: "/api/companysales6",
     // columns: CompanySalesColumns,
   },
-  Araçlar: {
-    searchItems: ["aranacak"],
-    apiUrl: "/api/Company/cars",
-    columns: CompanyCarListTypeHeaders(null, null),
-  },
 };
 
 export default function CompaniesContainer({
@@ -69,11 +69,11 @@ export default function CompaniesContainer({
   dataResult: PaginationType<CompanyType>;
 }) {
   const [keywords, setKeywords] = useState<string>("");
-  const [startDate, setStartDate] = useState<string>();
-  const [endDate, setEndDate] = useState<string>();
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
   const [excelLoading, setExcelLoading] = useState<boolean>(false);
 
-  const [activeMenu, setActiveMenu] = useState<string>("Satışlar");
+  const [activeMenu, setActiveMenu] = useState<string>("Araçlar");
   const [toggleOpened, selectedCompany, setSelectedCompany] = useCompanyModal(
     useShallow((state) => [
       state.toggleOpened,

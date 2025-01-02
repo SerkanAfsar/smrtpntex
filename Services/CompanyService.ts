@@ -3,18 +3,29 @@ import {
   AddCompanyType,
   CompanyCarListType,
   CompanyCarType,
+  CompanyCreditCartListType,
+  CompanyInvoiceListType,
   CompanyListType,
   CompanySalesListType,
   CompanySalesType,
   CompanyType,
   CompanyUserListType,
   CompanyUserType,
+  CreditCartType,
   CurrentAccountListType,
   CurrentAccountType,
   OtorizationsListType,
   OtorizationType,
 } from "@/Types/Company.Types";
 import BaseFetch from "./BaseService";
+import {
+  DistributorCarType,
+  DistributorCurrentAccountType,
+  DistributorSaleType,
+  DistrubitorCarsListType,
+  DistrubitorCurrentAccountsListType,
+  DistrubitorSaleListType,
+} from "@/Types/Distrubitor.Types";
 
 export async function GetAllCompanies({
   searchType,
@@ -55,6 +66,34 @@ export async function CompanySalesService({
     url: `adminApi/Company/sales/${id}`,
     body: searchType,
   })) as ResponseResult<PaginationType<CompanySalesType>>;
+}
+
+export async function GetCompanySalesListService({
+  companyId,
+  searchType,
+}: {
+  companyId: number;
+  searchType: DistrubitorSaleListType;
+}) {
+  return (await BaseFetch({
+    method: "POST",
+    url: `adminApi/Company/sales/${companyId}`,
+    body: searchType,
+  })) as ResponseResult<PaginationType<DistributorSaleType>>;
+}
+
+export async function GetCompanyCarsListService({
+  companyId,
+  searchType,
+}: {
+  companyId: number;
+  searchType: DistrubitorCarsListType;
+}) {
+  return (await BaseFetch({
+    method: "POST",
+    url: `adminApi/Company/cars/${companyId}`,
+    body: searchType,
+  })) as ResponseResult<PaginationType<DistributorCarType>>;
 }
 
 export async function CompanyUserListService({
@@ -111,4 +150,46 @@ export async function CompanyCarListService({
     url: `adminApi/Company/cars/${companyId}`,
     body: searchType,
   })) as ResponseResult<PaginationType<CompanyCarType>>;
+}
+
+export async function GetCompanyCurrentAccountsTypeListService({
+  compantId,
+  searchType,
+}: {
+  compantId: number;
+  searchType: DistrubitorCurrentAccountsListType;
+}) {
+  return (await BaseFetch({
+    method: "POST",
+    url: `adminApi/Company/current-accounts/${compantId}`,
+    body: searchType,
+  })) as ResponseResult<PaginationType<DistributorCurrentAccountType>>;
+}
+
+export async function GetCompanyCreditCartList({
+  companyId,
+  searchType,
+}: {
+  companyId: number;
+  searchType: CompanyCreditCartListType;
+}) {
+  return (await BaseFetch({
+    method: "POST",
+    url: `adminApi/Company/credit-cards/${companyId}`,
+    body: searchType,
+  })) as ResponseResult<PaginationType<CreditCartType>>;
+}
+
+export async function GetCompanyInvoiceList({
+  companyId,
+  searchType,
+}: {
+  companyId: number;
+  searchType: CompanyInvoiceListType;
+}) {
+  return (await BaseFetch({
+    method: "POST",
+    url: `adminApi/Company/invoices/${companyId}`,
+    body: searchType,
+  })) as ResponseResult<PaginationType<CreditCartType>>;
 }

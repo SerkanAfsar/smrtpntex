@@ -69,20 +69,6 @@ export async function UpdateDistributorService({
   })) as ResponseResult<DistrubitorType>;
 }
 
-export async function GetDistributorSalesListService({
-  distributorId,
-  searchType,
-}: {
-  distributorId: number;
-  searchType: DistrubitorSaleListType;
-}) {
-  return (await BaseFetch({
-    method: "POST",
-    url: `adminApi/Distributor/sales/${distributorId}`,
-    body: searchType,
-  })) as ResponseResult<PaginationType<DistributorSaleType>>;
-}
-
 export async function GetDistributorCompaniesListService({
   distributorId,
   searchType,
@@ -123,18 +109,4 @@ export async function GetDistributorUsersListService({
     url: `adminApi/Distributor/user/${distributorId}`,
     body: searchType,
   })) as ResponseResult<PaginationType<DistributorUserType>>;
-}
-
-export async function GetDistributorCurrentAccountsTypeListService({
-  distributorId,
-  searchType,
-}: {
-  distributorId: number;
-  searchType: DistrubitorCurrentAccountsListType;
-}) {
-  return (await BaseFetch({
-    method: "POST",
-    url: `adminApi/Distributor/current-accounts/${distributorId}`,
-    body: searchType,
-  })) as ResponseResult<PaginationType<DistributorCurrentAccountType>>;
 }
