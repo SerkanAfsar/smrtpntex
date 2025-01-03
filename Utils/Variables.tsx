@@ -755,7 +755,7 @@ export const CompanyOtorizationsListColumns = [
   },
 ];
 
-export const MemberColumnHeaders = [
+export const MemberColumnHeaders = (editFunc: any, deleteFunc: any) => [
   {
     name: "Üye Tipi",
     selector: (row: MemberType) => row.MemberTypeName,
@@ -786,6 +786,31 @@ export const MemberColumnHeaders = [
     selector: (row: MemberType) =>
       formatDate(row.CreatedDate, "dd.MM.yyy hh:MM"),
     sortable: true,
+  },
+  {
+    name: "İşlemler",
+    width: "80px",
+    selector: (row: any) => (
+      <div className="flex items-center justify-center gap-3">
+        <Image
+          src={Edit2}
+          width={20}
+          height={20}
+          alt="Edit"
+          className="cursor-pointer"
+          onClick={async () => editFunc({ id: row.Id })}
+        />
+        <Image
+          src={Delete2}
+          width={20}
+          height={20}
+          alt="Delete"
+          className="cursor-pointer"
+          onClick={async () => deleteFunc({ id: row.Id })}
+        />
+      </div>
+    ),
+    sortable: false,
   },
 ];
 

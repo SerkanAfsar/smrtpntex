@@ -1,4 +1,5 @@
 import {
+  AddMemberType,
   MemberListType,
   MemberType,
   MemberTypeType,
@@ -18,9 +19,38 @@ export async function GetMemberListService({
   })) as ResponseResult<PaginationType<MemberType>>;
 }
 
+export async function GetMemberByIdService({ id }: { id: number }) {
+  return (await BaseFetch({
+    method: "GET",
+    url: `adminApi/Member/getbyid/${id}`,
+  })) as ResponseResult<MemberType>;
+}
+
 export async function GetMemberTypesService() {
   return (await BaseFetch({
     method: "GET",
     url: "adminApi/Member/member-types",
-  })) as ResponseResult<MemberTypeType>;
+  })) as ResponseResult<PaginationType<MemberTypeType>>;
+}
+
+export async function AddMemberService({ data }: { data: AddMemberType }) {
+  return (await BaseFetch({
+    method: "POST",
+    url: "adminApi/Member/add",
+    body: data,
+  })) as ResponseResult<MemberType>;
+}
+
+export async function UpdateMemberService({
+  id,
+  data,
+}: {
+  id: number;
+  data: AddMemberType;
+}) {
+  return (await BaseFetch({
+    method: "PUT",
+    url: `adminApi/Member/edit/${id}`,
+    body: data,
+  })) as ResponseResult<MemberType>;
 }
