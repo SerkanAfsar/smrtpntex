@@ -41,6 +41,7 @@ import {
   DistributorSaleType,
   DistributorUserType,
 } from "@/Types/Distrubitor.Types";
+import { SystemLogType, UserLogType } from "@/Types/Log.Types";
 
 export const AdminMenuList: MenuLinkGroupType[] = [
   {
@@ -1217,6 +1218,50 @@ export const CompanyInvoiceHeaderColumns = [
     name: "CreatedDate",
     selector: (row: CompanyInvoiceType) =>
       format(row.CreatedDate, "dd/MM/yyyy HH:ss"),
+    sortable: true,
+  },
+];
+
+export const SystemLogsHeaderColumns = [
+  {
+    name: "Günlük Seviyesi",
+    selector: (row: SystemLogType) => `${row.LogLevelId}`,
+    sortable: true,
+    width: "140px",
+  },
+  {
+    name: "Kısa Mesaj",
+    selector: (row: SystemLogType) => row.ShortMessage,
+    sortable: true,
+  },
+  {
+    name: "Düzenlenme Tarihi",
+    selector: (row: SystemLogType) =>
+      format(row.CreatedDate, "dd/MM/yyyy HH:ss"),
+    sortable: true,
+    width: "150px",
+  },
+];
+
+export const ActivityLogsHeaderColumns = [
+  {
+    name: "Admin Kullanıcı",
+    selector: (row: UserLogType) => row.AdminUserActivityLogTypeId,
+    sortable: true,
+  },
+  {
+    name: "Etkinlik Günlüğü Türü",
+    selector: (row: UserLogType) => row.Comment,
+    sortable: true,
+  },
+  {
+    name: "IP Adresi",
+    selector: (row: UserLogType) => row.IpAddress,
+    sortable: true,
+  },
+  {
+    name: "Oluşturulma Tarihi",
+    selector: (row: UserLogType) => format(row.CreatedDate, "dd/MM/yyyy HH:ss"),
     sortable: true,
   },
 ];

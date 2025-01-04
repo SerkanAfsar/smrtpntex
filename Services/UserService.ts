@@ -50,3 +50,10 @@ export async function UpdateUserService({
     body: data,
   })) as ResponseResult<UserType>;
 }
+
+export async function DeleteUserService({ id }: { id: number }) {
+  return (await BaseFetch({
+    method: "POST",
+    url: `adminApi/User/delete/${id}`,
+  })) as ResponseResult<UserType>;
+}

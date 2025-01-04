@@ -53,7 +53,7 @@ const types: MenuType = {
   },
   "Kredi Kartları": {
     searchItems: ["aranacak", "status"],
-    apiUrl: "/api/companysale5",
+    apiUrl: "/api/Company/credit-cards",
     // columns: CompanySalesColumns,
   },
   Faturalar: {

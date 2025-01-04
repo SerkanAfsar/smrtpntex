@@ -1,13 +1,14 @@
 import CustomButton from "@/Components/UI/CustomButton";
 import { UserType } from "@/Types/User.Types";
 import { format } from "date-fns";
-import { CheckIcon } from "./IconList";
+import { CheckIcon, Delete2, Edit2 } from "./IconList";
 import Image from "next/image";
 import { RoleType } from "@/Types/Role.Types";
 
 export const KullanicilarDataTableColumns = (
   unBanCommand: any,
-  editCommand: any,
+  editFunc: any,
+  deleteFunc: any,
 ) => [
   {
     name: "E-Posta",
@@ -60,18 +61,43 @@ export const KullanicilarDataTableColumns = (
     sortable: true,
     width: "80px",
   },
+  // {
+  //   name: "Düzenle",
+  //   selector: (row: UserType) => (
+  //     <CustomButton
+  //       className={
+  //         "w-full gap-1 rounded-md border border-black bg-gray-900 px-3 py-2 text-white"
+  //       }
+  //       onClick={async () => await editCommand({ id: row.Id })}
+  //       title={"Düzenle"}
+  //     />
+  //   ),
+  //   sortable: true,
+  // },
   {
-    name: "Düzenle",
-    selector: (row: UserType) => (
-      <CustomButton
-        className={
-          "w-full gap-1 rounded-md border border-black bg-gray-900 px-3 py-2 text-white"
-        }
-        onClick={async () => await editCommand({ id: row.Id })}
-        title={"Düzenle"}
-      />
+    name: "İşlemler",
+    width: "80px",
+    selector: (row: any) => (
+      <div className="flex items-center justify-center gap-3">
+        <Image
+          src={Edit2}
+          width={20}
+          height={20}
+          alt="Edit"
+          className="cursor-pointer"
+          onClick={async () => editFunc({ id: row.Id })}
+        />
+        <Image
+          src={Delete2}
+          width={20}
+          height={20}
+          alt="Delete"
+          className="cursor-pointer"
+          onClick={async () => deleteFunc({ id: row.Id })}
+        />
+      </div>
     ),
-    sortable: true,
+    sortable: false,
   },
 ];
 

@@ -54,3 +54,10 @@ export async function UpdateMemberService({
     body: data,
   })) as ResponseResult<MemberType>;
 }
+
+export async function DeleteMemberService({ id }: { id: number }) {
+  return (await BaseFetch({
+    method: "POST",
+    url: `adminApi/Member/delete/${id}`,
+  })) as ResponseResult<MemberType>;
+}

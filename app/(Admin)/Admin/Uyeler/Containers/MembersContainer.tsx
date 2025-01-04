@@ -14,10 +14,13 @@ import { useCallback, useEffect, useState } from "react";
 import CustomDatatable from "@/Components/UI/CustomDataTable";
 import MembersCustomSearch from "../Components/MembersCustomSearch";
 import { MenuType } from "../../Petronet/Containers/PetronetContainer";
-import { CustomOptionsType } from "@/Types/Common.Types";
+import { CustomOptionsType, ResponseResult } from "@/Types/Common.Types";
 import { useMemberModal } from "@/store/useMemberModal";
 import { useShallow } from "zustand/shallow";
 import AddEditMemberModal from "../Components/AddEditMemberModal";
+import { MemberType } from "@/Types/Member.Types";
+import { DeleteMemberService } from "@/Services/MemberService";
+import { toast } from "react-toastify";
 
 export default function MembersContainer({
   memberTypes,
@@ -59,13 +62,34 @@ export default function MembersContainer({
     },
     [setSelectedMember, toggleOpenedModal],
   );
+
+  const deleteFunc = useCallback(
+    async ({ id }: { id: number }) => {
+      const confirmMessage = confirm(
+        "Üyeyi Silmek İstediğinizden Emin misiniz?",
+      );
+      if (confirmMessage) {
+        const result: ResponseResult<MemberType> = await DeleteMemberService({
+          id,
+        });
+        if (result.IsSuccess) {
+          toast.success("Üye Silindi", { position: "top-right" });
+          setIsUpdated();
+        } else {
+          return toast.error(result.Message || "Member Delete Error", {
+            position: "top-right",
+          });
+        }
+      }
+    },
+    [setIsUpdated],
+  );
+
   const types: MenuType = {
     Üyeler: {
       searchItems: ["gsm", "status"],
       apiUrl: "/api/member/members",
-      columns: MemberColumnHeaders(editFunc, ({ id }: { id: number }) => {
-        alert(id);
-      }),
+      columns: MemberColumnHeaders(editFunc, deleteFunc),
     },
     "Üye Tipleri": {
       apiUrl: "/api/member/membertypes",

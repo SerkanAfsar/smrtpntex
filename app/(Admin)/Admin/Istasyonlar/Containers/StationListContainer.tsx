@@ -4,7 +4,7 @@ import CustomButton from "@/Components/UI/CustomButton";
 import { useLeftMenuStore } from "@/store/useLeftMenuStore";
 import { cn } from "@/Utils";
 import { ExportCsvIcon, PlusSmall } from "@/Utils/IconList";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import CustomDatatable from "@/Components/UI/CustomDataTable";
 import { StationListHeaderColumns } from "@/Utils/StationUtis";
 import StationCustomSearch from "../Components/StationCustomSearch";
@@ -12,6 +12,10 @@ import { useStationModal } from "@/store/useStationModal";
 import { useShallow } from "zustand/shallow";
 import StationDetailModal from "../Components/StationDetailModal";
 import { ExcelIstasyonlarList } from "@/Services/Excel.Service";
+import { ResponseResult } from "@/Types/Common.Types";
+import { StationType } from "@/Types/Station.Types";
+import { DeleteStationService } from "@/Services/StationService";
+import { toast } from "react-toastify";
 
 export default function StationListContainer() {
   const isOpened = useLeftMenuStore((state) => state.isOpened);
@@ -35,7 +39,28 @@ export default function StationListContainer() {
       state.setUpdated,
     ]),
   );
-  // const getDAta = useExcel((state) => state.data);
+
+  const deleteStation = useCallback(
+    async ({ id }: { id: number }) => {
+      const confirmMessage = confirm(
+        "İstasyonu Silmek İstediğinizden Emin misiniz?",
+      );
+      if (confirmMessage) {
+        const result: ResponseResult<StationType> = await DeleteStationService({
+          id,
+        });
+        if (result.IsSuccess) {
+          setStationUpdate();
+          return toast.success("İstasyon Silindi", { position: "top-right" });
+        } else {
+          return toast.error(result.Message || "İstasyon Silme Hatası", {
+            position: "top-right",
+          });
+        }
+      }
+    },
+    [setStationUpdate],
+  );
 
   return (
     <>
@@ -79,10 +104,15 @@ export default function StationListContainer() {
           setKeywords={setKeywords}
         />
         <CustomDatatable
-          columns={StationListHeaderColumns(async ({ id }: { id: number }) => {
-            await setSelectedStation(id);
-            toggleOpenedStation();
-          })}
+          columns={StationListHeaderColumns(
+            async ({ id }: { id: number }) => {
+              await setSelectedStation(id);
+              toggleOpenedStation();
+            },
+            async ({ id }: { id: number }) => {
+              return await deleteStation({ id });
+            },
+          )}
           apiUrl="/api/stations/stationlist"
           keywords={keywords}
           isActive={isActive}

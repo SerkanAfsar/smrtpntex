@@ -12,7 +12,11 @@ import {
   KullanicilarDataTableColumns,
   RollerDataTableColumns,
 } from "@/Utils/KullanicilarUtils";
-import { GetUserByIdService, RemoveBanService } from "@/Services/UserService";
+import {
+  DeleteUserService,
+  GetUserByIdService,
+  RemoveBanService,
+} from "@/Services/UserService";
 import { ResponseResult } from "@/Types/Common.Types";
 import { toast } from "react-toastify";
 import UserDetailModal from "../Components/UserDetailModal";
@@ -103,6 +107,28 @@ export default function UsersContainer({
     [toggleOpened, setSelectedUser],
   );
 
+  const deleteUserFunc = useCallback(
+    async ({ id }: { id: number }) => {
+      const confirmMessage = confirm(
+        "Bu Üyeyi Kaldırmak İstediğinizden Emin misiniz?",
+      );
+      if (confirmMessage) {
+        const result: ResponseResult<UserType> = await DeleteUserService({
+          id,
+        });
+        if (result.IsSuccess) {
+          setUpdated();
+          return toast.success("Üye Kaldırıldı", { position: "top-right" });
+        } else {
+          return toast.error(result.Message || "User Remove Err", {
+            position: "top-right",
+          });
+        }
+      }
+    },
+    [setUpdated],
+  );
+
   const getRoleDetailFunc = useCallback(
     async ({ id }: { id: number }) => {
       const result: ResponseResult<RoleType> = await GetRoleByIdService({
@@ -127,6 +153,7 @@ export default function UsersContainer({
         columns: KullanicilarDataTableColumns(
           async ({ id }: { id: number }) => UnBanFunc({ id }),
           async ({ id }: { id: number }) => await getUserDetailsFunc({ id }),
+          async ({ id }: { id: number }) => await deleteUserFunc({ id }),
         ),
         addButton: (
           <CustomButton

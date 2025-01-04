@@ -56,9 +56,15 @@ export default function AddEditMemberModal({
       : await AddMemberService({ data });
 
     if (result.IsSuccess) {
-      toast.success("Kullanıcı Eklendi", {
-        position: "top-right",
-      });
+      if (data.Id) {
+        toast.warning("Kullanıcı Güncellendi", {
+          position: "top-right",
+        });
+      } else {
+        toast.success("Kullanıcı Eklendi", {
+          position: "top-right",
+        });
+      }
       reset();
       setIsUpdated();
       toggleOpenedModal(false);

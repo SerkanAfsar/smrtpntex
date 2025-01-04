@@ -1,10 +1,13 @@
 import { StationType } from "@/Types/Station.Types";
-import { CheckIcon } from "./IconList";
-import CustomButton from "@/Components/UI/CustomButton";
+import { CheckIcon, Delete2, Edit2 } from "./IconList";
+
 import Image from "next/image";
 import { format } from "date-fns";
 
-export const StationListHeaderColumns = (editCommand: any) => [
+export const StationListHeaderColumns = (
+  editCommand: any,
+  deleteCommand: any,
+) => [
   {
     name: "İstasyon Adı",
     selector: (row: StationType) => row.Title,
@@ -44,18 +47,42 @@ export const StationListHeaderColumns = (editCommand: any) => [
     selector: (row: StationType) => format(row.CreatedDate, "dd.MM.yyyy HH:ss"),
     sortable: true,
   },
+  // {
+  //   name: "Düzenle",
+  //   selector: (row: StationType) => (
+  //     <CustomButton
+  //       className={
+  //         "w-full gap-1 rounded-md border border-black bg-gray-900 px-3 py-2 text-white"
+  //       }
+  //       onClick={async () => await editCommand({ id: row.Id })}
+  //       title={"Düzenle"}
+  //     />
+  //   ),
+  //   sortable: true,
+  //   width: "150px",
+  // },
   {
-    name: "Düzenle",
-    selector: (row: StationType) => (
-      <CustomButton
-        className={
-          "w-full gap-1 rounded-md border border-black bg-gray-900 px-3 py-2 text-white"
-        }
-        onClick={async () => await editCommand({ id: row.Id })}
-        title={"Düzenle"}
-      />
+    width: "80px",
+    name: "İşlemler",
+    selector: (row: any) => (
+      <div className="flex items-center justify-center gap-3">
+        <Image
+          src={Edit2}
+          width={20}
+          height={20}
+          alt="Edit"
+          className="cursor-pointer"
+          onClick={async () => editCommand({ id: row.Id })}
+        />
+        <Image
+          src={Delete2}
+          width={20}
+          height={20}
+          alt="Delete"
+          className="cursor-pointer"
+          onClick={async () => deleteCommand({ id: row.Id })}
+        />
+      </div>
     ),
-    sortable: true,
-    width: "150px",
   },
 ];

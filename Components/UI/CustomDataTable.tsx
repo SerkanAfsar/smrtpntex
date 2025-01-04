@@ -35,7 +35,7 @@ export default function CustomDatatable({
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [totalRows, setTotalRows] = useState<number>(0);
-  const [perPage, setPerPage] = useState<number>(10);
+  const [perPage, setPerPage] = useState<number>(25);
 
   const handleChange = useCallback(
     async ({ page }: { page: number }) => {
@@ -121,6 +121,7 @@ export default function CustomDatatable({
         noDataComponent={"Gösterilecek Kayıt Bulunmamaktadır..."}
         paginationTotalRows={totalRows}
         onChangeRowsPerPage={handlePerRowsChange}
+        paginationRowsPerPageOptions={[25, 50, 100]}
         onChangePage={handlePageChange}
         className={cn("custom-table", extraClass && extraClass)}
         customStyles={{
