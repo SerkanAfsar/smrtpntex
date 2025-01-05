@@ -38,6 +38,9 @@ export default function AddEditDistrubutorModal({
     register,
     reset,
     handleSubmit,
+    watch,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm<AddDistributerType>({
     mode: "onChange",
@@ -65,6 +68,25 @@ export default function AddEditDistrubutorModal({
   useEffect(() => {
     reset(dataModel);
   }, [reset, dataModel]);
+
+  useEffect(() => {
+    const { unsubscribe } = watch((value) => {
+      console.log(value);
+      if (
+        value.alertLimit &&
+        value.riskLimit &&
+        value.alertLimit > value.riskLimit
+      ) {
+        setError("alertLimit", {
+          type: "value",
+          message: "Uyarı Limiti Risk Limitinden Fazla Olamaz",
+        });
+      } else {
+        clearErrors("alertLimit");
+      }
+    });
+    return () => unsubscribe();
+  }, [watch, setError, clearErrors]);
 
   const onSubmit: SubmitHandler<AddDistributerType> = async (data) => {
     const result =
