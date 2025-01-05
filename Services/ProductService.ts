@@ -1,9 +1,5 @@
 import BaseFetch from "./BaseService";
-import {
-  GenericType2,
-  PaginationType,
-  ResponseResult,
-} from "@/Types/Common.Types";
+import { PaginationType, ResponseResult } from "@/Types/Common.Types";
 import {
   AddProductType,
   ProductListType,
@@ -27,5 +23,19 @@ export async function AddProductService({ data }: { data: AddProductType }) {
     method: "POST",
     url: "adminApi/Product/add",
     body: data,
+  })) as ResponseResult<ProductType>;
+}
+
+export async function DeleteProductService({ id }: { id: number }) {
+  return (await BaseFetch({
+    method: "POST",
+    url: `adminApi/Product/delete/${id}`,
+  })) as ResponseResult<ProductType>;
+}
+
+export async function GetProductById({ id }: { id: number }) {
+  return (await BaseFetch({
+    method: "GET",
+    url: `adminApi/Product/getbyid/${id}`,
   })) as ResponseResult<ProductType>;
 }

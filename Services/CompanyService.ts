@@ -54,6 +54,13 @@ export async function AddCompanyService({ data }: { data: AddCompanyType }) {
   })) as ResponseResult<CompanyType>;
 }
 
+export async function DeleteCompanyService({ id }: { id: number }) {
+  return (await BaseFetch({
+    method: "POST",
+    url: `adminApi/Company/delete/${id}`,
+  })) as ResponseResult<CompanyType>;
+}
+
 export async function CompanySalesService({
   id,
   searchType,
@@ -192,4 +199,18 @@ export async function GetCompanyInvoiceList({
     url: `adminApi/Company/invoices/${companyId}`,
     body: searchType,
   })) as ResponseResult<PaginationType<CreditCartType>>;
+}
+
+export async function UpdateCompanyService({
+  id,
+  data,
+}: {
+  id: number;
+  data: AddCompanyType;
+}) {
+  return (await BaseFetch({
+    method: "PUT",
+    url: `adminApi/Company/edit/${id}`,
+    body: data,
+  })) as ResponseResult<CompanyType>;
 }

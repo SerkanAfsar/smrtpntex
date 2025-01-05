@@ -80,6 +80,12 @@ export const AdminMenuList: MenuLinkGroupType[] = [
         icon: ProductsIcon,
         url: "/Admin/Urunler",
       },
+      {
+        title: "Fiyatlar",
+        icon: ProductsIcon,
+        url: "/Admin/Fiyatlar",
+        isOpenedForce: true,
+      },
       // {
       //   title: "İçerik Yönetimi",
       //   icon: IcerikYonetimiIcon,

@@ -1,16 +1,11 @@
 "use client";
 import AdminTopSection from "@/Components/Admin/TopSection";
 import CustomButton from "@/Components/UI/CustomButton";
-
 import { ExportCsvIcon, PlusSmall } from "@/Utils/IconList";
-
 import { useState } from "react";
-
 import ContentWithInfoSection from "@/Components/Admin/ContentWithInfoSection";
 import { GenericType2 } from "@/Types/Common.Types";
-
 import { useShallow } from "zustand/shallow";
-
 import NotSelected from "@/Components/Admin/NotSelected";
 import ProductsSubLeftSection from "../Components/ProductsSubLeftSection";
 import { CategoryType } from "@/Types/Category.Types";
@@ -26,12 +21,21 @@ export default function ProductsContainer({
   const [keywords, setKeywords] = useState<string>();
   const data = dataResult.Result as CategoryType[];
 
-  const [toggleOpened, selectedId, selectAction] = useProductModal(
+  const [
+    toggleOpened,
+    selectedProduct,
+    selectAction,
+    isOpened,
+    isUpdated,
+    setIsUpdated,
+  ] = useProductModal(
     useShallow((state) => [
       state.toggleOpened,
-      state.selectedId,
+      state.selectedProduct,
       state.setSelectedProduct,
-      state,
+      state.isOpened,
+      state.isUpdated,
+      state.setIsUpdated,
     ]),
   );
   return (
@@ -52,9 +56,11 @@ export default function ProductsContainer({
           active: item.IsActive,
         }))}
         selectAction={selectAction}
+        setIsUpdated={setIsUpdated}
+        isUpdated={isUpdated}
       />
       <ContentWithInfoSection>
-        {selectedId ? (
+        {selectedProduct?.Id ? (
           <>
             <AdminTopSection className="border-b">
               <h3>Müşteriler</h3>
@@ -90,7 +96,7 @@ export default function ProductsContainer({
         )}
       </ContentWithInfoSection>
       {/* <AddEditDistrubutorModal /> */}
-      <AddEditProductModal />
+      <AddEditProductModal setIsUpdated={setIsUpdated} />
     </>
   );
 }

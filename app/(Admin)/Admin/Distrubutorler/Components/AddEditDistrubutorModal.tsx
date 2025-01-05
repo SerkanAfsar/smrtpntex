@@ -71,7 +71,6 @@ export default function AddEditDistrubutorModal({
 
   useEffect(() => {
     const { unsubscribe } = watch((value) => {
-      console.log(value);
       if (
         value.alertLimit &&
         value.riskLimit &&

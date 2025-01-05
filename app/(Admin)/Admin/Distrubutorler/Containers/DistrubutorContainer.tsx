@@ -132,6 +132,7 @@ export default function DistrubutorContainer({
           selectAction={setSelectedDistributor}
           selectedId={selectedDistributor?.Id ?? undefined}
           toggleOpened={toggleOpened}
+          type="DIST"
         />
       )}
 

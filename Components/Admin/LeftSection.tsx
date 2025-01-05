@@ -48,7 +48,7 @@ export default function LeftSection() {
       <ul>
         <li className="flex w-full items-center justify-start gap-3">
           <Link
-            href={"/"}
+            href={"/Admin/Dashboard"}
             className="relative flex w-full items-center justify-start gap-3 whitespace-nowrap px-2 py-3"
           >
             <Image

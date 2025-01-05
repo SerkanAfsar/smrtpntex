@@ -23,7 +23,11 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useShallow } from "zustand/shallow";
 
-export default function AddEditProductModal() {
+export default function AddEditProductModal({
+  setIsUpdated,
+}: {
+  setIsUpdated: any;
+}) {
   const router = useRouter();
   const [isOpened, toggleOpened] = useProductModal(
     useShallow((state) => [state.isOpened, state.toggleOpened]),
@@ -70,9 +74,9 @@ export default function AddEditProductModal() {
       toast.success("Ürün Eklendi", {
         position: "top-right",
       });
+      setIsUpdated();
       reset();
       toggleOpened();
-      return router.refresh();
     } else {
       return toast.error(result.Message || "Hata", {
         position: "top-right",

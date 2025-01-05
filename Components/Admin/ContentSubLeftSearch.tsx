@@ -1,4 +1,5 @@
 import {
+  Delete2,
   EditIcon,
   ExportCsvIcon,
   PlusSmall,
@@ -8,8 +9,14 @@ import CustomButton from "../UI/CustomButton";
 import { CustomTextbox } from "../UI/CustomTextbox";
 import CustomSelect from "../UI/CustomSelect";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { cn } from "@/Utils";
+import { ResponseResult } from "@/Types/Common.Types";
+
+import { DeleteDistributorService } from "@/Services/DistrubitorsService";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { DeleteCompanyService } from "@/Services/CompanyService";
 
 export type VariablesType = {
   name: string;
@@ -27,6 +34,7 @@ export type ContentSubLeftSearchType = {
   selectAction: (id?: number) => void;
   selectedId: number | undefined;
   toggleOpened?: any;
+  type: "DIST" | "COMPANY";
 };
 export type SelectTypes = "all" | "true" | "false";
 export default function ContentSubLeftSearch({
@@ -39,7 +47,9 @@ export default function ContentSubLeftSearch({
   selectAction,
   selectedId,
   toggleOpened,
+  type,
 }: ContentSubLeftSearchType) {
+  const router = useRouter();
   const [searchKey, setSearchKey] = useState<string>();
   const [selectedType, setSelectedType] = useState<SelectTypes>("all");
 
@@ -59,6 +69,33 @@ export default function ContentSubLeftSearch({
           (a) => a.active == Boolean(selectedType == "true" ? true : false),
         );
   }, [searchKey, selectedType, variables]);
+
+  const deleteFunc = useCallback(
+    async ({ id }: { id: number }) => {
+      const confirmMessage = confirm(
+        "Seçili Veriyi Silmek İstediğinizden Emin misiniz?",
+      );
+      if (confirmMessage) {
+        const result: ResponseResult<any> =
+          type == "DIST"
+            ? await DeleteDistributorService({
+                id,
+              })
+            : await DeleteCompanyService({
+                id,
+              });
+        if (result.IsSuccess) {
+          toast.success("Veri Silindi", { position: "top-right" });
+          return router.refresh();
+        } else {
+          return toast.error(result.Message || "Silme Hatası", {
+            position: "top-right",
+          });
+        }
+      }
+    },
+    [router, type],
+  );
 
   return (
     <section className="ml-[62px] flex w-[320px] flex-col border-r border-t bg-white">
@@ -114,24 +151,36 @@ export default function ContentSubLeftSearch({
         {tempDataResult.map((item, index) => (
           <div
             className={cn(
-              "group flex w-full cursor-pointer items-center justify-between gap-3 rounded-md p-3 text-sm transition-all hover:bg-blue-100",
+              "group flex w-full items-center justify-between gap-3 rounded-md p-3 text-sm transition-all hover:bg-blue-100",
               selectedId && selectedId == Number(item.value) && "bg-blue-100",
             )}
             key={index}
-            onClick={async () => {
-              toggleOpened(false);
-              await selectAction(Number(item.value));
-              toggleOpened(true);
-            }}
           >
             {item.name}
-            <Image
-              src={EditIcon}
-              width={20}
-              height={20}
-              alt={item.name}
-              className="opacity-0 transition-all delay-[25] group-hover:opacity-100"
-            />
+            <div className="flex items-center justify-between gap-3">
+              <Image
+                src={Delete2}
+                width={20}
+                height={20}
+                alt={item.name}
+                className="cursor-pointer fill-none text-blue-500 opacity-0 transition-all delay-[25] group-hover:opacity-100"
+                onClick={async () => {
+                  await deleteFunc({ id: Number(item.value) });
+                }}
+              />
+              <Image
+                src={EditIcon}
+                width={20}
+                height={20}
+                alt={item.name}
+                className="cursor-pointer opacity-0 transition-all delay-[25] group-hover:opacity-100"
+                onClick={async () => {
+                  toggleOpened(false);
+                  await selectAction(Number(item.value));
+                  toggleOpened(true);
+                }}
+              />
+            </div>
           </div>
         ))}
       </div>

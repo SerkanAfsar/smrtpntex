@@ -1,8 +1,11 @@
 import CustomButton from "@/Components/UI/CustomButton";
 import CustomSelect from "@/Components/UI/CustomSelect";
 import { CustomTextbox } from "@/Components/UI/CustomTextbox";
-import { GetAllProducts } from "@/Services/ProductService";
-import { useProductModal } from "@/store/useProductModal";
+import {
+  DeleteProductService,
+  GetAllProducts,
+} from "@/Services/ProductService";
+
 import {
   GenericType2,
   PaginationType,
@@ -10,6 +13,7 @@ import {
 } from "@/Types/Common.Types";
 import { ProductListType, ProductType } from "@/Types/Product.Types";
 import {
+  Delete2,
   EditIcon,
   ExportCsvIcon,
   PlusSmall,
@@ -17,8 +21,8 @@ import {
 } from "@/Utils/IconList";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { useShallow } from "zustand/shallow";
+import { useCallback, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export type VariablesType = {
   name: string;
@@ -34,6 +38,8 @@ export type ContentSubLeftSearchType = {
   placeholder: string;
   variables: VariablesType[];
   selectAction: (id?: number) => void;
+  setIsUpdated: any;
+  isUpdated: boolean;
 };
 export type SelectTypes = "all" | "true" | "false";
 export default function ProductsSubLeftSection({
@@ -44,8 +50,9 @@ export default function ProductsSubLeftSection({
   title,
   variables,
   selectAction,
+  setIsUpdated,
+  isUpdated,
 }: ContentSubLeftSearchType) {
-  const [isOpened] = useProductModal(useShallow((state) => [state.isOpened]));
   const [searchKey, setSearchKey] = useState<string>();
   const [selectedType, setSelectedType] = useState<SelectTypes>("all");
   const [selectedCategory, setSelectedCategory] = useState<string>();
@@ -80,10 +87,25 @@ export default function ProductsSubLeftSection({
         setProductList([]);
       }
     };
-    if (!isOpened) {
-      process();
+    process();
+  }, [searchKey, selectedCategory, selectedType, isUpdated]);
+
+  const deleteProductFunc = useCallback(async ({ id }: { id: number }) => {
+    const confirmMessage = confirm("Ürünü Silmek İstediğinizden Emin misiniz?");
+    if (confirmMessage) {
+      const result: ResponseResult<ProductType> = await DeleteProductService({
+        id,
+      });
+      if (result.IsSuccess) {
+        setIsUpdated();
+        return toast.success("Ürün Silindi", { position: "top-right" });
+      } else {
+        return toast.error(result.Message ?? "Ürün Silme Hatası", {
+          position: "top-right",
+        });
+      }
     }
-  }, [searchKey, selectedCategory, selectedType, isOpened]);
+  }, []);
 
   return (
     <section className="ml-[62px] flex w-[320px] flex-col border-r border-t bg-white">
@@ -151,20 +173,32 @@ export default function ProductsSubLeftSection({
       <div className="w-full flex-1 flex-col gap-6 overflow-auto overscroll-contain p-4">
         {productList.map((item: ProductType, index) => (
           <div
-            className="group flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-md p-3 text-sm transition-all hover:bg-blue-100"
+            className="group flex w-full flex-col items-center justify-center gap-2 rounded-md p-3 text-sm transition-all hover:bg-blue-100"
             key={index}
             onClick={() => selectAction(Number(item.Id))}
           >
             <div className="flex w-full items-center justify-between">
               <h4 className="text-[16px]">{item.Name}</h4>
               <div className="h-[30px]">
-                <Image
-                  src={EditIcon}
-                  width={20}
-                  height={20}
-                  alt={item.Name}
-                  className="hidden opacity-0 transition-all delay-[25] group-hover:block group-hover:opacity-100"
-                />
+                <div className="hidden items-center gap-3 opacity-0 transition-all delay-[25] group-hover:flex group-hover:opacity-100">
+                  <Image
+                    src={Delete2}
+                    width={20}
+                    height={20}
+                    alt={item.Name}
+                    className="cursor-pointer"
+                    onClick={async () => {
+                      await deleteProductFunc({ id: Number(item.Id) });
+                    }}
+                  />
+                  <Image
+                    src={EditIcon}
+                    width={20}
+                    height={20}
+                    alt={item.Name}
+                    className="cursor-pointer"
+                  />
+                </div>
                 <div className="block rounded-md bg-[#2970ff] px-2 py-1 text-sm text-white opacity-100 group-hover:hidden group-hover:opacity-0">
                   {item.CategoryPath}
                 </div>

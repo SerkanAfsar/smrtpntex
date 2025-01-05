@@ -3,28 +3,36 @@ import CustomCheckbox from "@/Components/UI/CustomCheckbox";
 import CustomSelect from "@/Components/UI/CustomSelect";
 import { CustomTextbox } from "@/Components/UI/CustomTextbox";
 
-import { GetPaymentMethodTypes } from "@/Services/DistrubitorsService";
 import { useCompanyModal } from "@/store/useCompanyModal";
 import { CustomOptionsType, ResponseResult } from "@/Types/Common.Types";
-import { AddCompanyType } from "@/Types/Company.Types";
-import { PaymentMethodType } from "@/Types/Distrubitor.Types";
+import { AddCompanyType, CompanyType } from "@/Types/Company.Types";
+
 import { cn } from "@/Utils";
 import { ExitIcon } from "@/Utils/IconList";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useMask } from "@react-input/mask";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import {
+  AddCompanyService,
+  UpdateCompanyService,
+} from "@/Services/CompanyService";
+import { toast } from "react-toastify";
 
 export default function AddEditCompanyModal({
   editData,
+  paymentMethods,
+  toggleOpenedModal,
+  isOpenedModal,
 }: {
   editData: AddCompanyType;
+  paymentMethods: CustomOptionsType[];
+  toggleOpenedModal: any;
+  isOpenedModal: boolean;
 }) {
   const router = useRouter();
   const { isOpened, toggleOpened } = useCompanyModal();
-  const [paymentMethods, setPaymentMethods] = useState<CustomOptionsType[]>([]);
   const {
     register,
     reset,
@@ -38,10 +46,10 @@ export default function AddEditCompanyModal({
     defaultValues: editData,
   });
 
-  const inputRef = useMask({
-    mask: "+1 (___) ___-__-__",
-    replacement: { _: /\d/ },
-  });
+  // const inputRef = useMask({
+  //   mask: "+1 (___) ___-__-__",
+  //   replacement: { _: /\d/ },
+  // });
 
   useEffect(() => {
     reset(editData);
@@ -65,39 +73,50 @@ export default function AddEditCompanyModal({
     return () => unsubscribe();
   }, [watch, setError, clearErrors]);
 
-  useEffect(() => {
-    const process = async () => {
-      const result: ResponseResult<PaymentMethodType> =
-        await GetPaymentMethodTypes();
-      if (result.IsSuccess) {
-        const data = result.Data as PaymentMethodType[];
-        const paymetOptionsData: CustomOptionsType[] = data.map((item) => ({
-          name: item.Name,
-          value: item.Id,
-        }));
-        setPaymentMethods(paymetOptionsData);
-      } else {
-        setPaymentMethods([]);
-      }
-    };
-    process();
-  }, []);
+  // useEffect(() => {
+  //   const process = async () => {
+  //     const result: ResponseResult<PaymentMethodType> =
+  //       await GetPaymentMethodTypes();
+  //     if (result.IsSuccess) {
+  //       const data = result.Data as PaymentMethodType[];
+  //       const paymetOptionsData: CustomOptionsType[] = data.map((item) => ({
+  //         name: item.Name,
+  //         value: item.Id,
+  //       }));
+  //       setPaymentMethods(paymetOptionsData);
+  //     } else {
+  //       setPaymentMethods([]);
+  //     }
+  //   };
+  //   process();
+  // }, []);
 
   const onSubmit: SubmitHandler<AddCompanyType> = async (data) => {
-    // console.log(data);
-    // const result = await AddCompanyService({ data });
-    // if (result.IsSuccess) {
-    //   toast.success("Firma Eklendi", {
-    //     position: "top-right",
-    //   });
-    //   reset();
-    //   toggleOpened();
-    //   return router.refresh();
-    // } else {
-    //   return toast.error(result.Message || "Hata", {
-    //     position: "top-right",
-    //   });
-    // }
+    const result: ResponseResult<CompanyType> = !data.Id
+      ? await AddCompanyService({
+          data,
+        })
+      : await UpdateCompanyService({ id: data.Id as number, data });
+
+    if (result.IsSuccess) {
+      if (!data.Id) {
+        toast.success("Firma Eklendi", {
+          position: "top-right",
+        });
+      } else {
+        toast.warning("Firma Güncellendi", {
+          position: "top-right",
+        });
+      }
+
+      reset();
+      toggleOpenedModal(false);
+      return router.refresh();
+    } else {
+      return toast.error(result.Message || "Hata", {
+        position: "top-right",
+      });
+    }
   };
 
   return (

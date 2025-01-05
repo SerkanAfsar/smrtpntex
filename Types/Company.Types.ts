@@ -48,7 +48,8 @@ export type OtorizationsListType = PageIndexType & {
 };
 
 export type AddCompanyType = {
-  paymentMethodId: number;
+  Id?: number | null;
+  paymentMethodId: number | string;
   title: string;
   taxNumber: string;
   taxOffice: string;

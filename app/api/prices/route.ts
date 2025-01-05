@@ -1,0 +1,25 @@
+import { GetPriceListService } from "@/Services/PriceService";
+import { BpOrderListType } from "@/Types/BpOrder.Types";
+import { NextRequest, NextResponse } from "next/server";
+
+export async function GET(req: NextRequest) {
+  const searchParams = req.nextUrl.searchParams;
+  const pageIndex = Number(searchParams.get("pageIndex"));
+  const pageSize = Number(searchParams.get("pageSize"));
+  const keywords = searchParams.get("keywords");
+
+  const searchType: BpOrderListType = {
+    pageSize,
+    pageIndex,
+  };
+
+  if (keywords && keywords != "undefined") {
+    searchType.keywords = keywords;
+  }
+
+  const result = await GetPriceListService({
+    searchType,
+  });
+
+  return NextResponse.json(result);
+}

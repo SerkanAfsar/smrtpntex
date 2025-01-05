@@ -12,7 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import ContentWithInfoSection from "@/Components/Admin/ContentWithInfoSection";
 import ContentSubLeftSearch from "@/Components/Admin/ContentSubLeftSearch";
-import { PaginationType } from "@/Types/Common.Types";
+import { CustomOptionsType, PaginationType } from "@/Types/Common.Types";
 import { useShallow } from "zustand/shallow";
 import { CompanyType } from "@/Types/Company.Types";
 import { useCompanyModal } from "@/store/useCompanyModal";
@@ -65,8 +65,10 @@ const types: MenuType = {
 
 export default function CompaniesContainer({
   dataResult,
+  paymentMethods,
 }: {
   dataResult: PaginationType<CompanyType>;
+  paymentMethods: CustomOptionsType[];
 }) {
   const [keywords, setKeywords] = useState<string>("");
   const [startDate, setStartDate] = useState<string>("");
@@ -74,13 +76,21 @@ export default function CompaniesContainer({
   const [excelLoading, setExcelLoading] = useState<boolean>(false);
 
   const [activeMenu, setActiveMenu] = useState<string>("Araçlar");
-  const [toggleOpened, selectedCompany, setSelectedCompany] = useCompanyModal(
+
+  const [
+    toggleOpenedModal,
+    selectedCompany,
+    setSelectedCompany,
+    isOpenedModal,
+  ] = useCompanyModal(
     useShallow((state) => [
       state.toggleOpened,
       state.selectedCompany,
       state.setSelectedCompany,
+      state.isOpened,
     ]),
   );
+
   useEffect(() => {
     setSelectedCompany(undefined);
   }, [setSelectedCompany]);
@@ -91,10 +101,10 @@ export default function CompaniesContainer({
         actionOne={() => {
           alert("test");
         }}
-        addAction={() => {
-          toggleOpened(false);
-          setSelectedCompany(undefined);
-          toggleOpened(true);
+        addAction={async () => {
+          toggleOpenedModal(false);
+          await setSelectedCompany(undefined);
+          toggleOpenedModal(true);
         }}
         addTitle="Firma Ekle"
         placeholder="Firma Ara"
@@ -104,9 +114,10 @@ export default function CompaniesContainer({
           value: item.Id.toString(),
           active: item.IsActive,
         }))}
-        toggleOpened={toggleOpened}
+        toggleOpened={toggleOpenedModal}
         selectAction={setSelectedCompany}
         selectedId={selectedCompany?.Id ?? undefined}
+        type="COMPANY"
       />
       <ContentWithInfoSection>
         {selectedCompany?.Id ? (
@@ -172,16 +183,20 @@ export default function CompaniesContainer({
         ) : (
           <NotSelected
             title="Firma"
-            action={() => toggleOpened(true)}
+            action={() => toggleOpenedModal(true)}
             buttonTitle="Firma Ekle"
           />
         )}
       </ContentWithInfoSection>
       <AddEditCompanyModal
+        paymentMethods={paymentMethods}
+        toggleOpenedModal={toggleOpenedModal}
+        isOpenedModal={isOpenedModal}
         editData={{
+          Id: selectedCompany?.Id ?? null,
           alertLimit: selectedCompany?.AlertLimit ?? 0,
           isActive: selectedCompany?.IsActive ?? false,
-          paymentMethodId: selectedCompany?.PaymentMethodId ?? 0,
+          paymentMethodId: selectedCompany?.PaymentMethodId ?? "",
           riskLimit: selectedCompany?.RiskLimit ?? 0,
           taxNumber: selectedCompany?.TaxNumber ?? "",
           taxOffice: selectedCompany?.TaxOffice ?? "",

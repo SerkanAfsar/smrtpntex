@@ -3,14 +3,10 @@ import {
   AddDistributerType,
   DistributorCarType,
   DistributorCompanyType,
-  DistributorCurrentAccountType,
-  DistributorSaleType,
   DistributorUserType,
   DistrubitorCarsListType,
   DistrubitorCompanyListType,
-  DistrubitorCurrentAccountsListType,
   DistrubitorListType,
-  DistrubitorSaleListType,
   DistrubitorType,
   DistrubitorUsersListType,
   PaymentMethodType,
@@ -109,4 +105,11 @@ export async function GetDistributorUsersListService({
     url: `adminApi/Distributor/user/${distributorId}`,
     body: searchType,
   })) as ResponseResult<PaginationType<DistributorUserType>>;
+}
+
+export async function DeleteDistributorService({ id }: { id: number }) {
+  return (await BaseFetch({
+    method: "POST",
+    url: `adminApi/Distributor/delete/${id}`,
+  })) as ResponseResult<DistrubitorType>;
 }
