@@ -83,7 +83,9 @@ export default function AddEditMemberModal({
       )}
     >
       <div className="flex items-center justify-between">
-        <h1 className="text-lg font-medium">Firma Ekle</h1>
+        <h1 className="text-lg font-medium">
+          {editData.Id ? "Üye Güncelle" : "Üye Ekle"}
+        </h1>
         <Image
           src={ExitIcon}
           alt="Exit"
