@@ -17,6 +17,11 @@ export const KullanicilarDataTableColumns = (
     width: "250px",
   },
   {
+    name: "GSM",
+    selector: (row: UserType) => row.Gsm,
+    sortable: true,
+  },
+  {
     name: "Kullanıcı Adı",
     selector: (row: UserType) => row.UserName,
     sortable: true,

@@ -153,7 +153,7 @@ export default function DistributorCompanies({
                 // toggleOpened(true);
               }}
             >
-              {item.Title} {item.Id}
+              {item.Title}
               {/* <Image
               src={EditIcon}
               width={20}

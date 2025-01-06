@@ -156,7 +156,17 @@ export default function ContentSubLeftSearch({
             )}
             key={index}
           >
-            {item.name}
+            <span
+              className="block h-full flex-1 cursor-pointer"
+              onClick={async () => {
+                toggleOpened(false);
+                await selectAction(Number(item.value));
+                toggleOpened(true);
+              }}
+            >
+              {item.name}
+            </span>
+
             <div className="flex items-center justify-between gap-3">
               <Image
                 src={Delete2}

@@ -144,6 +144,7 @@ export default function UserDetailModal({
         toggleOpened();
         setUpdated();
       } else {
+        alert("deneme");
         return toast.error(result.Message || "Hata", {
           position: "top-right",
         });

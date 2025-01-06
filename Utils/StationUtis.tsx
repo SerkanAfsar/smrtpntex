@@ -16,7 +16,7 @@ export const StationListHeaderColumns = (
   },
   {
     name: "Marka",
-    selector: (row: StationType) => row.StationBrandId,
+    selector: (row: StationType) => row.BrandName,
     sortable: true,
   },
   {

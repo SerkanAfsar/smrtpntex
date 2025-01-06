@@ -21,6 +21,8 @@ export type AddStationType = {
 };
 
 export type StationType = {
+  BrandName?: string;
+  ImageUrl?: string;
   StationGuid: string;
   StationNumber: string;
   StationIP: string;
