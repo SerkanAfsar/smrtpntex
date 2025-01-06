@@ -13,12 +13,9 @@ import {
 import { DistrubitorType } from "@/Types/Distrubitor.Types";
 import { RoleType } from "@/Types/Role.Types";
 import { AddUserType, UserType } from "@/Types/User.Types";
-
 import { cn } from "@/Utils";
 import { ExitIcon } from "@/Utils/IconList";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-
 import { useCallback, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -29,23 +26,32 @@ export default function UserDetailModal({
   setUpdated,
   userData,
   title,
+  stationBrands,
+  stationList,
 }: {
   toggleOpened: any;
   isOpenedModal: boolean;
   setUpdated: any;
   userData: UserType | null;
   title: string;
+  stationBrands: CustomOptionsType[];
+  stationList: CustomOptionsType[];
 }) {
-  const router = useRouter();
   const [roleList, setRoleList] = useState<CustomOptionsType[]>([]);
   const [distributorList, setDistributorList] = useState<CustomOptionsType[]>(
     [],
   );
+  const [isDagitici, setIsDagitici] = useState<boolean>(false);
+  const [isYetkiki, setIsYetkili] = useState<boolean>(false);
+  const [isDist, setIsDist] = useState<boolean>(false);
+
   const {
     register,
     reset,
     handleSubmit,
     clearErrors,
+    watch,
+    resetField,
     formState: { errors },
   } = useForm<UserType>();
 
@@ -103,9 +109,40 @@ export default function UserDetailModal({
     setDistributorsFunc();
   }, [setRolesFunc, setDistributorsFunc]);
 
+  const roleId = watch("RoleId");
+
+  useEffect(() => {
+    if (roleId == 1009) {
+      setIsDagitici(true);
+      setIsYetkili(false);
+      setIsDist(false);
+      resetField("stationId");
+      resetField("DistributorId");
+    } else if (roleId == 1010) {
+      setIsDagitici(false);
+      setIsYetkili(true);
+      setIsDist(false);
+      resetField("stationBrandId");
+      resetField("DistributorId");
+    } else if (roleId == 1001) {
+      setIsDagitici(false);
+      setIsYetkili(false);
+      setIsDist(true);
+      resetField("stationId");
+      resetField("stationBrandId");
+    } else {
+      setIsDagitici(false);
+      setIsYetkili(false);
+      setIsDist(false);
+      resetField("stationId");
+      resetField("stationBrandId");
+      resetField("DistributorId");
+    }
+  }, [roleId, resetField]);
+
   const onSubmit: SubmitHandler<UserType> = async (data) => {
     const addUserData: AddUserType = {
-      distributorId: data.DistributorId,
+      distributorId: isDist ? data.DistributorId : undefined,
       email: data.Email,
       firstName: data.FirstName,
       gsm: data.Gsm,
@@ -114,7 +151,10 @@ export default function UserDetailModal({
       password: data.Password,
       roleId: data.RoleId,
       username: data.UserName,
+      stationBrandId: isDagitici ? data.stationBrandId : undefined,
+      stationId: isYetkiki ? data.stationId : undefined,
     };
+
     if (userData == null) {
       const result = await AddUserService({ data: addUserData });
       if (result.IsSuccess) {
@@ -144,7 +184,6 @@ export default function UserDetailModal({
         toggleOpened();
         setUpdated();
       } else {
-        alert("deneme");
         return toast.error(result.Message || "Hata", {
           position: "top-right",
         });
@@ -184,19 +223,49 @@ export default function UserDetailModal({
           title="Rol Seçiniz"
           err={errors.RoleId?.message}
         />
-        <CustomSelect
-          {...register("DistributorId", {
-            required: "Distribütör Seçiniz",
-            valueAsNumber: true,
-            value: (userData?.DistributorId as number) ?? undefined,
-          })}
-          defaultValue={(userData?.DistributorId as number) ?? undefined}
-          setFirst={true}
-          options={distributorList}
-          className="rounded-md border p-3"
-          title="Distribütör Seçiniz"
-          err={errors.DistributorId?.message}
-        />
+        {isDagitici && (
+          <CustomSelect
+            {...register("stationBrandId", {
+              required: "İstasyon Marka Seçiniz",
+              valueAsNumber: true,
+              value: (userData?.stationBrandId as number) ?? undefined,
+            })}
+            setFirst={true}
+            options={stationBrands}
+            className="rounded-md border p-3"
+            title="İstasyon Marka"
+            err={errors.stationBrandId?.message}
+          />
+        )}
+        {isYetkiki && (
+          <CustomSelect
+            {...register("stationId", {
+              required: "İstasyon Seçiniz",
+              valueAsNumber: true,
+              value: (userData?.stationId as number) ?? undefined,
+            })}
+            setFirst={true}
+            options={stationList}
+            className="rounded-md border p-3"
+            title="İstasyon"
+            err={errors.stationId?.message}
+          />
+        )}
+        {isDist && (
+          <CustomSelect
+            {...register("DistributorId", {
+              required: "Distribütör Seçiniz",
+              valueAsNumber: true,
+              value: (userData?.DistributorId as number) ?? undefined,
+            })}
+            defaultValue={(userData?.DistributorId as number) ?? undefined}
+            setFirst={true}
+            options={distributorList}
+            className="rounded-md border p-3"
+            title="Distribütör Seçiniz"
+            err={errors.DistributorId?.message}
+          />
+        )}
 
         <CustomTextbox
           {...register("UserName", {
