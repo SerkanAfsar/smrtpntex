@@ -3,7 +3,7 @@ import { PageIndexType } from "./Common.Types";
 export type UserType = {
   RoleId: number;
   UserGuid: string;
-  DistributorId: number;
+  DistributorId?: number;
   RoleName: string;
   UserName: string;
   FirstName: string;
@@ -22,6 +22,8 @@ export type UserType = {
   IsDeleted: boolean;
   CreatedDate: string;
   Id: number;
+  stationBrandId?: number;
+  stationId?: number;
 };
 
 export type UserListType = PageIndexType & {
@@ -30,7 +32,7 @@ export type UserListType = PageIndexType & {
 
 export type AddUserType = {
   roleId: number;
-  distributorId: number;
+  distributorId?: number;
   username: string;
   gsm: string;
   email: string;
@@ -38,6 +40,8 @@ export type AddUserType = {
   firstName: string;
   lastName: string;
   isActive: boolean;
+  stationBrandId?: number;
+  stationId?: number;
 };
 
 export type UserChangePasswordType = {

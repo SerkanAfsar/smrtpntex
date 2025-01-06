@@ -17,7 +17,7 @@ import {
   GetUserByIdService,
   RemoveBanService,
 } from "@/Services/UserService";
-import { ResponseResult } from "@/Types/Common.Types";
+import { CustomOptionsType, ResponseResult } from "@/Types/Common.Types";
 import { toast } from "react-toastify";
 import UserDetailModal from "../Components/UserDetailModal";
 import { useUserModal } from "@/store/useUserModal";
@@ -34,8 +34,12 @@ import { PermissionPageDataType } from "../page";
 
 export default function UsersContainer({
   permissionPages,
+  stationBrands,
+  stationList,
 }: {
   permissionPages: PermissionPageDataType;
+  stationBrands: CustomOptionsType[];
+  stationList: CustomOptionsType[];
 }) {
   const isOpened = useLeftMenuStore((state) => state.isOpened);
   const [
@@ -249,6 +253,8 @@ export default function UsersContainer({
         toggleOpened={toggleOpened}
         userData={userData ?? null}
         title={selectedUserId ? "Kullanıcı Güncelle" : "Kullanıcı Ekle"}
+        stationBrands={stationBrands}
+        stationList={stationList}
       />
       <RoleDetailModal
         isOpenedModal={isOpenedModalRole}
