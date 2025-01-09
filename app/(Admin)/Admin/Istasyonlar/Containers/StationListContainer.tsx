@@ -16,12 +16,16 @@ import { ResponseResult } from "@/Types/Common.Types";
 import { StationType } from "@/Types/Station.Types";
 import { DeleteStationService } from "@/Services/StationService";
 import { toast } from "react-toastify";
+import StationMapsList from "../Components/StationMapsList";
+
+export type ContainerListProps = Record<string, any>;
 
 export default function StationListContainer() {
   const isOpened = useLeftMenuStore((state) => state.isOpened);
   const [keywords, setKeywords] = useState<string>("");
   const [isActive, setIsActive] = useState<boolean | undefined>(undefined);
   const [excelLoading, setExcelLoading] = useState<boolean>(false);
+  const [activeMenu, setActiveMenu] = useState<string>("İstasyonlar");
   const [
     setSelectedStation,
     selectedStation,
@@ -39,6 +43,32 @@ export default function StationListContainer() {
       state.setUpdated,
     ]),
   );
+  const types: ContainerListProps = {
+    İstasyonlar: (
+      <>
+        <StationCustomSearch
+          setIsActive={setIsActive}
+          setKeywords={setKeywords}
+        />
+        <CustomDatatable
+          columns={StationListHeaderColumns(
+            async ({ id }: { id: number }) => {
+              await setSelectedStation(id);
+              toggleOpenedStation();
+            },
+            async ({ id }: { id: number }) => {
+              return await deleteStation({ id });
+            },
+          )}
+          apiUrl="/api/stations/stationlist"
+          keywords={keywords}
+          isActive={isActive}
+          updated={updatedStation}
+        />
+      </>
+    ),
+    Harita: <StationMapsList />,
+  };
 
   const deleteStation = useCallback(
     async ({ id }: { id: number }) => {
@@ -71,53 +101,50 @@ export default function StationListContainer() {
         )}
       >
         <AdminTopSection>
-          <h2>İstasyonlar</h2>
-          <div className="flex items-center gap-3">
-            <CustomButton
-              className="P-2 bg-blue-100 text-blue-500"
-              onClick={() => {
-                setSelectedStation();
-                toggleOpenedStation();
-              }}
-              icon={PlusSmall}
-              title={"İstasyon Ekle"}
-            />
-            <CustomButton
-              className="gap-1 bg-green-100 p-2 text-green-600"
-              icon={ExportCsvIcon}
-              disabled={excelLoading}
-              title={excelLoading ? "Excel Çıktısı Alınıyor" : "Dışa Aktar"}
-              onClick={async () => {
-                setExcelLoading(true);
-                await ExcelIstasyonlarList({
-                  stationName: keywords ?? "",
-                  status: isActive ?? undefined,
-                });
-                setExcelLoading(false);
-              }}
-            />
+          <div className="flex w-full items-center justify-between">
+            <div className="mr-3 flex items-center justify-between gap-3">
+              {Object.keys(types).map((key: string, index: number) => (
+                <CustomButton
+                  key={index}
+                  className={cn(
+                    "gap-1 rounded-md border p-2 px-3",
+                    activeMenu == key
+                      ? "border-black bg-gray-900 text-white"
+                      : "bg-white text-black",
+                  )}
+                  onClick={() => setActiveMenu(key)}
+                  title={key}
+                />
+              ))}
+            </div>
+            <div className="flex items-center gap-3">
+              <CustomButton
+                className="P-2 bg-blue-100 text-blue-500"
+                onClick={() => {
+                  setSelectedStation();
+                  toggleOpenedStation();
+                }}
+                icon={PlusSmall}
+                title={"İstasyon Ekle"}
+              />
+              <CustomButton
+                className="gap-1 bg-green-100 p-2 text-green-600"
+                icon={ExportCsvIcon}
+                disabled={excelLoading}
+                title={excelLoading ? "Excel Çıktısı Alınıyor" : "Dışa Aktar"}
+                onClick={async () => {
+                  setExcelLoading(true);
+                  await ExcelIstasyonlarList({
+                    stationName: keywords ?? "",
+                    status: isActive ?? undefined,
+                  });
+                  setExcelLoading(false);
+                }}
+              />
+            </div>
           </div>
         </AdminTopSection>
-
-        <StationCustomSearch
-          setIsActive={setIsActive}
-          setKeywords={setKeywords}
-        />
-        <CustomDatatable
-          columns={StationListHeaderColumns(
-            async ({ id }: { id: number }) => {
-              await setSelectedStation(id);
-              toggleOpenedStation();
-            },
-            async ({ id }: { id: number }) => {
-              return await deleteStation({ id });
-            },
-          )}
-          apiUrl="/api/stations/stationlist"
-          keywords={keywords}
-          isActive={isActive}
-          updated={updatedStation}
-        />
+        {types[activeMenu]}
       </div>
       <StationDetailModal
         stationData={selectedStation ?? null}

@@ -10,6 +10,7 @@
     "lint:fix": "next lint --fix"
   },
   "dependencies": {
+    "@react-google-maps/api": "^2.20.5",
     "@react-input/mask": "^2.0.4",
     "@types/xlsx": "^0.0.35",
     "chart.js": "^4.4.7",

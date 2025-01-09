@@ -74,3 +74,6 @@ public string OrderNumber { get; set; }
 public string UserName { get; set; }
 public string DisplayName { get; set; }
 public string CompanyName { get; set; }
+
+1. İstasyonlar kısmına harita eklenicek
+2. Gösterge paneli dashboard olan yere "hoşgeldin kullanıcı adı"
