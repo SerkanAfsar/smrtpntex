@@ -77,3 +77,7 @@ public string CompanyName { get; set; }
 
 1. İstasyonlar kısmına harita eklenicek
 2. Gösterge paneli dashboard olan yere "hoşgeldin kullanıcı adı"
+
+Admin-Price ile ilgili düzenlemeler
+Product-ile ilgili düzenlemeler
+Üyeler-Adress kısmının eklenmesi

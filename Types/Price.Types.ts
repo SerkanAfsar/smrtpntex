@@ -27,12 +27,13 @@ export type PriceType = {
 };
 
 export type AddPriceType = {
-  productId: number;
+  Id?: number;
+  productId: number | null;
   companyId: number | null;
   stationId: number | null;
-  memberId: number;
-  newAmount: number;
-  discountRatio: number;
+  memberId: number | null;
+  newAmount: number | null;
+  discountRatio: number | null;
   startDate: string;
   endDate: string;
 };

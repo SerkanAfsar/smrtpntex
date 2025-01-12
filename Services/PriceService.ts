@@ -1,10 +1,6 @@
 import { PaginationType, ResponseResult } from "@/Types/Common.Types";
 import BaseFetch from "./BaseService";
-import {
-  ExcelPriceType,
-  PriceSearchType,
-  PriceType,
-} from "@/Types/Price.Types";
+import { AddPriceType, PriceSearchType, PriceType } from "@/Types/Price.Types";
 import { toast } from "react-toastify";
 import { exportToExcel } from "@/Utils";
 import { format } from "date-fns";
@@ -90,3 +86,39 @@ export const ExportPriceList = async ({ keywords }: { keywords: string }) => {
     return toast.error(result.Message || "Hata", { position: "top-right" });
   }
 };
+
+export async function GetPriceByIdService({ id }: { id: number }) {
+  return (await BaseFetch({
+    method: "GET",
+    url: `adminApi/Price/getbyid/${id}`,
+  })) as ResponseResult<PriceType>;
+}
+
+export async function AddPriceService({ data }: { data: AddPriceType }) {
+  return (await BaseFetch({
+    method: "POST",
+    url: `adminApi/Price/add`,
+    body: data,
+  })) as ResponseResult<PriceType>;
+}
+
+export async function UpdatePriceService({
+  id,
+  data,
+}: {
+  id: number;
+  data: AddPriceType;
+}) {
+  return (await BaseFetch({
+    method: "PUT",
+    url: `adminApi/Price/edit/${id}`,
+    body: data,
+  })) as ResponseResult<PriceType>;
+}
+
+export async function DeletePriceService({ id }: { id: number }) {
+  return (await BaseFetch({
+    method: "POST",
+    url: `adminApi/Price/delete/${id}`,
+  })) as ResponseResult<PriceType>;
+}

@@ -4,34 +4,54 @@ import CustomButton from "@/Components/UI/CustomButton";
 import { useLeftMenuStore } from "@/store/useLeftMenuStore";
 import { cn } from "@/Utils";
 import { ExportCsvIcon, PlusSmall } from "@/Utils/IconList";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { MenuType } from "../../Petronet/Containers/PetronetContainer";
 import CustomDatatable from "@/Components/UI/CustomDataTable";
 
 import { PriceHeaderColumns } from "@/Utils/PriceUtils";
 
 import CustomPriceSearch from "../Components/CustomPriceSearch";
-import { ExportPriceList } from "@/Services/PriceService";
+import {
+  DeletePriceService,
+  ExportPriceList,
+  GetPriceByIdService,
+} from "@/Services/PriceService";
+import { usePriceModal } from "@/store/usePriceModal";
+import { useShallow } from "zustand/shallow";
+import { CustomOptionsType, ResponseResult } from "@/Types/Common.Types";
+import AddEditPriceModal from "../Components/AddEditPriceModal";
+import { PriceType } from "@/Types/Price.Types";
+import { toast } from "react-toastify";
 
-export default function PriceContainer() {
+export default function PriceContainer({
+  companyList,
+  stationList,
+  productList,
+  memberList,
+}: {
+  companyList: CustomOptionsType[];
+  stationList: CustomOptionsType[];
+  productList: CustomOptionsType[];
+  memberList: CustomOptionsType[];
+}) {
   const isOpened = useLeftMenuStore((state) => state.isOpened);
-  //   const [
-  //     toggleOpened,
-  //     isOpenedModal,
-  //     setUpdated,
-  //     selectedUserId,
-  //     setSelectedUser,
-  //     updated,
-  //   ] = useUserModal(
-  //     useShallow((state) => [
-  //       state.toggleOpened,
-  //       state.isOpened,
-  //       state.setUpdated,
-  //       state.selectedId,
-  //       state.setSelectedUser,
-  //       state.updated,
-  //     ]),
-  //   );
+  const [
+    toggleOpened,
+    isOpenedModal,
+    setUpdated,
+    selectedPrice,
+    setSelectedPrice,
+    updated,
+  ] = usePriceModal(
+    useShallow((state) => [
+      state.toggleOpened,
+      state.isOpened,
+      state.setisUpdated,
+      state.selectedPrice,
+      state.setSelectedPrice,
+      state.isUpdated,
+    ]),
+  );
 
   const [keywords, setKeywords] = useState<string>("");
   const [activeMenu, setActiveMenu] = useState<string>("Fiyat Listesi");
@@ -53,43 +73,35 @@ export default function PriceContainer() {
   //     [toggleOpened, setSelectedUser],
   //   );
 
-  //   const deleteUserFunc = useCallback(
-  //     async ({ id }: { id: number }) => {
-  //       const confirmMessage = confirm(
-  //         "Bu Üyeyi Kaldırmak İstediğinizden Emin misiniz?",
-  //       );
-  //       if (confirmMessage) {
-  //         const result: ResponseResult<UserType> = await DeleteUserService({
-  //           id,
-  //         });
-  //         if (result.IsSuccess) {
-  //           setUpdated();
-  //           return toast.success("Üye Kaldırıldı", { position: "top-right" });
-  //         } else {
-  //           return toast.error(result.Message || "User Remove Err", {
-  //             position: "top-right",
-  //           });
-  //         }
-  //       }
-  //     },
-  //     [setUpdated],
-  //   );
+  const deletePriceFunc = useCallback(
+    async ({ id }: { id: number }) => {
+      const confirmMessage = confirm(
+        "Bu Veriyi Kaldırmak İstediğinizden Emin misiniz?",
+      );
+      if (confirmMessage) {
+        const result: ResponseResult<PriceType> = await DeletePriceService({
+          id,
+        });
+        if (result.IsSuccess) {
+          setUpdated();
+          return toast.success("Fiyat Kaldırıldı", { position: "top-right" });
+        } else {
+          return toast.error(result.Message || "User Remove Err", {
+            position: "top-right",
+          });
+        }
+      }
+    },
+    [setUpdated],
+  );
 
-  //   const getRoleDetailFunc = useCallback(
-  //     async ({ id }: { id: number }) => {
-  //       const result: ResponseResult<RoleType> = await GetRoleByIdService({
-  //         id,
-  //       });
-  //       if (result.IsSuccess) {
-  //         setRoleData(result.Data as RoleType);
-  //         setSelectedRole(id);
-  //         toggleOpenedRole();
-  //       } else {
-  //         return toast.error(result.Message || "Hata", { position: "top-right" });
-  //       }
-  //     },
-  //     [toggleOpenedRole, setSelectedRole],
-  //   );
+  const getPriceDetailFunc = useCallback(
+    async ({ id }: { id: number }) => {
+      await setSelectedPrice(id);
+      toggleOpened(true);
+    },
+    [setSelectedPrice, toggleOpened],
+  );
 
   const types = useMemo<MenuType>(() => {
     return {
@@ -97,30 +109,23 @@ export default function PriceContainer() {
         searchItems: ["aranacak"],
         apiUrl: "/api/prices",
         columns: PriceHeaderColumns(
-          //   async ({ id }: { id: number }) => await getUserDetailsFunc({ id }),
-          //   async ({ id }: { id: number }) => await deleteUserFunc({ id }),
-          ({ id }: { id: number }) => {
-            alert(id);
-          },
-          ({ id }: { id: number }) => {
-            alert(id);
-          },
+          async ({ id }: { id: number }) => await getPriceDetailFunc({ id }),
+          async ({ id }: { id: number }) => await deletePriceFunc({ id }),
         ),
-        addButton: (
-          <CustomButton
-            className="P-2 bg-blue-100 text-blue-500"
-            onClick={() => {
-              //   setSelectedUser(undefined);
-              //   setUserData(null);
-              //   toggleOpened();
-            }}
-            icon={PlusSmall}
-            title={"Kullanıcı Ekle"}
-          />
-        ),
+        // addButton: (
+        //   <CustomButton
+        //     className="P-2 bg-blue-100 text-blue-500"
+        //     onClick={async () => {
+        //       await setSelectedPrice(undefined);
+        //       toggleOpened(true);
+        //     }}
+        //     icon={PlusSmall}
+        //     title={"Kullanıcı Ekle"}
+        //   />
+        // ),
       },
     };
-  }, []);
+  }, [deletePriceFunc, getPriceDetailFunc]);
 
   return (
     <>
@@ -150,8 +155,8 @@ export default function PriceContainer() {
             <CustomButton
               className="bg-blue-100 p-2 text-blue-500"
               onClick={async () => {
-                // await setSelectedMember();
-                // toggleOpenedModal(true);
+                await setSelectedPrice(undefined);
+                toggleOpened(true);
               }}
               icon={PlusSmall}
               title={"Fiyat Ekle"}
@@ -178,9 +183,29 @@ export default function PriceContainer() {
           columns={types[activeMenu].columns}
           apiUrl={types[activeMenu].apiUrl}
           keywords={keywords}
-          //   updated={updated || updatedRole}
+          updated={updated}
         />
       </div>
+      <AddEditPriceModal
+        companyList={companyList}
+        editData={{
+          Id: selectedPrice?.Id ?? undefined,
+          companyId: selectedPrice?.CompanyId ?? null,
+          discountRatio: selectedPrice?.DiscountRatio ?? 0,
+          endDate: selectedPrice?.FinishDate ?? "",
+          memberId: selectedPrice?.MemberId ?? null,
+          newAmount: selectedPrice?.NewAmount ?? 0,
+          productId: selectedPrice?.ProductId ?? null,
+          startDate: selectedPrice?.StartDate ?? "",
+          stationId: selectedPrice?.StationId ?? null,
+        }}
+        isOpenedModal={isOpenedModal}
+        memberList={memberList}
+        productList={productList}
+        stationList={stationList}
+        toggleOpenedModal={toggleOpened}
+        setUpdated={setUpdated}
+      />
     </>
   );
 }
