@@ -1,11 +1,9 @@
 import CustomButton from "@/Components/UI/CustomButton";
-import CustomCheckbox from "@/Components/UI/CustomCheckbox";
+
 import CustomSelect from "@/Components/UI/CustomSelect";
 import { CustomTextbox } from "@/Components/UI/CustomTextbox";
 
-import { useCompanyModal } from "@/store/useCompanyModal";
 import { CustomOptionsType, ResponseResult } from "@/Types/Common.Types";
-import { AddCompanyType, CompanyType } from "@/Types/Company.Types";
 
 import { cn } from "@/Utils";
 import { ExitIcon } from "@/Utils/IconList";

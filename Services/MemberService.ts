@@ -6,6 +6,7 @@ import {
 } from "@/Types/Member.Types";
 import BaseFetch from "./BaseService";
 import { PaginationType, ResponseResult } from "@/Types/Common.Types";
+import { AddMemberAddressService } from "./ProvinceService";
 
 export async function GetMemberListService({
   searchType,
@@ -34,11 +35,21 @@ export async function GetMemberTypesService() {
 }
 
 export async function AddMemberService({ data }: { data: AddMemberType }) {
-  return (await BaseFetch({
+  const result = (await BaseFetch({
     method: "POST",
     url: "adminApi/Member/add",
     body: data,
   })) as ResponseResult<MemberType>;
+  if (result.IsSuccess) {
+    if (data.addresses) {
+      const memberId = (result.Data as MemberType).Id;
+      for (let i = 0; i < data.addresses.length; i++) {
+        const item = data.addresses[i];
+        await AddMemberAddressService({ memberId, data: item });
+      }
+    }
+  }
+  return result;
 }
 
 export async function UpdateMemberService({

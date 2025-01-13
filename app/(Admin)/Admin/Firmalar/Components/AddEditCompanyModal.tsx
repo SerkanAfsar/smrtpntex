@@ -13,12 +13,13 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import { useEffect } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import {
   AddCompanyService,
   UpdateCompanyService,
 } from "@/Services/CompanyService";
 import { toast } from "react-toastify";
+import BaseAddressSection from "@/Components/Admin/BaseAddressSection";
 
 export default function AddEditCompanyModal({
   editData,
@@ -40,10 +41,17 @@ export default function AddEditCompanyModal({
     watch,
     setError,
     clearErrors,
+    control,
+    setValue,
     formState: { errors },
   } = useForm<AddCompanyType>({
     mode: "onChange",
     defaultValues: editData,
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "addresses",
   });
 
   // const inputRef = useMask({
@@ -220,6 +228,16 @@ export default function AddEditCompanyModal({
           title="Firma aktifleştirilsin mi?"
           {...register("isActive")}
           name="isActive"
+        />
+        <BaseAddressSection
+          append={append}
+          errors={errors}
+          fields={fields}
+          register={register}
+          remove={remove}
+          watch={watch}
+          setValue={setValue}
+          clearErrors={clearErrors}
         />
 
         <CustomButton

@@ -26,6 +26,20 @@ export async function AddProductService({ data }: { data: AddProductType }) {
   })) as ResponseResult<ProductType>;
 }
 
+export async function UpdateProductService({
+  id,
+  data,
+}: {
+  id: number;
+  data: AddProductType;
+}) {
+  return (await BaseFetch({
+    method: "PUT",
+    url: `adminApi/Product/edit/${id}`,
+    body: data,
+  })) as ResponseResult<ProductType>;
+}
+
 export async function DeleteProductService({ id }: { id: number }) {
   return (await BaseFetch({
     method: "POST",
@@ -37,5 +51,5 @@ export async function GetProductById({ id }: { id: number }) {
   return (await BaseFetch({
     method: "GET",
     url: `adminApi/Product/getbyid/${id}`,
-  })) as ResponseResult<ProductType>;
+  })) as ResponseResult<AddProductType>;
 }

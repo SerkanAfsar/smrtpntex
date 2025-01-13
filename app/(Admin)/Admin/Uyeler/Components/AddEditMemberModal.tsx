@@ -8,7 +8,7 @@ import { ExitIcon } from "@/Utils/IconList";
 import Image from "next/image";
 
 import { useEffect } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { AddMemberType, MemberType } from "@/Types/Member.Types";
 
 import { CustomOptionsType, ResponseResult } from "@/Types/Common.Types";
@@ -17,6 +17,7 @@ import {
   UpdateMemberService,
 } from "@/Services/MemberService";
 import { toast } from "react-toastify";
+import BaseAddressSection from "@/Components/Admin/BaseAddressSection";
 
 export default function AddEditMemberModal({
   editData,
@@ -41,9 +42,18 @@ export default function AddEditMemberModal({
     register,
     reset,
     handleSubmit,
+    control,
+    watch,
+    setValue,
+    clearErrors,
     formState: { errors },
   } = useForm<AddMemberType>({
     mode: "onChange",
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "addresses",
   });
 
   useEffect(() => {
@@ -194,6 +204,16 @@ export default function AddEditMemberModal({
           title="Üye aktifleştirilsin mi?"
           {...register("isActive")}
           name="isActive"
+        />
+        <BaseAddressSection
+          append={append}
+          errors={errors}
+          fields={fields}
+          register={register}
+          remove={remove}
+          watch={watch}
+          setValue={setValue}
+          clearErrors={clearErrors}
         />
         <CustomButton
           type="submit"

@@ -43,7 +43,7 @@ const types: MenuType = {
   },
   Finans: {
     searchItems: ["aranacak", "baslangic", "bitis"],
-    apiUrl: "/api/Company/currentaccount",
+    apiUrl: "/api/Company/current-account",
     columns: CompanyCurrentAccountListColumns,
   },
   Otorizasyonlar: {

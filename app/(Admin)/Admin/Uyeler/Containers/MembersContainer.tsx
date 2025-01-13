@@ -178,6 +178,7 @@ export default function MembersContainer({
           taxNumber: (selectedMember?.TaxOffice as string) ?? "",
           taxOffice: (selectedMember?.TaxOffice as string) ?? "",
           Id: (selectedMember?.Id as number) ?? null,
+          addresses: [],
         }}
         isOpenedModal={isOpenedModal}
         toggleOpenedModal={toggleOpenedModal}

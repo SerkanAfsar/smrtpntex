@@ -1,3 +1,4 @@
+import { AddAddressType } from "./Address.Types";
 import { PageIndexType } from "./Common.Types";
 
 export type MemberTypeType = {
@@ -77,4 +78,5 @@ export type AddMemberType = {
   taxNumber: string;
   taxOffice: string;
   isActive: boolean;
+  addresses?: AddAddressType[];
 };

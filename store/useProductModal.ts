@@ -1,24 +1,26 @@
 import { GetProductById } from "@/Services/ProductService";
-import { ProductType } from "@/Types/Product.Types";
+import { AddProductType } from "@/Types/Product.Types";
 import { create } from "zustand";
 
 interface ProductModal {
   isOpened: boolean;
-  toggleOpened: () => void;
+  toggleOpened: (val: boolean) => void;
   setSelectedProduct: (id?: number) => Promise<void>;
-  selectedProduct?: ProductType | null;
+  selectedProduct?: AddProductType | null;
   setIsUpdated: () => void;
   isUpdated: boolean;
 }
 
 export const useProductModal = create<ProductModal>()((set) => ({
   isOpened: false,
-  toggleOpened: () => set((state) => ({ isOpened: !state.isOpened })),
+  toggleOpened: (val) => set(() => ({ isOpened: val })),
   setSelectedProduct: async (id?: number) => {
     if (id) {
       const result = await GetProductById({ id });
       set({
-        selectedProduct: result.IsSuccess ? (result.Data as ProductType) : null,
+        selectedProduct: result.IsSuccess
+          ? (result.Data as AddProductType)
+          : null,
       });
     } else {
       set({ selectedProduct: null });

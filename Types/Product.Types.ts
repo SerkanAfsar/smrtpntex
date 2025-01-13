@@ -34,12 +34,24 @@ export type ProductListType = PageIndexType & {
 };
 
 export type AddProductType = {
-  name: string;
-  description: string;
-  categoryId: number;
-  sku: string;
-  unitId: number;
-  amount: number;
-  sort: number;
-  isActive: boolean;
+  Id?: number;
+  name: string | null;
+  description: string | null;
+  categoryId: number | null;
+  sku: string | null;
+  unitId: number | null;
+  amount: number | null;
+  sort: number | null;
+  isActive: boolean | null;
+
+  Name?: string;
+  Description?: string;
+  ImageUrl?: string;
+  CategoryPath?: string;
+  CategoryId?: number;
+  UnitId?: number;
+  Amount?: number;
+  Sku?: string;
+  IsActive?: boolean;
+  Sort?: number;
 };

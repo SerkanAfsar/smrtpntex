@@ -2,37 +2,39 @@ import CustomButton from "@/Components/UI/CustomButton";
 import CustomCheckbox from "@/Components/UI/CustomCheckbox";
 import CustomSelect from "@/Components/UI/CustomSelect";
 import { CustomTextbox } from "@/Components/UI/CustomTextbox";
-import { GetAllCategories } from "@/Services/CategoryService";
-import { AddProductService } from "@/Services/ProductService";
-import { useProductModal } from "@/store/useProductModal";
-import { CategoryType } from "@/Types/Category.Types";
+
 import {
-  CustomOptionsType,
-  GenericType2,
-  PaginationType,
-  ResponseResult,
-} from "@/Types/Common.Types";
+  AddProductService,
+  UpdateProductService,
+} from "@/Services/ProductService";
+
+import { CustomOptionsType } from "@/Types/Common.Types";
 
 import { AddProductType } from "@/Types/Product.Types";
 import { cn } from "@/Utils";
 import { ExitIcon } from "@/Utils/IconList";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { useShallow } from "zustand/shallow";
 
 export default function AddEditProductModal({
+  editData,
   setIsUpdated,
+  categoryList,
+  toggleOpened,
+  isOpened,
 }: {
+  editData: AddProductType;
   setIsUpdated: any;
+  categoryList: CustomOptionsType[];
+  toggleOpened: any;
+  isOpened: boolean;
 }) {
   const router = useRouter();
-  const [isOpened, toggleOpened] = useProductModal(
-    useShallow((state) => [state.isOpened, state.toggleOpened]),
-  );
-  const [categoryList, setCategoryList] = useState<CustomOptionsType[]>([]);
+
   const {
     register,
     reset,
@@ -40,43 +42,31 @@ export default function AddEditProductModal({
     formState: { errors },
   } = useForm<AddProductType>({
     mode: "onChange",
+    defaultValues: editData ?? {},
   });
 
   useEffect(() => {
-    const process = async () => {
-      const result: ResponseResult<PaginationType<CategoryType>> =
-        await GetAllCategories({
-          searchType: {
-            pageIndex: 1,
-            pageSize: 1000,
-          },
-        });
-      if (result.IsSuccess) {
-        const data = result.Data as PaginationType<CategoryType>;
-        const resultData = data.records as GenericType2<CategoryType>;
-        const categoryData: CustomOptionsType[] = resultData.Result.map(
-          (item) => ({
-            name: item.Name,
-            value: item.Id,
-          }),
-        );
-        setCategoryList(categoryData);
-      } else {
-        setCategoryList([]);
-      }
-    };
-    process();
-  }, []);
+    reset(editData);
+  }, [reset, editData]);
 
   const onSubmit: SubmitHandler<AddProductType> = async (data) => {
-    const result = await AddProductService({ data });
+    const result = !data.Id
+      ? await AddProductService({ data })
+      : await UpdateProductService({ id: data.Id, data });
+
     if (result.IsSuccess) {
-      toast.success("Ürün Eklendi", {
-        position: "top-right",
-      });
-      setIsUpdated();
+      if (!data.Id) {
+        toast.success("Ürün Eklendi", {
+          position: "top-right",
+        });
+      } else {
+        toast.warning("Ürün Güncellendi", {
+          position: "top-right",
+        });
+      }
       reset();
-      toggleOpened();
+      toggleOpened(false);
+      setIsUpdated();
     } else {
       return toast.error(result.Message || "Hata", {
         position: "top-right",
@@ -97,7 +87,7 @@ export default function AddEditProductModal({
           src={ExitIcon}
           alt="Exit"
           className="cursor-pointer"
-          onClick={() => toggleOpened()}
+          onClick={() => toggleOpened(false)}
         />
       </div>
       <form

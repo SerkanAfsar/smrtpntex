@@ -38,18 +38,21 @@ export default function ProductsContainer({
       state.setIsUpdated,
     ]),
   );
+
   return (
     <>
       <ProductsSubLeftSection
         actionOne={() => {
           alert("test");
         }}
-        addAction={() => {
-          toggleOpened();
+        addAction={async () => {
+          toggleOpened(false);
+          await selectAction(undefined);
+          toggleOpened(true);
         }}
         addTitle="Ürün Ekle"
         placeholder="Ürün Ara"
-        title="Ürümnler"
+        title="Ürünler"
         variables={data.map((item: CategoryType) => ({
           name: item.Name,
           value: item.Id.toString(),
@@ -58,6 +61,7 @@ export default function ProductsContainer({
         selectAction={selectAction}
         setIsUpdated={setIsUpdated}
         isUpdated={isUpdated}
+        toggleOpened={toggleOpened}
       />
       <ContentWithInfoSection>
         {selectedProduct?.Id ? (
@@ -77,26 +81,36 @@ export default function ProductsContainer({
               </div>
             </AdminTopSection>
             <ProductCustomSearch setKeywords={setKeywords} />
-            {/* <CustomGrid
-              search={false}
-              columns={AraclarDatatableProps.columns}
-              pagination={true}
-              sort={true}
-              convertAction={returnCarItem}
-              apiUrl="/api/cars/getlist"
-            /> */}
-            {/* <div>Müşteriler Tablosu Gelicek</div> */}
           </>
         ) : (
           <NotSelected
             title="Ürün"
-            action={() => toggleOpened()}
+            action={() => toggleOpened(true)}
             buttonTitle="Ürün Ekle"
           />
         )}
       </ContentWithInfoSection>
-      {/* <AddEditDistrubutorModal /> */}
-      <AddEditProductModal setIsUpdated={setIsUpdated} />
+
+      <AddEditProductModal
+        categoryList={data.map((category) => ({
+          name: category.Name,
+          value: category.Id,
+        }))}
+        editData={{
+          amount: selectedProduct?.Amount ?? null,
+          categoryId: selectedProduct?.CategoryId ?? null,
+          description: selectedProduct?.Description ?? "",
+          isActive: selectedProduct?.IsActive ?? null,
+          name: selectedProduct?.Name ?? null,
+          sku: selectedProduct?.Sku ?? null,
+          sort: selectedProduct?.Sort ?? null,
+          unitId: selectedProduct?.UnitId ?? null,
+          Id: selectedProduct?.Id ?? undefined,
+        }}
+        setIsUpdated={setIsUpdated}
+        toggleOpened={toggleOpened}
+        isOpened={isOpened}
+      />
     </>
   );
 }

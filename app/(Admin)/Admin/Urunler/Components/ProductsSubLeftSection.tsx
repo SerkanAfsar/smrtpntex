@@ -6,11 +6,7 @@ import {
   GetAllProducts,
 } from "@/Services/ProductService";
 
-import {
-  GenericType2,
-  PaginationType,
-  ResponseResult,
-} from "@/Types/Common.Types";
+import { PaginationType, ResponseResult } from "@/Types/Common.Types";
 import { ProductListType, ProductType } from "@/Types/Product.Types";
 import {
   Delete2,
@@ -40,6 +36,7 @@ export type ContentSubLeftSearchType = {
   selectAction: (id?: number) => void;
   setIsUpdated: any;
   isUpdated: boolean;
+  toggleOpened: any;
 };
 export type SelectTypes = "all" | "true" | "false";
 export default function ProductsSubLeftSection({
@@ -52,6 +49,7 @@ export default function ProductsSubLeftSection({
   selectAction,
   setIsUpdated,
   isUpdated,
+  toggleOpened,
 }: ContentSubLeftSearchType) {
   const [searchKey, setSearchKey] = useState<string>();
   const [selectedType, setSelectedType] = useState<SelectTypes>("all");
@@ -81,8 +79,7 @@ export default function ProductsSubLeftSection({
 
       if (response.IsSuccess) {
         const data = response.Data as PaginationType<ProductType>;
-        const data2 = data.records as GenericType2<ProductType>;
-        setProductList(data2.Result as ProductType[]);
+        setProductList(data?.records as ProductType[]);
       } else {
         setProductList([]);
       }
@@ -90,22 +87,27 @@ export default function ProductsSubLeftSection({
     process();
   }, [searchKey, selectedCategory, selectedType, isUpdated]);
 
-  const deleteProductFunc = useCallback(async ({ id }: { id: number }) => {
-    const confirmMessage = confirm("Ürünü Silmek İstediğinizden Emin misiniz?");
-    if (confirmMessage) {
-      const result: ResponseResult<ProductType> = await DeleteProductService({
-        id,
-      });
-      if (result.IsSuccess) {
-        setIsUpdated();
-        return toast.success("Ürün Silindi", { position: "top-right" });
-      } else {
-        return toast.error(result.Message ?? "Ürün Silme Hatası", {
-          position: "top-right",
+  const deleteProductFunc = useCallback(
+    async ({ id }: { id: number }) => {
+      const confirmMessage = confirm(
+        "Ürünü Silmek İstediğinizden Emin misiniz?",
+      );
+      if (confirmMessage) {
+        const result: ResponseResult<ProductType> = await DeleteProductService({
+          id,
         });
+        if (result.IsSuccess) {
+          setIsUpdated();
+          return toast.success("Ürün Silindi", { position: "top-right" });
+        } else {
+          return toast.error(result.Message ?? "Ürün Silme Hatası", {
+            position: "top-right",
+          });
+        }
       }
-    }
-  }, []);
+    },
+    [setIsUpdated],
+  );
 
   return (
     <section className="ml-[62px] flex w-[320px] flex-col border-r border-t bg-white">
@@ -171,14 +173,18 @@ export default function ProductsSubLeftSection({
       </div>
       <hr />
       <div className="w-full flex-1 flex-col gap-6 overflow-auto overscroll-contain p-4">
-        {productList.map((item: ProductType, index) => (
+        {productList?.map((item: ProductType, index) => (
           <div
             className="group flex w-full flex-col items-center justify-center gap-2 rounded-md p-3 text-sm transition-all hover:bg-blue-100"
             key={index}
-            onClick={() => selectAction(Number(item.Id))}
+            onClick={async () => {
+              toggleOpened(false);
+              await selectAction(Number(item.Id));
+              toggleOpened(true);
+            }}
           >
             <div className="flex w-full items-center justify-between">
-              <h4 className="text-[16px]">{item.Name}</h4>
+              <h4 className="cursor-pointer text-[16px]">{item.Name}</h4>
               <div className="h-[30px]">
                 <div className="hidden items-center gap-3 opacity-0 transition-all delay-[25] group-hover:flex group-hover:opacity-100">
                   <Image

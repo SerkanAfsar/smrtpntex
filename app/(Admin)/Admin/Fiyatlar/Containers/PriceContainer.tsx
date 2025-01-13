@@ -11,11 +11,7 @@ import CustomDatatable from "@/Components/UI/CustomDataTable";
 import { PriceHeaderColumns } from "@/Utils/PriceUtils";
 
 import CustomPriceSearch from "../Components/CustomPriceSearch";
-import {
-  DeletePriceService,
-  ExportPriceList,
-  GetPriceByIdService,
-} from "@/Services/PriceService";
+import { DeletePriceService, ExportPriceList } from "@/Services/PriceService";
 import { usePriceModal } from "@/store/usePriceModal";
 import { useShallow } from "zustand/shallow";
 import { CustomOptionsType, ResponseResult } from "@/Types/Common.Types";

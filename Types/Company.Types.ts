@@ -1,3 +1,4 @@
+import { AddAddressType } from "./Address.Types";
 import { PageIndexType } from "./Common.Types";
 import { DistrubitorType } from "./Distrubitor.Types";
 
@@ -56,6 +57,7 @@ export type AddCompanyType = {
   alertLimit: number;
   riskLimit: number;
   isActive: boolean;
+  addresses?: AddAddressType[];
 };
 
 export type CompanySalesType = {

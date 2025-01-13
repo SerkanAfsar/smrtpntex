@@ -81,3 +81,18 @@ public string CompanyName { get; set; }
 Admin-Price ile ilgili düzenlemeler
 Product-ile ilgili düzenlemeler
 Üyeler-Adress kısmının eklenmesi
+
+// "id": 0,
+// "title": "string",
+// "firstName": "string",
+// "lastName": "string",
+// "email": "string",
+// "phoneNumber": "string",
+// "company": "string",
+// "countryId": 0,
+// "provinceId": 0,
+// "districtId": 0,
+// "neighborhoodId": 0,
+// "addressLine": "string",
+// "zipPostalCode": "string",
+// "addressHtml": "string"
