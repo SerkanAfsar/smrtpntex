@@ -60,6 +60,8 @@ export default function StationDetailModal({
     handleSubmit,
     clearErrors,
     control,
+    setValue,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<StationType>();
 
@@ -85,7 +87,7 @@ export default function StationDetailModal({
           IsDeleted: false,
           Latitude: "",
           Longitude: "",
-          StationBrandId: 0,
+          StationBrandId: "",
           StationGuid: "",
           StationIP: "",
           StationNumber: "",
@@ -103,7 +105,7 @@ export default function StationDetailModal({
   const onSubmit: SubmitHandler<StationType> = async (data) => {
     const newStationData: AddStationType = {
       affiliateCode: data.AffiliateCode,
-      brandId: data.StationBrandId,
+      brandId: data.StationBrandId as number,
       isActive: data.IsActive,
       latitude: data.Latitude,
       longitude: data.Longitude,
@@ -281,7 +283,7 @@ export default function StationDetailModal({
         {fields.length > 0 && (
           <h2 className="text-md font-bold">Tank Bilgileri</h2>
         )}
-        {fields.map((field, index) => (
+        {fields.map((field: any, index: number) => (
           <div
             className="flex flex-col gap-4 rounded-md border p-4"
             key={field.id}
@@ -318,80 +320,32 @@ export default function StationDetailModal({
                 {field.Id ? "Tankı Sil" : "Kaldır"}
               </button>
             </h2>
-            <CustomSelect
-              {...register(`tanks.${index}.IntegratorId`, {
-                required: "IntegratorId",
-                valueAsNumber: true,
-              })}
-              setFirst={true}
-              options={[
-                { name: "Petronet", value: 1 },
-                { name: "EPump", value: 2 },
-              ]}
-              className="rounded-md border p-3"
-              title="IntegratorId"
-              err={errors.tanks?.[index]?.IntegratorId?.message}
+            <TankDetailComponent
+              errors={errors}
+              index={index}
+              register={register}
+              setValue={setValue}
+              getValues={getValues}
             />
-            <CustomTextbox
-              {...register(`tanks.${index}.ePumpId`, {
-                required: "Mitra PompaId Giriniz..",
-              })}
-              className="rounded-md border p-3 outline-none"
-              title="Mitra PompaId"
-              err={errors.tanks?.[index]?.ePumpId?.message}
-            />
-            <CustomTextbox
-              {...register(`tanks.${index}.Title`, {
-                required: "Başlık Giriniz..",
-              })}
-              className="rounded-md border p-3 outline-none"
-              title="Başlık"
-              err={errors.tanks?.[index]?.Title?.message}
-            />
-            <CustomTextbox
-              {...register(`tanks.${index}.TankNumber`, {
-                required: "Tank No Giriniz..",
-              })}
-              className="rounded-md border p-3 outline-none"
-              title="Tank No"
-              err={errors.tanks?.[index]?.TankNumber?.message}
-            />
-            <div className="flex items-center justify-between gap-4">
-              <CustomTextbox
-                {...register(`tanks.${index}.CurrentCapacity`, {
-                  required: "Mevcut Kapasite Giriniz..",
-                  valueAsNumber: true,
-                })}
-                className="rounded-md border p-3 outline-none"
-                title="Mevcut Kapasite"
-                err={errors.tanks?.[index]?.CurrentCapacity?.message}
-              />
-              <CustomTextbox
-                {...register(`tanks.${index}.TotalCapacity`, {
-                  required: "Toplam Kapasite Giriniz..",
-                  valueAsNumber: true,
-                })}
-                className="rounded-md border p-3 outline-none"
-                title="Toplam Kapasite"
-                err={errors.tanks?.[index]?.TotalCapacity?.message}
-              />
-            </div>
-            <div className="flex flex-wrap gap-3 rounded-md border p-3 outline-none">
-              {/* <Image
-                width={200}
-                height={100}
-                src={`https://smartpoint.tr${field.tankQrList[0].PictureUrl}`}
-                alt="deneme"
-              /> */}
-              {field.tankQrList?.map((item, index) => (
-                <img
-                  key={index}
-                  src={`https://smartpoint.tr${item.PictureUrl}`}
-                  alt={`${field.TankNumber.toString()}-${item.TankId.toString()}`}
-                  className="h-[150px] w-[150px]"
-                />
-              ))}
-            </div>
+            {field.tankQrList && field.tankQrList?.length > 0 && (
+              <div className="flex flex-wrap gap-3 rounded-md border p-3 outline-none">
+                {/* <Image
+   width={200}
+   height={100}
+   src={`https://smartpoint.tr${field.tankQrList[0].PictureUrl}`}
+   alt="deneme"
+ /> */}
+
+                {field.tankQrList?.map((item: any, index: number) => (
+                  <img
+                    key={index}
+                    src={`https://smartpoint.tr${item.PictureUrl}`}
+                    alt={`${field.TankNumber.toString()}-${item.TankId.toString()}`}
+                    className="h-[150px] w-[150px]"
+                  />
+                ))}
+              </div>
+            )}
           </div>
         ))}
 
@@ -425,5 +379,105 @@ export default function StationDetailModal({
         />
       </form>
     </div>
+  );
+}
+
+function TankDetailComponent({
+  index,
+  register,
+  errors,
+  setValue,
+  getValues,
+}: {
+  index: number;
+  register: any;
+  errors: any;
+  setValue: any;
+  getValues: any;
+}) {
+  const val = getValues(`tanks.${index}.IntegratorId`);
+  const [selectedIntegrator, setSelectedIntegrator] = useState<
+    number | undefined
+  >(val);
+
+  useEffect(() => {
+    if (selectedIntegrator) {
+      setValue(`tanks.${index}.IntegratorId`, selectedIntegrator);
+    }
+  }, [selectedIntegrator]);
+
+  return (
+    <>
+      <CustomSelect
+        {...register(`tanks.${index}.IntegratorId`, {
+          required: "IntegratorId",
+          valueAsNumber: true,
+        })}
+        setFirst={true}
+        options={[
+          { name: "Petronet", value: 1 },
+          { name: "EPump", value: 2 },
+        ]}
+        value={selectedIntegrator}
+        onChange={(e) =>
+          setSelectedIntegrator(
+            e.target.value ? Number(e.target.value) : undefined,
+          )
+        }
+        className="rounded-md border p-3"
+        title="IntegratorId"
+        err={errors.tanks?.[index]?.IntegratorId?.message}
+      />
+      {selectedIntegrator == 2 && (
+        <CustomTextbox
+          {...register(`tanks.${index}.ePumpId`, {
+            required: "Mitra PompaId Giriniz..",
+          })}
+          className="rounded-md border p-3 outline-none"
+          title="Mitra PompaId"
+          err={errors.tanks?.[index]?.ePumpId?.message}
+        />
+      )}
+
+      <div className="flex items-center justify-between gap-4">
+        <CustomTextbox
+          {...register(`tanks.${index}.Title`, {
+            required: "Başlık Giriniz..",
+          })}
+          className="rounded-md border p-3 outline-none"
+          title="Başlık"
+          err={errors.tanks?.[index]?.Title?.message}
+        />
+        <CustomTextbox
+          {...register(`tanks.${index}.TankNumber`, {
+            required: "Tank No Giriniz..",
+          })}
+          className="rounded-md border p-3 outline-none"
+          title="Tank No"
+          err={errors.tanks?.[index]?.TankNumber?.message}
+        />
+      </div>
+
+      <div className="flex items-center justify-between gap-4">
+        <CustomTextbox
+          {...register(`tanks.${index}.CurrentCapacity`, {
+            required: "Mevcut Kapasite Giriniz..",
+            valueAsNumber: true,
+          })}
+          className="rounded-md border p-3 outline-none"
+          title="Mevcut Kapasite"
+          err={errors.tanks?.[index]?.CurrentCapacity?.message}
+        />
+        <CustomTextbox
+          {...register(`tanks.${index}.TotalCapacity`, {
+            required: "Toplam Kapasite Giriniz..",
+            valueAsNumber: true,
+          })}
+          className="rounded-md border p-3 outline-none"
+          title="Toplam Kapasite"
+          err={errors.tanks?.[index]?.TotalCapacity?.message}
+        />
+      </div>
+    </>
   );
 }

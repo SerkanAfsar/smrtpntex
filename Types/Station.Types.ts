@@ -27,7 +27,7 @@ export type StationType = {
   StationNumber: string;
   StationIP: string;
   Title: string;
-  StationBrandId: number;
+  StationBrandId: number | string;
   TaxNumber: string;
   TaxOffice: string;
   AffiliateCode: string;

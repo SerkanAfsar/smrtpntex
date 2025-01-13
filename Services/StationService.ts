@@ -78,9 +78,10 @@ export async function AddTotalTankService({ data }: { data: AddStationType }) {
       }, index * 400);
       return null;
     }
+
     const tankResultData = tankResult.Data as TankType;
 
-    if (elem.id == 0 || !elem.id) {
+    if (elem.id === 0 || !elem.id) {
       const qrResult = await AddTankQRCodeService({
         tankId: tankResultData.Id,
       });

@@ -1,4 +1,9 @@
 import LoginBaseComponent from "@/Components/Login";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Smartpoint Giriş",
+};
 
 export default function Login() {
   return (
