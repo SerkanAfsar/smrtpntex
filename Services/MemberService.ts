@@ -45,7 +45,18 @@ export async function AddMemberService({ data }: { data: AddMemberType }) {
       const memberId = (result.Data as MemberType).Id;
       for (let i = 0; i < data.addresses.length; i++) {
         const item = data.addresses[i];
-        await AddMemberAddressService({ memberId, data: item });
+        const resultAddress = await AddMemberAddressService({
+          memberId,
+          data: item,
+        });
+        if (!resultAddress.IsSuccess) {
+          await DeleteMemberService({ id: memberId });
+          const newResponse: ResponseResult<MemberType> = {
+            IsSuccess: false,
+            Message: "Adres Ekleme Hatası",
+          };
+          return newResponse;
+        }
       }
     }
   }

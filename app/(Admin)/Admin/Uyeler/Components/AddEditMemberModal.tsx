@@ -46,7 +46,7 @@ export default function AddEditMemberModal({
     watch,
     setValue,
     clearErrors,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<AddMemberType>({
     mode: "onChange",
   });
@@ -107,6 +107,12 @@ export default function AddEditMemberModal({
         onSubmit={handleSubmit(onSubmit)}
         className="mt-8 flex flex-col gap-4"
       >
+        <CustomTextbox
+          {...register("companyName", { required: "Firma Adı Giriniz.." })}
+          title="Firma Adı"
+          className="rounded-md border p-3 outline-none"
+          err={errors.companyName?.message}
+        />
         <CustomSelect
           {...register("memberTypeId", {
             required: "Üye Tipi Seçiniz",
@@ -182,12 +188,7 @@ export default function AddEditMemberModal({
           className="rounded-md border p-3 outline-none"
           err={errors.gsm?.message}
         />
-        <CustomTextbox
-          {...register("companyName", { required: "Firma Adı Giriniz.." })}
-          title="Firma Adı"
-          className="rounded-md border p-3 outline-none"
-          err={errors.companyName?.message}
-        />
+
         <CustomTextbox
           {...register("taxNumber", { required: "Vergi Numarası Giriniz.." })}
           title="Vergi Numarası"
@@ -217,8 +218,9 @@ export default function AddEditMemberModal({
         />
         <CustomButton
           type="submit"
+          disabled={isSubmitting}
           className="text-md flex w-full items-center justify-center rounded-md bg-[#2970FF] p-2 text-white"
-          title="Kaydet"
+          title={isSubmitting ? "Kaydediliyor..." : "Kaydet"}
         />
       </form>
     </div>

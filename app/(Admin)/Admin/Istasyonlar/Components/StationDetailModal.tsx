@@ -23,6 +23,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import StationMaps from "./StationMaps";
 
 export default function StationDetailModal({
   toggleOpened,
@@ -62,6 +63,7 @@ export default function StationDetailModal({
     control,
     setValue,
     getValues,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<StationType>();
 
@@ -101,6 +103,8 @@ export default function StationDetailModal({
       reset({ ...stationData, tanks: stationData?.tanks });
     }
   }, [stationData, reset, clearErrors, remove]);
+
+  const [Latitude, longitude] = watch(["Latitude", "Longitude"]);
 
   const onSubmit: SubmitHandler<StationType> = async (data) => {
     const newStationData: AddStationType = {
@@ -254,6 +258,14 @@ export default function StationDetailModal({
               err={errors.Longitude?.message}
             />
           </div>
+          {Latitude &&
+            longitude &&
+            !isNaN(Number(Latitude)) &&
+            !isNaN(Number(longitude)) && (
+              <div className="flex h-60 w-full items-center justify-center border-2 border-black">
+                <StationMaps latitude={Latitude} longitude={longitude} />
+              </div>
+            )}
           <CustomTextbox
             {...register("StationNumber", {
               required: "İstasyon No Giriniz..",
@@ -263,6 +275,7 @@ export default function StationDetailModal({
             // defaultValue={stationData?.StationNumber}
             err={errors.StationNumber?.message}
           />
+
           <CustomTextbox
             {...register("StationIP", {
               required: "İstasyon IP Giriniz..",
@@ -337,12 +350,17 @@ export default function StationDetailModal({
  /> */}
 
                 {field.tankQrList?.map((item: any, index: number) => (
-                  <img
+                  <a
                     key={index}
-                    src={`https://smartpoint.tr${item.PictureUrl}`}
-                    alt={`${field.TankNumber.toString()}-${item.TankId.toString()}`}
-                    className="h-[150px] w-[150px]"
-                  />
+                    href={`https://smartpoint.tr${item.PictureUrl}`}
+                    target="_blank"
+                  >
+                    <img
+                      src={`https://smartpoint.tr${item.PictureUrl}`}
+                      alt={`${field.TankNumber.toString()}-${item.TankId.toString()}`}
+                      className="h-[150px] w-[150px]"
+                    />
+                  </a>
                 ))}
               </div>
             )}

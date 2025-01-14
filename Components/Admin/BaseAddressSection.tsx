@@ -83,6 +83,14 @@ export default function BaseAddressSection({
             err={errors.addresses?.[index]?.title?.message}
           />
           <CustomTextbox
+            {...register(`addresses.${index}.company`, {
+              required: "Şirket İsmi Giriniz..",
+            })}
+            title="Şirket"
+            className="rounded-md border p-3 outline-none"
+            err={errors.addresses?.[index]?.company?.message}
+          />
+          <CustomTextbox
             {...register(`addresses.${index}.firstName`, {
               required: "İsim Giriniz..",
             })}
@@ -94,7 +102,7 @@ export default function BaseAddressSection({
             {...register(`addresses.${index}.lastName`, {
               required: "Soyisim Giriniz..",
             })}
-            title="İsim"
+            title="Soyisim"
             className="rounded-md border p-3 outline-none"
             err={errors.addresses?.[index]?.lastName?.message}
           />
@@ -121,14 +129,6 @@ export default function BaseAddressSection({
             setValue={setValue}
             watch={watch}
             clearErrors={clearErrors}
-          />
-          <CustomTextbox
-            {...register(`addresses.${index}.company`, {
-              required: "Şirket İsmi Giriniz..",
-            })}
-            title="Şirket"
-            className="rounded-md border p-3 outline-none"
-            err={errors.addresses?.[index]?.company?.message}
           />
 
           <CustomTextbox

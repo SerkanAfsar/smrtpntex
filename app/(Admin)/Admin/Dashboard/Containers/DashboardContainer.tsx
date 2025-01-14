@@ -8,9 +8,14 @@ import { cn } from "@/Utils";
 import DashboardSectionOne from "../Components/DashboardSectionOne";
 import DashboardSectionTwo from "../Components/DashboardSectionTwo";
 import DashboardSectionThree from "../Components/DashboardSectionThree";
+import { useShallow } from "zustand/shallow";
 
-export default function DashboardContainer() {
-  const { isOpened } = useLeftMenuStore();
+export default function DashboardContainer({
+  title,
+}: {
+  title: string | undefined;
+}) {
+  const isOpened = useLeftMenuStore(useShallow((state) => state.isOpened));
 
   return (
     <div
@@ -20,7 +25,16 @@ export default function DashboardContainer() {
       )}
     >
       <AdminTopSection>
-        <h2>Gösterge Paneli</h2>
+        <h2>
+          {title ? (
+            <>
+              {" "}
+              <span>Hoşgeldiniz</span> <b className="capitalize">{title}</b>
+            </>
+          ) : (
+            "Gösterge Paneli"
+          )}
+        </h2>
       </AdminTopSection>
       <ContentSection className="flex flex-col gap-6 p-6">
         <DashboardSectionOne />

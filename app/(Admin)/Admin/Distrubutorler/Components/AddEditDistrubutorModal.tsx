@@ -174,21 +174,21 @@ export default function AddEditDistrubutorModal({
         />
         <CustomTextbox
           {...register("alertLimit", {
-            required: "Uyarı Limiti Giriniz..",
+            required: "Uyarı Limiti (TL) Giriniz..",
             valueAsNumber: true,
           })}
           type="number"
-          title="Uyarı Limiti"
+          title="Uyarı Limiti (TL)"
           className="rounded-md border p-3 outline-none"
           err={errors.alertLimit?.message}
         />
         <CustomTextbox
           {...register("riskLimit", {
-            required: "Risk Limiti Giriniz..",
+            required: "Risk Limiti (TL) Giriniz..",
             valueAsNumber: true,
           })}
           type="number"
-          title="Risk Limiti"
+          title="Risk Limiti (TL)"
           className="rounded-md border p-3 outline-none"
           err={errors.riskLimit?.message}
         />
