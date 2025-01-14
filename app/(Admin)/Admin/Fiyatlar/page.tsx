@@ -80,7 +80,7 @@ export default async function Page() {
   const paginatedProducts = resultProducts.Data as PaginationType<ProductType>;
 
   const productList: CustomOptionsType[] =
-    (paginatedProducts.records as GenericType2<ProductType>).Result.map(
+    (paginatedProducts.records as ProductType[]).map(
       (product: ProductType) => ({
         name: product.Name,
         value: product.Id,
