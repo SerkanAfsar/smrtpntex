@@ -1,11 +1,7 @@
 import { GetAllCompanies } from "@/Services/CompanyService";
 import PriceContainer from "./Containers/PriceContainer";
 import { GetAllStationsService } from "@/Services/StationService";
-import {
-  CustomOptionsType,
-  GenericType2,
-  PaginationType,
-} from "@/Types/Common.Types";
+import { CustomOptionsType, PaginationType } from "@/Types/Common.Types";
 import { CompanyType } from "@/Types/Company.Types";
 import { StationType } from "@/Types/Station.Types";
 import { GetAllProducts } from "@/Services/ProductService";
