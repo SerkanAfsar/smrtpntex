@@ -21,6 +21,7 @@ import AddEditMemberModal from "../Components/AddEditMemberModal";
 import { MemberType } from "@/Types/Member.Types";
 import { DeleteMemberService } from "@/Services/MemberService";
 import { toast } from "react-toastify";
+import { AddressType } from "@/Types/Address.Types";
 
 export default function MembersContainer({
   memberTypes,
@@ -178,7 +179,22 @@ export default function MembersContainer({
           taxNumber: (selectedMember?.TaxOffice as string) ?? "",
           taxOffice: (selectedMember?.TaxOffice as string) ?? "",
           Id: (selectedMember?.Id as number) ?? null,
-          addresses: [],
+          addresses: selectedMember?.addresses?.map((item: AddressType) => ({
+            addressHtml: item.AddressHtml,
+            addressLine: item.AddressLine,
+            company: item.Company,
+            countryId: item.CountryId,
+            districtId: item.DistrictId,
+            email: item.Email,
+            firstName: item.FirstName,
+            id: item.Id ?? undefined,
+            lastName: item.LastName,
+            neighborhoodId: item.NeighborhoodId,
+            phoneNumber: item.PhoneNumber,
+            provinceId: item.ProvinceId,
+            title: item.Title,
+            zipPostalCode: item.ZipPostalCode,
+          })),
         }}
         isOpenedModal={isOpenedModal}
         toggleOpenedModal={toggleOpenedModal}

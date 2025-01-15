@@ -25,6 +25,7 @@ export default function BaseAddressSection({
   watch,
   setValue,
   clearErrors,
+  getValues,
 }: {
   fields: any;
   append: any;
@@ -34,6 +35,7 @@ export default function BaseAddressSection({
   watch: any;
   setValue: any;
   clearErrors: any;
+  getValues: any;
 }) {
   return (
     <>
@@ -129,6 +131,7 @@ export default function BaseAddressSection({
             setValue={setValue}
             watch={watch}
             clearErrors={clearErrors}
+            getValues={getValues}
           />
 
           <CustomTextbox
@@ -182,6 +185,7 @@ function CustomAddress({
   watch,
   setValue,
   clearErrors,
+  getValues,
 }: {
   register: any;
   index: number;
@@ -189,25 +193,26 @@ function CustomAddress({
   watch: any;
   setValue: any;
   clearErrors: any;
+  getValues: any;
 }) {
   const [selectedCountry, setSelectedCountry] = useState<number | undefined>(
-    undefined,
+    getValues(`addresses.${index}.countryId`) ?? undefined,
   );
   const [countryList, setCountryList] = useState<CustomOptionsType[]>([]);
 
   const [selectedCity, setSelectedCity] = useState<number | undefined>(
-    undefined,
+    getValues(`addresses.${index}.provinceId`) ?? undefined,
   );
   const [cityList, setCityList] = useState<CustomOptionsType[]>([]);
 
   const [selectedDistrict, setSelectedDistrict] = useState<number | undefined>(
-    undefined,
+    getValues(`addresses.${index}.districtId`) ?? undefined,
   );
   const [districtList, setDistrictList] = useState<CustomOptionsType[]>([]);
 
   const [selectedNeighbour, setSelectedNeighbour] = useState<
     number | undefined
-  >(undefined);
+  >(getValues(`addresses.${index}.neighborhoodId`) ?? undefined);
   const [neighbourList, setNeighbourList] = useState<CustomOptionsType[]>([]);
 
   useEffect(() => {

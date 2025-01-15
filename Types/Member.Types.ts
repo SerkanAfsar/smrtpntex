@@ -1,4 +1,4 @@
-import { AddAddressType } from "./Address.Types";
+import { AddAddressType, AddressType } from "./Address.Types";
 import { PageIndexType } from "./Common.Types";
 
 export type MemberTypeType = {
@@ -62,6 +62,7 @@ export type MemberType = {
   CreatedById: number | string | null;
   CreatedDate: string;
   Id: number;
+  addresses?: AddressType[];
 };
 
 export type AddMemberType = {

@@ -2,6 +2,7 @@ import clsx, { type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { saveAs } from "file-saver";
 import { utils, write } from "xlsx";
+import { PaginationType, ResponseResult } from "@/Types/Common.Types";
 
 export const cn = (...args: ClassValue[]) => {
   return twMerge(clsx(args));
@@ -34,3 +35,20 @@ export const exportToExcel = (data: any, fileName: string) => {
     saveAs(blob, `${fileName}.xlsx`);
   }
 };
+
+export function getResultData<T extends object>(
+  responseResult: ResponseResult<PaginationType<T>> | ResponseResult<T>,
+  type: "List" | "Simple",
+) {
+  if (type == "List") {
+    const result = responseResult.IsSuccess
+      ? (responseResult.Data as PaginationType<T>)
+      : undefined;
+    return (result?.records as T[]) || [];
+  } else {
+    const result = responseResult.IsSuccess
+      ? (responseResult.Data as T)
+      : undefined;
+    return result;
+  }
+}

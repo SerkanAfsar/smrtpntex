@@ -1,5 +1,5 @@
 export type AddAddressType = {
-  id: number;
+  id?: number | null;
   title: string | null;
   firstName: string | null;
   lastName: string | null;

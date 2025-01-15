@@ -46,6 +46,7 @@ export default function AddEditMemberModal({
     watch,
     setValue,
     clearErrors,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<AddMemberType>({
     mode: "onChange",
@@ -107,12 +108,6 @@ export default function AddEditMemberModal({
         onSubmit={handleSubmit(onSubmit)}
         className="mt-8 flex flex-col gap-4"
       >
-        <CustomTextbox
-          {...register("companyName", { required: "Firma Adı Giriniz.." })}
-          title="Firma Adı"
-          className="rounded-md border p-3 outline-none"
-          err={errors.companyName?.message}
-        />
         <CustomSelect
           {...register("memberTypeId", {
             required: "Üye Tipi Seçiniz",
@@ -215,6 +210,7 @@ export default function AddEditMemberModal({
           watch={watch}
           setValue={setValue}
           clearErrors={clearErrors}
+          getValues={getValues}
         />
         <CustomButton
           type="submit"

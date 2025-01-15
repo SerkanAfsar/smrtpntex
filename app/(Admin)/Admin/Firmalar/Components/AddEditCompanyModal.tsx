@@ -43,6 +43,7 @@ export default function AddEditCompanyModal({
     clearErrors,
     control,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm<AddCompanyType>({
     mode: "onChange",
@@ -238,6 +239,7 @@ export default function AddEditCompanyModal({
           watch={watch}
           setValue={setValue}
           clearErrors={clearErrors}
+          getValues={getValues}
         />
 
         <CustomButton

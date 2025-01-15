@@ -1,5 +1,10 @@
-import { GetMemberByIdService } from "@/Services/MemberService";
+import {
+  GetMemberAddressListService,
+  GetMemberByIdService,
+} from "@/Services/MemberService";
+import { AddressType } from "@/Types/Address.Types";
 import { MemberType } from "@/Types/Member.Types";
+import { getResultData } from "@/Utils";
 import { create } from "zustand";
 
 interface MemberModal {
@@ -20,9 +25,20 @@ export const useMemberModal = create<MemberModal>()((set) => ({
   setSelectedMember: async (id?: number) => {
     if (id) {
       const result = await GetMemberByIdService({ id });
-      set({
-        selectedMember: result.IsSuccess ? (result.Data as MemberType) : null,
-      });
+      if (result.IsSuccess) {
+        const getMemberAddressList = await GetMemberAddressListService({
+          memberId: (result.Data as MemberType).Id,
+        });
+        const memberResult: MemberType = {
+          ...(result.Data as MemberType),
+          addresses: getResultData(getMemberAddressList, "List") as
+            | AddressType[]
+            | undefined,
+        };
+        set({
+          selectedMember: result.IsSuccess ? memberResult : null,
+        });
+      }
     } else {
       set({ selectedMember: null });
     }

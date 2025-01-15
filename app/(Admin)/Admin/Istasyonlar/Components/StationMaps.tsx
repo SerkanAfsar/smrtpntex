@@ -30,7 +30,12 @@ export default function StationMaps({
   }
 
   return isLoaded ? (
-    <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={7}>
+    <GoogleMap
+      mapContainerStyle={containerStyle}
+      options={{ disableDefaultUI: true }}
+      center={center}
+      zoom={7}
+    >
       <Marker
         icon={{
           url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",

@@ -7,6 +7,7 @@ import {
 import BaseFetch from "./BaseService";
 import { PaginationType, ResponseResult } from "@/Types/Common.Types";
 import { AddMemberAddressService } from "./ProvinceService";
+import { AddressType } from "@/Types/Address.Types";
 
 export async function GetMemberListService({
   searchType,
@@ -70,11 +71,34 @@ export async function UpdateMemberService({
   id: number;
   data: AddMemberType;
 }) {
-  return (await BaseFetch({
+  const result = (await BaseFetch({
     method: "PUT",
     url: `adminApi/Member/edit/${id}`,
     body: data,
   })) as ResponseResult<MemberType>;
+  if (result.IsSuccess) {
+    if (data.addresses) {
+      const memberId = (result.Data as MemberType).Id;
+      for (let i = 0; i < data.addresses.length; i++) {
+        const item = data.addresses[i];
+        if (item.id) {
+          const resultAddress = await AddMemberAddressService({
+            memberId,
+            data: item,
+          });
+          if (!resultAddress.IsSuccess) {
+            // await DeleteMemberService({ id: memberId });
+            const newResponse: ResponseResult<MemberType> = {
+              IsSuccess: false,
+              Message: "Adres Ekleme Hatası",
+            };
+            return newResponse;
+          }
+        }
+      }
+    }
+  }
+  return result;
 }
 
 export async function DeleteMemberService({ id }: { id: number }) {
@@ -82,4 +106,15 @@ export async function DeleteMemberService({ id }: { id: number }) {
     method: "POST",
     url: `adminApi/Member/delete/${id}`,
   })) as ResponseResult<MemberType>;
+}
+
+export async function GetMemberAddressListService({
+  memberId,
+}: {
+  memberId: number;
+}) {
+  return (await BaseFetch({
+    method: "GET",
+    url: `adminApi/Member/address-list/${memberId}`,
+  })) as ResponseResult<PaginationType<AddressType>>;
 }
