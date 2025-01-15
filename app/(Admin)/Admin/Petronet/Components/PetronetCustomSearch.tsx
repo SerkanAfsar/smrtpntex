@@ -23,7 +23,7 @@ export default function PetronetCustomSearch({
   startDate?: string | null;
   endDate?: string | null;
 }) {
-  const [keyValue, setKeyValue] = useState<string>();
+  const [keyValue, setKeyValue] = useState<string>("");
 
   useEffect(() => {
     const timer = setTimeout(() => {

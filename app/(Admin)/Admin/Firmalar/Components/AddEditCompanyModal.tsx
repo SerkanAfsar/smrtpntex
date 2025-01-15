@@ -27,13 +27,13 @@ export default function AddEditCompanyModal({
   toggleOpenedModal,
   isOpenedModal,
 }: {
-  editData: AddCompanyType;
+  editData?: AddCompanyType;
   paymentMethods: CustomOptionsType[];
   toggleOpenedModal: any;
   isOpenedModal: boolean;
 }) {
   const router = useRouter();
-  const { isOpened, toggleOpened } = useCompanyModal();
+
   const {
     register,
     reset,
@@ -44,7 +44,7 @@ export default function AddEditCompanyModal({
     control,
     setValue,
     getValues,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<AddCompanyType>({
     mode: "onChange",
     defaultValues: editData,
@@ -82,24 +82,6 @@ export default function AddEditCompanyModal({
     return () => unsubscribe();
   }, [watch, setError, clearErrors]);
 
-  // useEffect(() => {
-  //   const process = async () => {
-  //     const result: ResponseResult<PaymentMethodType> =
-  //       await GetPaymentMethodTypes();
-  //     if (result.IsSuccess) {
-  //       const data = result.Data as PaymentMethodType[];
-  //       const paymetOptionsData: CustomOptionsType[] = data.map((item) => ({
-  //         name: item.Name,
-  //         value: item.Id,
-  //       }));
-  //       setPaymentMethods(paymetOptionsData);
-  //     } else {
-  //       setPaymentMethods([]);
-  //     }
-  //   };
-  //   process();
-  // }, []);
-
   const onSubmit: SubmitHandler<AddCompanyType> = async (data) => {
     const result: ResponseResult<CompanyType> = !data.Id
       ? await AddCompanyService({
@@ -132,7 +114,7 @@ export default function AddEditCompanyModal({
     <div
       className={cn(
         "fixed -right-[100%] z-50 h-screen w-[340px] overflow-auto overscroll-contain border-l bg-white p-4 shadow-2xl transition-all duration-700 ease-in-out",
-        isOpened ? "right-0" : "-right-[100%]",
+        isOpenedModal ? "right-0" : "-right-[100%]",
       )}
     >
       <div className="flex items-center justify-between">
@@ -141,7 +123,7 @@ export default function AddEditCompanyModal({
           src={ExitIcon}
           alt="Exit"
           className="cursor-pointer"
-          onClick={() => toggleOpened(false)}
+          onClick={() => toggleOpenedModal(false)}
         />
       </div>
       <form
@@ -244,8 +226,9 @@ export default function AddEditCompanyModal({
 
         <CustomButton
           type="submit"
+          disabled={isSubmitting}
           className="text-md flex w-full items-center justify-center rounded-md bg-[#2970FF] p-2 text-white"
-          title="Kaydet"
+          title={isSubmitting ? "Kaydediliyor..." : "Kaydet"}
         />
       </form>
     </div>

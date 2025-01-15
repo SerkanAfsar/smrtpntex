@@ -10,12 +10,15 @@ import { ExitIcon } from "@/Utils/IconList";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import { AddPriceType, PriceType } from "@/Types/Price.Types";
 import { AddPriceService, UpdatePriceService } from "@/Services/PriceService";
 import { toast } from "react-toastify";
+import CustomRadioButtonListGroup, {
+  CustomRadioButtonInputRef,
+} from "@/Components/UI/CustomRadioButtonList";
 
 export default function AddEditPriceModal({
   editData,
@@ -36,12 +39,23 @@ export default function AddEditPriceModal({
   isOpenedModal: boolean;
   setUpdated: any;
 }) {
+  const types = [
+    { title: "Firma", value: "Firma" },
+    { title: "İstasyon", value: "İstasyon" },
+    { title: "Üye", value: "Üye" },
+  ];
   const router = useRouter();
+  const typeRef = useRef<CustomRadioButtonInputRef>(null);
+  const [selectedType, setSelectedType] = useState<
+    "Firma" | "İstasyon" | "Üye"
+  >("Firma");
 
   const {
     register,
     reset,
     handleSubmit,
+    unregister,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<AddPriceType>({
     mode: "onChange",
@@ -53,13 +67,25 @@ export default function AddEditPriceModal({
   }, [reset, editData]);
 
   const onSubmit: SubmitHandler<AddPriceType> = async (data) => {
-    const result: ResponseResult<PriceType> = !data.Id
+    const newData: AddPriceType = data;
+    if (selectedType == "Firma") {
+      newData.stationId = null;
+      newData.memberId = null;
+    } else if (selectedType == "Üye") {
+      newData.stationId = null;
+      newData.companyId = null;
+    } else {
+      newData.memberId = null;
+      newData.companyId = null;
+    }
+
+    const result: ResponseResult<PriceType> = !newData.Id
       ? await AddPriceService({
-          data,
+          data: newData,
         })
-      : await UpdatePriceService({ id: data.Id, data });
+      : await UpdatePriceService({ id: newData.Id, data: newData });
     if (result.IsSuccess) {
-      if (!data.Id) {
+      if (!newData.Id) {
         toast.success("Fiyat Eklendi", {
           position: "top-right",
         });
@@ -78,6 +104,8 @@ export default function AddEditPriceModal({
       });
     }
   };
+
+  useEffect(() => {}, [selectedType]);
 
   return (
     <div
@@ -101,6 +129,13 @@ export default function AddEditPriceModal({
         onSubmit={handleSubmit(onSubmit)}
         className="mt-8 flex flex-col gap-4"
       >
+        <CustomRadioButtonListGroup
+          ref={typeRef}
+          name="tip"
+          selectedType={selectedType}
+          options={types}
+          setSelectedType={setSelectedType}
+        />
         <CustomSelect
           {...register("productId", {
             required: "Ürün Seçiniz",
@@ -109,42 +144,54 @@ export default function AddEditPriceModal({
           setFirst={true}
           options={productList}
           className="rounded-md border p-3"
-          title="Ödeme Tipi Seçiniz"
+          title="Ürün Seçiniz"
           err={errors.productId?.message}
         />
         <CustomSelect
           {...register("companyId", {
-            required: "Firma Seçiniz",
             valueAsNumber: true,
+            validate: (val) => {
+              return selectedType == "Firma" && !val ? "Firma Seçiniz" : true;
+            },
           })}
+          outerClass={cn(selectedType != "Firma" && "hidden")}
           setFirst={true}
           options={companyList}
-          className="rounded-md border p-3"
+          className={cn("rounded-md border p-3")}
           title="Firma Seçiniz"
           err={errors.companyId?.message}
         />
         <CustomSelect
           {...register("stationId", {
-            required: "İstasyon Seçiniz",
             valueAsNumber: true,
+            validate: (val) => {
+              return selectedType == "İstasyon" && !val
+                ? "İstasyon Seçiniz"
+                : true;
+            },
           })}
           setFirst={true}
           options={stationList}
-          className="rounded-md border p-3"
+          className={cn("rounded-md border p-3")}
+          outerClass={cn(selectedType != "İstasyon" && "hidden")}
           title="İstasyon Seçiniz"
           err={errors.stationId?.message}
         />
         <CustomSelect
           {...register("memberId", {
-            required: "Üye Seçiniz",
             valueAsNumber: true,
+            validate: (val) => {
+              return selectedType == "Üye" && !val ? "Üye Seçiniz" : true;
+            },
           })}
           setFirst={true}
           options={memberList}
-          className="rounded-md border p-3"
+          outerClass={cn(selectedType != "Üye" && "hidden")}
+          className={cn("rounded-md border p-3")}
           title="Üye Seçiniz"
           err={errors.memberId?.message}
         />
+
         <CustomTextbox
           {...register("newAmount", { required: "Yeni Fiyat Giriniz.." })}
           className="rounded-md border p-3 outline-none"

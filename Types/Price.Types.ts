@@ -28,10 +28,10 @@ export type PriceType = {
 
 export type AddPriceType = {
   Id?: number;
-  productId: number | null;
-  companyId: number | null;
-  stationId: number | null;
-  memberId: number | null;
+  productId: number | string | null;
+  companyId: number | string | null;
+  stationId: number | string | null;
+  memberId: number | string | null;
   newAmount: number | null;
   discountRatio: number | null;
   startDate: string;

@@ -10,6 +10,7 @@ type CustomSelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
   name?: string;
   setFirst?: boolean;
   subTitle?: string;
+  outerClass?: string;
 };
 
 const CustomSelect = React.forwardRef<HTMLSelectElement, CustomSelectProps>(
@@ -25,6 +26,7 @@ const CustomSelect = React.forwardRef<HTMLSelectElement, CustomSelectProps>(
       title,
       options,
       subTitle,
+      outerClass,
       ...rest
     },
     ref,
@@ -34,6 +36,7 @@ const CustomSelect = React.forwardRef<HTMLSelectElement, CustomSelectProps>(
         className={cn(
           "relative flex flex-col items-start justify-start gap-2",
           isFull ? "w-full" : "w-auto",
+          outerClass && outerClass,
         )}
       >
         {title && (

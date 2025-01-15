@@ -186,14 +186,26 @@ export default function PriceContainer({
         companyList={companyList}
         editData={{
           Id: selectedPrice?.Id ?? undefined,
-          companyId: selectedPrice?.CompanyId ?? null,
+          companyId: selectedPrice?.CompanyId
+            ? selectedPrice.CompanyId == 0
+              ? ""
+              : selectedPrice.CompanyId
+            : "",
           discountRatio: selectedPrice?.DiscountRatio ?? 0,
           endDate: selectedPrice?.FinishDate ?? "",
-          memberId: selectedPrice?.MemberId ?? null,
+          memberId: selectedPrice?.MemberId
+            ? selectedPrice.MemberId == 0
+              ? ""
+              : selectedPrice.MemberId
+            : "",
           newAmount: selectedPrice?.NewAmount ?? 0,
-          productId: selectedPrice?.ProductId ?? null,
+          productId: selectedPrice?.ProductId ?? "",
           startDate: selectedPrice?.StartDate ?? "",
-          stationId: selectedPrice?.StationId ?? null,
+          stationId: selectedPrice?.StationId
+            ? selectedPrice.StationId == 0
+              ? ""
+              : selectedPrice.StationId
+            : "",
         }}
         isOpenedModal={isOpenedModal}
         memberList={memberList}

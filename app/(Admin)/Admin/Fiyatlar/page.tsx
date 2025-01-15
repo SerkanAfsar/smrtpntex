@@ -8,6 +8,11 @@ import { GetAllProducts } from "@/Services/ProductService";
 import { ProductType } from "@/Types/Product.Types";
 import { GetMemberListService } from "@/Services/MemberService";
 import { MemberType } from "@/Types/Member.Types";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Fiyatlar",
+};
 
 export default async function Page() {
   const [resultCompanies, resultStations, resultProducts, resultMembers] =

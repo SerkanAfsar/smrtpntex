@@ -52,7 +52,7 @@ export default function UserDetailModal({
     clearErrors,
     watch,
     resetField,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<UserType>();
 
   useEffect(() => {
@@ -299,14 +299,17 @@ export default function UserDetailModal({
           title="E-Mail"
           err={errors.Email?.message}
         />
-        <CustomTextbox
-          {...register("Password", {
-            required: !userData ? "Şifre Giriniz" : false,
-          })}
-          className="rounded-md border p-3 outline-none"
-          title="Şifre"
-          err={errors.Password?.message}
-        />
+        {!isDist && (
+          <CustomTextbox
+            {...register("Password", {
+              required: !userData ? "Şifre Giriniz" : false,
+            })}
+            className="rounded-md border p-3 outline-none"
+            title="Şifre"
+            err={errors.Password?.message}
+          />
+        )}
+
         <CustomTextbox
           {...register("FirstName", {
             required: "Adınızı Giriniz..",
@@ -332,11 +335,17 @@ export default function UserDetailModal({
           name="IsActive"
           defaultChecked={userData?.IsActive ?? false}
         />
+        {isDist && (
+          <b className="flex-start flex items-center text-sm">
+            Parola Mail Adresinize Gönderilecektir...
+          </b>
+        )}
 
         <CustomButton
           type="submit"
+          disabled={isSubmitting}
           className="text-md flex w-full items-center justify-center rounded-md bg-[#2970FF] p-2 text-white"
-          title="Kaydet"
+          title={isSubmitting ? "Kaydediliyor..." : "Kaydet"}
         />
       </form>
     </div>

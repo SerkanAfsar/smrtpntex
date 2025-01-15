@@ -4,7 +4,7 @@ import DashboardContainer from "./Containers/DashboardContainer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Smartpoint",
+  title: "Smartpoint Admin",
 };
 export default async function Dashboard() {
   let title: string | undefined = "";

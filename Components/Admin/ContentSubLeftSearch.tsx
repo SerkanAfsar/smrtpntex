@@ -1,5 +1,5 @@
 import {
-  Delete2,
+  Delete3,
   EditIcon,
   ExportCsvIcon,
   PlusSmall,
@@ -169,7 +169,7 @@ export default function ContentSubLeftSearch({
 
             <div className="flex items-center justify-between gap-3">
               <Image
-                src={Delete2}
+                src={Delete3}
                 width={20}
                 height={20}
                 alt={item.name}

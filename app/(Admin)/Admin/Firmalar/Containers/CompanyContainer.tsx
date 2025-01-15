@@ -23,6 +23,7 @@ import { MenuType } from "../../Petronet/Containers/PetronetContainer";
 import PetronetCustomSearch from "../../Petronet/Components/PetronetCustomSearch";
 import { ExportCsvIcon } from "@/Utils/IconList";
 import { ExcelFirmalarSatisResult } from "@/Services/Excel.Service";
+import { AddressType } from "@/Types/Address.Types";
 
 const types: MenuType = {
   Araçlar: {
@@ -74,7 +75,6 @@ export default function CompaniesContainer({
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [excelLoading, setExcelLoading] = useState<boolean>(false);
-
   const [activeMenu, setActiveMenu] = useState<string>("Araçlar");
 
   const [
@@ -91,9 +91,9 @@ export default function CompaniesContainer({
     ]),
   );
 
-  useEffect(() => {
-    setSelectedCompany(undefined);
-  }, [setSelectedCompany]);
+  // useEffect(() => {
+  //   setSelectedCompany(undefined);
+  // }, [setSelectedCompany]);
 
   return (
     <>
@@ -188,6 +188,7 @@ export default function CompaniesContainer({
           />
         )}
       </ContentWithInfoSection>
+
       <AddEditCompanyModal
         paymentMethods={paymentMethods}
         toggleOpenedModal={toggleOpenedModal}
@@ -201,6 +202,22 @@ export default function CompaniesContainer({
           taxNumber: selectedCompany?.TaxNumber ?? "",
           taxOffice: selectedCompany?.TaxOffice ?? "",
           title: selectedCompany?.Title ?? "",
+          addresses: selectedCompany?.addresses?.map((item: AddressType) => ({
+            addressHtml: item.AddressHtml,
+            addressLine: item.AddressLine,
+            company: item.Company,
+            countryId: item.CountryId,
+            districtId: item.DistrictId,
+            email: item.Email,
+            firstName: item.FirstName,
+            id: item.Id ?? undefined,
+            lastName: item.LastName,
+            neighborhoodId: item.NeighborhoodId,
+            phoneNumber: item.PhoneNumber,
+            provinceId: item.ProvinceId,
+            title: item.Title,
+            zipPostalCode: item.ZipPostalCode,
+          })),
         }}
       />
     </>

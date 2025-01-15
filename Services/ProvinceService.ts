@@ -62,3 +62,17 @@ export async function AddMemberAddressService({
     body: data,
   })) as ResponseResult<AddressType>;
 }
+
+export async function AddCompanyAddressService({
+  companyId,
+  data,
+}: {
+  companyId: number;
+  data: AddAddressType;
+}) {
+  return (await BaseFetch({
+    method: "POST",
+    url: `adminApi/Company/address-add/${companyId}`,
+    body: data,
+  })) as ResponseResult<AddressType>;
+}

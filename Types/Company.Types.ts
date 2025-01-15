@@ -1,10 +1,11 @@
-import { AddAddressType } from "./Address.Types";
+import { AddAddressType, AddressType } from "./Address.Types";
 import { PageIndexType } from "./Common.Types";
 import { DistrubitorType } from "./Distrubitor.Types";
 
 export type CompanyType = Omit<DistrubitorType, "DistributorGuid"> & {
   CompanyGuid: string;
   DistributorId: number;
+  addresses?: AddressType[];
 };
 
 export type CompanyListType = PageIndexType & {

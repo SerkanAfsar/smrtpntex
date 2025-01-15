@@ -26,6 +26,8 @@ import {
   DistrubitorCurrentAccountsListType,
   DistrubitorSaleListType,
 } from "@/Types/Distrubitor.Types";
+import { AddressType } from "@/Types/Address.Types";
+import { AddCompanyAddressService } from "./ProvinceService";
 
 export async function GetAllCompanies({
   searchType,
@@ -47,11 +49,32 @@ export async function GetCompanyByIdService({ id }: { id: number }) {
 }
 
 export async function AddCompanyService({ data }: { data: AddCompanyType }) {
-  return (await BaseFetch({
+  const result = (await BaseFetch({
     method: "POST",
     url: "adminApi/Company/add",
     body: data,
   })) as ResponseResult<CompanyType>;
+  if (result.IsSuccess) {
+    if (data.addresses) {
+      const companyId = (result.Data as CompanyType).Id;
+      for (let i = 0; i < data.addresses.length; i++) {
+        const item = data.addresses[i];
+        const resultAddress = await AddCompanyAddressService({
+          companyId,
+          data: item,
+        });
+        if (!resultAddress.IsSuccess) {
+          await DeleteCompanyService({ id: companyId });
+          const newResponse: ResponseResult<CompanyType> = {
+            IsSuccess: false,
+            Message: "Adres Ekleme Hatası",
+          };
+          return newResponse;
+        }
+      }
+    }
+  }
+  return result;
 }
 
 export async function DeleteCompanyService({ id }: { id: number }) {
@@ -208,9 +231,41 @@ export async function UpdateCompanyService({
   id: number;
   data: AddCompanyType;
 }) {
-  return (await BaseFetch({
+  const result = (await BaseFetch({
     method: "PUT",
     url: `adminApi/Company/edit/${id}`,
     body: data,
   })) as ResponseResult<CompanyType>;
+  if (result.IsSuccess) {
+    if (data.addresses) {
+      for (let i = 0; i < data.addresses.length; i++) {
+        const item = data.addresses[i];
+        if (item.id) {
+          const resultAddress = await AddCompanyAddressService({
+            companyId: data.Id!,
+            data: item,
+          });
+          if (!resultAddress.IsSuccess) {
+            const newResponse: ResponseResult<CompanyType> = {
+              IsSuccess: false,
+              Message: "Adres Ekleme Hatası",
+            };
+            return newResponse;
+          }
+        }
+      }
+    }
+  }
+  return result;
+}
+
+export async function GetCompanyAddressListService({
+  companyId,
+}: {
+  companyId: number;
+}) {
+  return (await BaseFetch({
+    method: "GET",
+    url: `adminApi/Company/address-list/${companyId}`,
+  })) as ResponseResult<PaginationType<AddressType>>;
 }
