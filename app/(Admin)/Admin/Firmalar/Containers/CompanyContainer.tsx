@@ -9,7 +9,7 @@ import {
   CompanySalesColumns,
   CompanyUserListColumns,
 } from "@/Utils/Variables";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ContentWithInfoSection from "@/Components/Admin/ContentWithInfoSection";
 import ContentSubLeftSearch from "@/Components/Admin/ContentSubLeftSearch";
 import { CustomOptionsType, PaginationType } from "@/Types/Common.Types";

@@ -1,20 +1,6 @@
 import { cn } from "@/Utils";
-import CustomSelect from "../UI/CustomSelect";
 import { CustomTextbox } from "../UI/CustomTextbox";
-import { useEffect, useState } from "react";
-import {
-  CountryType,
-  DistrictsType,
-  NeighbourType,
-  ProvicesType,
-} from "@/Types/Address.Types";
-import {
-  GetAllCountries,
-  GetDisctrictsByProvinceId,
-  GetNeighboursByDistrictId,
-  GetProvicesByCountryId,
-} from "@/Services/ProvinceService";
-import { CustomOptionsType, PaginationType } from "@/Types/Common.Types";
+
 import CustomAddress from "./CustomAddress";
 
 export default function BaseAddressSection({
