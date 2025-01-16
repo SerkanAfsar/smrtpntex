@@ -18,6 +18,8 @@ export type CustomDataTableProps = {
   gsm?: string;
   extraClass?: string;
   plateNumber?: string;
+  subjectId?: string;
+  statusId?: string;
 };
 export default function CustomDatatable({
   apiUrl,
@@ -31,6 +33,8 @@ export default function CustomDatatable({
   gsm,
   extraClass,
   plateNumber,
+  subjectId,
+  statusId,
 }: CustomDataTableProps) {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -70,6 +74,12 @@ export default function CustomDatatable({
       if (plateNumber) {
         newUrl.searchParams.append("plateNumber", plateNumber.toString());
       }
+      if (subjectId) {
+        newUrl.searchParams.append("subjectId", subjectId.toString());
+      }
+      if (statusId) {
+        newUrl.searchParams.append("statusId", statusId.toString());
+      }
 
       const response = await fetch(newUrl.toString());
       const result: ResponseResult<PaginationType<any>> = await response.json();
@@ -95,6 +105,8 @@ export default function CustomDatatable({
       id,
       gsm,
       plateNumber,
+      subjectId,
+      statusId,
     ],
   );
 
@@ -110,7 +122,7 @@ export default function CustomDatatable({
   }, [handleChange]);
 
   return (
-    <div className="block h-full w-full flex-1">
+    <div className="block h-full max-h-full w-full flex-1">
       <DataTable
         columns={columns}
         data={data}

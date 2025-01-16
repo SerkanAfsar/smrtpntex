@@ -924,11 +924,11 @@ export const CompanyCarListTypeHeaders = (editFunc: any, deleteFunc: any) => [
     selector: (row: CompanyCarType) => `${row.FirstName} ${row.LastName}`,
     sortable: true,
   },
-  {
-    name: "Firma",
-    selector: (row: CompanyCarType) => row.CompanyName,
-    sortable: true,
-  },
+  // {
+  //   name: "Firma",
+  //   selector: (row: CompanyCarType) => row.CompanyName,
+  //   sortable: true,
+  // },
 
   {
     name: "Kayıt Tarihi",

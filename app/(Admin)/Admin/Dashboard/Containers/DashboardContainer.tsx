@@ -39,7 +39,7 @@ export default function DashboardContainer({
       <ContentSection className="flex flex-col gap-6 p-6">
         <DashboardSectionOne />
         <DashboardSectionTwo />
-        <DashboardSectionThree />
+        {/* <DashboardSectionThree /> */}
       </ContentSection>
     </div>
   );
