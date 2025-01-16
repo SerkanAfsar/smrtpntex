@@ -1,6 +1,4 @@
-import { GetDistributorCarsListService } from "@/Services/DistrubitorsService";
 import { GetHelpDescListService } from "@/Services/HelpDescService";
-
 import { HelpDescSearchType } from "@/Types/Help.Types";
 import { NextRequest, NextResponse } from "next/server";
 

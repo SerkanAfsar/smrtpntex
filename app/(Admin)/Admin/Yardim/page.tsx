@@ -4,7 +4,7 @@ import {
   GetHelpDescStatusService,
   GetHelpDescSubjectsService,
 } from "@/Services/HelpDescService";
-import { CustomOptionsType, PaginationType } from "@/Types/Common.Types";
+import { CustomOptionsType } from "@/Types/Common.Types";
 import { HelpDescCommonType } from "@/Types/Help.Types";
 import { getResultData } from "@/Utils";
 
