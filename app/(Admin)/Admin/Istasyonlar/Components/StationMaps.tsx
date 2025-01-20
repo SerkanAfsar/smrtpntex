@@ -6,10 +6,6 @@ const containerStyle = {
   height: "100%",
 };
 
-const center = {
-  lat: 39.056,
-  lng: 35.3213,
-};
 export default function StationMaps({
   latitude,
   longitude,
@@ -17,6 +13,7 @@ export default function StationMaps({
   latitude: string;
   longitude: string;
 }) {
+  const center: any = {};
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     language: "tr",

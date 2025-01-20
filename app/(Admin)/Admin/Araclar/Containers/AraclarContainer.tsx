@@ -10,7 +10,7 @@ import {
 } from "@/Utils/Variables";
 import AraclarCustomSearch from "../Components/AraclarCustomSearch";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import CustomDatatable from "@/Components/UI/CustomDataTable";
 
 import { ExcelAraclarResult } from "@/Services/Excel.Service";
@@ -18,28 +18,20 @@ import { MenuType } from "../../Petronet/Containers/PetronetContainer";
 import { useCarBrandModal } from "@/store/useCarBrandModal";
 import { useShallow } from "zustand/shallow";
 import CarBrandAddEditModal from "../Components/CarBrandAddEditModal";
+import { CustomOptionsType } from "@/Types/Common.Types";
 
-const types: MenuType = {
-  Araçlar: {
-    searchItems: ["aranacak", "plateNumber"],
-    apiUrl: "/api/cars/getlist",
-    columns: CompanyCarListTypeHeaders(null, null),
-  },
-  Markalar: {
-    searchItems: ["aranacak"],
-    apiUrl: "/api/cars/carbrand",
-    columns: CarBrandHeaderColumns(null, null),
-  },
-};
-
-export default function AraclarContainer() {
+export default function AraclarContainer({
+  catData,
+}: {
+  catData: CustomOptionsType[];
+}) {
   const isOpened = useLeftMenuStore((state) => state.isOpened);
   const [keywords, setKeywords] = useState<string>("");
   const [plateNumber, setPlateNumber] = useState<string>("");
   const [excelLoading, setExcelLoading] = useState<boolean>(false);
   const [activeMenu, setActiveMenu] = useState<string>("Araçlar");
 
-  const [isOpenedModal, selectedBrand, setSelectedBrand, toggleOpened] =
+  const [isOpenedModal, selectedBrand, setSelectedBrand, toogleOpenedBrand] =
     useCarBrandModal(
       useShallow((state) => [
         state.isOpened,
@@ -48,6 +40,34 @@ export default function AraclarContainer() {
         state.toggleOpened,
       ]),
     );
+
+  const types = useMemo<MenuType>(() => {
+    return {
+      Araçlar: {
+        searchItems: ["aranacak", "plateNumber"],
+        apiUrl: "/api/cars/getlist",
+        columns: CompanyCarListTypeHeaders(
+          async ({ id }: { id: number }) => {},
+          async ({ id }: { id: number }) => {
+            alert(`${id} Api Bekleniyor...`);
+          },
+        ),
+      },
+      Markalar: {
+        searchItems: ["aranacak"],
+        apiUrl: "/api/cars/carbrand",
+        columns: CarBrandHeaderColumns(
+          async ({ id }: { id: number }) => {
+            await setSelectedBrand(id);
+            toogleOpenedBrand(true);
+          },
+          async ({ id }: { id: number }) => {
+            alert(`${id} Api Bekleniyor...`);
+          },
+        ),
+      },
+    };
+  }, [setSelectedBrand, toogleOpenedBrand]);
 
   return (
     <>
@@ -79,9 +99,9 @@ export default function AraclarContainer() {
             {activeMenu == "Markalar" && (
               <CustomButton
                 className="P-2 bg-blue-100 text-blue-500"
-                onClick={() => {
-                  setSelectedBrand();
-                  toggleOpened(true);
+                onClick={async () => {
+                  await setSelectedBrand(undefined);
+                  toogleOpenedBrand(true);
                 }}
                 icon={PlusSmall}
                 title={"Marka Ekle"}
@@ -125,11 +145,22 @@ export default function AraclarContainer() {
         )}
       </div>
       <CarBrandAddEditModal
-        brandData={null}
+        brandData={{
+          Title: selectedBrand?.Title ?? "",
+          CreatedById: selectedBrand?.CreatedById ?? "",
+          CreatedDate: selectedBrand?.CreatedDate ?? "",
+          DeletedById: selectedBrand?.DeletedById ?? "",
+          DeletedDate: selectedBrand?.DeletedDate ?? "",
+          Id: selectedBrand?.Id ?? undefined,
+          IsActive: selectedBrand?.IsActive ?? false,
+          IsDeleted: selectedBrand?.IsDeleted ?? false,
+          models: selectedBrand?.models ?? [],
+        }}
         isOpenedModal={isOpenedModal}
         title="Marka Ekle"
-        toggleOpened={toggleOpened}
+        toggleOpened={toogleOpenedBrand}
         setUpdated={null}
+        catData={catData}
       />
     </>
   );

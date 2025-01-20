@@ -77,6 +77,7 @@ export async function AddCarBrandTotalService({
   data: AddCarBrandType;
 }) {
   const result = await AddCarBrandService({ data });
+
   if (result.IsSuccess) {
     const resultData = result.Data as CarBrandType;
     const arr = data.models as AddCarBrandModelType[];
@@ -85,7 +86,7 @@ export async function AddCarBrandTotalService({
       const element = arr[index];
       const modelResult = await AddCarBrandModelService({
         data: {
-          brandId: resultData.Id,
+          brandId: resultData.Id as number,
           categoryId: element.categoryId,
           title: element.title,
         },
@@ -102,4 +103,11 @@ export async function AddCarBrandTotalService({
       position: "top-right",
     });
   }
+}
+
+export async function GetCarBrandByIdService({ id }: { id: number }) {
+  return (await BaseFetch({
+    method: "GET",
+    url: `adminApi/Car//brand-getbyid/${id}`,
+  })) as ResponseResult<CarBrandType>;
 }

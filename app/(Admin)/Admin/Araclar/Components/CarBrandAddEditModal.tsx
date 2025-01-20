@@ -2,21 +2,10 @@ import CustomButton from "@/Components/UI/CustomButton";
 import CustomCheckbox from "@/Components/UI/CustomCheckbox";
 import CustomSelect from "@/Components/UI/CustomSelect";
 import { CustomTextbox } from "@/Components/UI/CustomTextbox";
-import {
-  AddCarBrandTotalService,
-  GetCarModelCategoryTypes,
-} from "@/Services/CarService";
-import {
-  AddCarBrandType,
-  CarBrandType,
-  CarModelCategoryType,
-} from "@/Types/Car.Types";
+import { AddCarBrandTotalService } from "@/Services/CarService";
+import { AddCarBrandType, CarBrandType } from "@/Types/Car.Types";
 
-import {
-  CustomOptionsType,
-  PaginationType,
-  ResponseResult,
-} from "@/Types/Common.Types";
+import { CustomOptionsType } from "@/Types/Common.Types";
 
 import { cn } from "@/Utils";
 import { ExitIcon } from "@/Utils/IconList";
@@ -30,12 +19,14 @@ export default function CarBrandAddEditModal({
   setUpdated,
   brandData,
   title,
+  catData,
 }: {
   toggleOpened: any;
   isOpenedModal: boolean;
   setUpdated: any;
   brandData: CarBrandType | null;
   title: string;
+  catData: CustomOptionsType[];
 }) {
   const [modelCats, setModelCats] = useState<CustomOptionsType[]>([]);
   const {
@@ -46,9 +37,7 @@ export default function CarBrandAddEditModal({
     control,
     formState: { errors, isSubmitting },
   } = useForm<CarBrandType>({
-    defaultValues: {
-      models: brandData?.models,
-    },
+    defaultValues: brandData ?? {},
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -57,29 +46,10 @@ export default function CarBrandAddEditModal({
   });
 
   useEffect(() => {
-    const getCatModels = async () => {
-      const result: ResponseResult<PaginationType<CarModelCategoryType>> =
-        await GetCarModelCategoryTypes();
-      if (result.IsSuccess) {
-        const data = result.Data as PaginationType<CarModelCategoryType>;
-        setModelCats(
-          (data.records as CarModelCategoryType[]).map((item) => ({
-            name: item.Title,
-            value: item.Id,
-          })),
-        );
-      }
-    };
-    getCatModels();
-  }, []);
-
-  // useEffect(() => {
-  //   clearErrors();
-  //   reset({ tanks: stationData?.tanks });
-  //   if (stationData == null) {
-  //     remove();
-  //   }
-  // }, [stationData, reset, clearErrors, remove]);
+    if (brandData) {
+      reset(brandData);
+    }
+  }, [brandData, reset]);
 
   const onSubmit: SubmitHandler<CarBrandType> = async (data) => {
     const newData: AddCarBrandType = {
@@ -87,7 +57,7 @@ export default function CarBrandAddEditModal({
       title: data.Title,
       models:
         data.models?.map((item) => ({
-          categoryId: item.CarCategoryId,
+          categoryId: item.CarCategoryId as number,
           title: item.Title,
           brandId: 0,
         })) || [],
@@ -174,8 +144,8 @@ export default function CarBrandAddEditModal({
                 required: "Kategori Seçiniz",
                 valueAsNumber: true,
               })}
-              setFirst={false}
-              options={modelCats}
+              setFirst={true}
+              options={catData}
               className="rounded-md border p-3"
               title="Kategori Seçiniz"
               err={errors.models?.[index]?.CarCategoryId?.message}
@@ -197,7 +167,7 @@ export default function CarBrandAddEditModal({
           onClick={() =>
             append({
               CarBrandId: 0,
-              CarCategoryId: 0,
+              CarCategoryId: "",
               CreatedById: null,
               CreatedDate: "",
               DeletedById: null,

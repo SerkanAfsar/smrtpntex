@@ -43,7 +43,7 @@ export type CarBrandType = {
   DeletedDate: string | number | null;
   CreatedById: string | number | null;
   CreatedDate: string;
-  Id: number;
+  Id?: number;
   models?: CarBrandModelType[];
 };
 
@@ -54,7 +54,7 @@ export type AddCarBrandType = {
 };
 
 export type CarBrandModelType = {
-  CarCategoryId: number;
+  CarCategoryId: number | string;
   CarBrandId: number;
   Title: string;
   IsActive: boolean;

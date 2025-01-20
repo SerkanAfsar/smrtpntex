@@ -1,3 +1,4 @@
+import { GetCarBrandByIdService } from "@/Services/CarService";
 import { CarBrandType } from "@/Types/Car.Types";
 import { create } from "zustand";
 
@@ -13,14 +14,13 @@ export const useCarBrandModal = create<CarBrandModal>()((set) => ({
   toggleOpened: (open: boolean) => set((state) => ({ isOpened: open })),
   selectedBrand: null,
   setSelectedBrand: async (id?: number) => {
-    // if (id) {
-    //   const result = await GetCompanyByIdService({ id });
-    //   set({
-    //     selectedCompany: result.IsSuccess ? (result.Data as CompanyType) : null,
-    //   });
-    // } else {
-    //   set({ selectedCompany: null });
-    // }
-    set({ selectedBrand: null });
+    if (id) {
+      const result = await GetCarBrandByIdService({ id });
+      set({
+        selectedBrand: result.IsSuccess ? (result.Data as CarBrandType) : null,
+      });
+    } else {
+      set({ selectedBrand: null });
+    }
   },
 }));

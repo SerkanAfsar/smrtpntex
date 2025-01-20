@@ -96,3 +96,7 @@ Product-ile ilgili düzenlemeler
 // "addressLine": "string",
 // "zipPostalCode": "string",
 // "addressHtml": "string"
+
+41.019805476888
+
+28.563646026834

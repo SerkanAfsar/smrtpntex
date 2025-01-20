@@ -21,7 +21,7 @@ import NotSelected from "@/Components/Admin/NotSelected";
 import CustomDatatable from "@/Components/UI/CustomDataTable";
 import { MenuType } from "../../Petronet/Containers/PetronetContainer";
 import PetronetCustomSearch from "../../Petronet/Components/PetronetCustomSearch";
-import { ExportCsvIcon } from "@/Utils/IconList";
+import { ExportCsvIcon, PlusSmall } from "@/Utils/IconList";
 import { ExcelFirmalarSatisResult } from "@/Services/Excel.Service";
 import { AddressType } from "@/Types/Address.Types";
 
@@ -140,6 +140,16 @@ export default function CompaniesContainer({
                   ))}
                 </div>
               </div>
+              {activeMenu == "Finans" && (
+                <CustomButton
+                  className="P-2 bg-blue-100 text-blue-500"
+                  onClick={() => {
+                    alert("Finans Eklenicek Api Kısmı Mevcut Değil");
+                  }}
+                  icon={PlusSmall}
+                  title={"Finans Ekle"}
+                />
+              )}
               {types[activeMenu].excelCommand && (
                 <CustomButton
                   className="gap-1 bg-green-100 p-2 text-green-600"
