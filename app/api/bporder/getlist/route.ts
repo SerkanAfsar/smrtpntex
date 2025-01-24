@@ -9,6 +9,7 @@ export async function GET(req: NextRequest) {
   const keywords = searchParams.get("keywords");
   const startDate = searchParams.get("startDate");
   const endDate = searchParams.get("endDate");
+  const orderStateId = searchParams.get("orderStateId");
 
   const searchType: BpOrderListType = {
     pageSize,
@@ -25,6 +26,9 @@ export async function GET(req: NextRequest) {
 
   if (endDate && endDate != "undefined") {
     searchType.endDate = endDate;
+  }
+  if (orderStateId && orderStateId != "undefined") {
+    searchType.orderStateId = Number(orderStateId);
   }
 
   const result = await GetBpOrderListData({

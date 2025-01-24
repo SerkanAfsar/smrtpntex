@@ -7,6 +7,8 @@ interface CarBrandModal {
   toggleOpened: (open: boolean) => void;
   setSelectedBrand: (id?: number) => Promise<void>;
   selectedBrand: CarBrandType | null;
+  isUpdated: boolean;
+  setIsUpdated: () => void;
 }
 
 export const useCarBrandModal = create<CarBrandModal>()((set) => ({
@@ -16,6 +18,7 @@ export const useCarBrandModal = create<CarBrandModal>()((set) => ({
   setSelectedBrand: async (id?: number) => {
     if (id) {
       const result = await GetCarBrandByIdService({ id });
+
       set({
         selectedBrand: result.IsSuccess ? (result.Data as CarBrandType) : null,
       });
@@ -23,4 +26,6 @@ export const useCarBrandModal = create<CarBrandModal>()((set) => ({
       set({ selectedBrand: null });
     }
   },
+  isUpdated: false,
+  setIsUpdated: () => set((state) => ({ isUpdated: !state.isUpdated })),
 }));

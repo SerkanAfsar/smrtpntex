@@ -2,7 +2,10 @@ import CustomButton from "@/Components/UI/CustomButton";
 import CustomCheckbox from "@/Components/UI/CustomCheckbox";
 import CustomSelect from "@/Components/UI/CustomSelect";
 import { CustomTextbox } from "@/Components/UI/CustomTextbox";
-import { AddCarBrandTotalService } from "@/Services/CarService";
+import {
+  AddCarBrandTotalService,
+  DeleteCarModelByIdService,
+} from "@/Services/CarService";
 import { AddCarBrandType, CarBrandType } from "@/Types/Car.Types";
 
 import { CustomOptionsType } from "@/Types/Common.Types";
@@ -13,6 +16,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 export default function CarBrandAddEditModal({
   toggleOpened,
   isOpenedModal,
@@ -62,7 +66,17 @@ export default function CarBrandAddEditModal({
           brandId: 0,
         })) || [],
     };
-    await AddCarBrandTotalService({ data: newData });
+
+    const result = await AddCarBrandTotalService({ data: newData });
+    if (result.IsSuccess) {
+      toast.success("Marka Eklendi", { position: "top-right" });
+      setUpdated();
+      toggleOpened(false);
+    } else {
+      return toast.error(result.Message || "Marka Ekleme Hatası", {
+        position: "top-right",
+      });
+    }
   };
 
   return (
@@ -113,20 +127,25 @@ export default function CarBrandAddEditModal({
                 type="button"
                 onClick={async () => {
                   if (field.Id) {
-                    // const confirmMessage = confirm(
-                    //   "Modeli Sistemden Silmek İstediğinizden Emin misiniz?",
-                    // );
-                    // if (confirmMessage) {
-                    //   const result = await DeleteTankByIdService({
-                    //     tankId: field.Id,
-                    //   });
-                    //   if (result.IsSuccess) {
-                    //     toast.success("Tank Sistemden Silindi", {
-                    //       position: "top-right",
-                    //     });
-                    //     remove(index);
-                    //   }
-                    // }
+                    const confirmMessage = confirm(
+                      "Modeli Sistemden Silmek İstediğinizden Emin misiniz?",
+                    );
+                    if (confirmMessage) {
+                      const result = await DeleteCarModelByIdService({
+                        id: field.Id,
+                      });
+                      if (result.IsSuccess) {
+                        toast.success("Model Sistemden Silindi", {
+                          position: "top-right",
+                        });
+                        remove(index);
+                      } else {
+                        return toast.error(
+                          result.Message || "Car Model Delete Error",
+                          { position: "top-right" },
+                        );
+                      }
+                    }
                   } else {
                     remove(index);
                   }
@@ -136,7 +155,7 @@ export default function CarBrandAddEditModal({
                   field.Id ? "bg-red-600" : "bg-red-500",
                 )}
               >
-                {field.Id ? "Tankı Sil" : "Kaldır"}
+                {field.Id ? "Model Sil" : "Kaldır"}
               </button>
             </h2>
             <CustomSelect

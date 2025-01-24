@@ -13,14 +13,28 @@ import BpOrderEditModal from "../Components/BpOrderEditModal";
 import { useShallow } from "zustand/shallow";
 import CustomDatatable from "@/Components/UI/CustomDataTable";
 import { ExcelBPList } from "@/Services/Excel.Service";
-import { DeleteBpOrderService } from "@/Services/BpOrderService";
+import {
+  ApproveBpOrderService,
+  DeleteBpOrderService,
+} from "@/Services/BpOrderService";
 import { toast } from "react-toastify";
+import { CustomOptionsType } from "@/Types/Common.Types";
 
-export default function BpContainer() {
-  const { isOpened } = useLeftMenuStore();
+export default function BpContainer({
+  OrderStateData,
+}: {
+  OrderStateData: CustomOptionsType[];
+}) {
+  const isOpened = useLeftMenuStore((state) => state.isOpened);
   const [startDate, setStartDate] = useState<string>();
   const [endDate, setEndDate] = useState<string>();
   const [excelLoading, setExcelLoading] = useState<boolean>(false);
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const [orderStateId, setOrderStateId] = useState<number>(0);
+  const [keywords, setKeywords] = useState<string>("");
+
+  const [isApprooving, setIsApproving] = useState<boolean>(false);
+
   const [toggleOpened, updated, setUpdated, isOpenedModal] = useBpOrderModal(
     useShallow((state) => [
       state.toggleOpened,
@@ -30,22 +44,47 @@ export default function BpContainer() {
     ]),
   );
 
-  const deleteFunc = useCallback(async ({ id }: { id: number }) => {
-    const confirmMessage = confirm(
-      "Bu Kaydı Silmek İstediğinizden Emin misiniz?",
-    );
-    if (confirmMessage) {
-      const result = await DeleteBpOrderService({ id });
-      if (result.IsSuccess) {
-        setUpdated();
-        return toast.success("Veri Silindi!", { position: "top-right" });
-      } else {
-        return toast.error(result.Message || "Hata", {
-          position: "top-right",
-        });
+  const deleteFunc = useCallback(
+    async ({ id }: { id: number }) => {
+      const confirmMessage = confirm(
+        "Bu Kaydı Silmek İstediğinizden Emin misiniz?",
+      );
+      if (confirmMessage) {
+        const result = await DeleteBpOrderService({ id });
+        if (result.IsSuccess) {
+          setUpdated();
+          return toast.success("Veri Silindi!", { position: "top-right" });
+        } else {
+          return toast.error(result.Message || "Hata", {
+            position: "top-right",
+          });
+        }
       }
+    },
+    [setUpdated],
+  );
+
+  const checkBoxFunc = (isChecked: boolean, Id: number) => {
+    setSelectedRows((prev: number[]) =>
+      isChecked ? [...prev, Id] : prev.filter((a) => a != Id),
+    );
+  };
+
+  const AprooveIdFunc = useCallback(async () => {
+    setIsApproving(true);
+    const responseResult = await ApproveBpOrderService({
+      idList: selectedRows,
+    });
+    if (responseResult.IsSuccess) {
+      toast.success(responseResult.Message, { position: "top-right" });
+      setUpdated();
+    } else {
+      toast.error(responseResult.Message || "Approve Error", {
+        position: "top-right",
+      });
     }
-  }, []);
+    setIsApproving(false);
+  }, [selectedRows, setUpdated]);
 
   return (
     <div
@@ -64,7 +103,10 @@ export default function BpContainer() {
             onClick={() => toggleOpened()}
           />
           <CustomButton
-            title="Sipariş Onayla"
+            title={
+              isApprooving ? "Siparişler Onaylanıyor..." : "Siparişleri Onayla"
+            }
+            onClick={async () => await AprooveIdFunc()}
             className="cursor-pointer bg-green-100 p-2 text-green-600"
             icon={CheckIcon}
           />
@@ -85,11 +127,23 @@ export default function BpContainer() {
           />
         </div>
       </AdminTopSection>
-      <BpCustomSearch setStartDate={setStartDate} setEndDate={setEndDate} />
+      <BpCustomSearch
+        setKeywords={setKeywords}
+        setStartDate={setStartDate}
+        OrderStateData={OrderStateData}
+        setEndDate={setEndDate}
+        setOrderStateId={setOrderStateId}
+        orderStateId={orderStateId}
+      />
       <CustomDatatable
-        columns={BpDatatableProps(null, deleteFunc)}
+        columns={BpDatatableProps(null, deleteFunc, checkBoxFunc, selectedRows)}
         apiUrl="/api/bporder/getlist"
         updated={updated}
+        selectableRows
+        orderStateId={orderStateId}
+        startDate={startDate}
+        endDate={endDate}
+        keywords={keywords}
       />
       <BpOrderEditModal
         isOpenedModal={isOpenedModal}

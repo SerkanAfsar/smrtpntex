@@ -308,7 +308,24 @@ export const AraclarDatatableProps = {
   ],
 };
 
-export const BpDatatableProps = (editFunc: any, deleteFunc: any) => [
+export const BpDatatableProps = (
+  editFunc: any,
+  deleteFunc: any,
+  checkBoxFunc: any,
+  selectedRows?: number[],
+) => [
+  {
+    name: "",
+    selector: (row: any) => (
+      <input
+        type="checkbox"
+        checked={selectedRows?.includes(row.Id)}
+        onChange={(e) => checkBoxFunc(e.target.checked, row.Id)}
+      />
+    ),
+    width: "40px",
+  },
+
   {
     name: "Sipariş No",
     selector: (row: any) => row.OrderCode,

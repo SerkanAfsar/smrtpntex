@@ -77,13 +77,12 @@ export async function AddCarBrandTotalService({
   data: AddCarBrandType;
 }) {
   const result = await AddCarBrandService({ data });
-
   if (result.IsSuccess) {
     const resultData = result.Data as CarBrandType;
     const arr = data.models as AddCarBrandModelType[];
-
     for (let index = 0; index < arr.length; index++) {
       const element = arr[index];
+      console.log("element is ", element);
       const modelResult = await AddCarBrandModelService({
         data: {
           brandId: resultData.Id as number,
@@ -92,22 +91,67 @@ export async function AddCarBrandTotalService({
         },
       });
       if (!modelResult.IsSuccess) {
-        return toast.error(modelResult.Message || "Model Err", {
-          position: "top-right",
-        });
+        const resultData = modelResult.Data as CarBrandType;
+        await CarBrandDeleteService({ id: resultData.Id as number });
+        return modelResult;
       }
     }
-    return toast.success("Marka Eklendi", { position: "top-right" });
-  } else {
-    return toast.error(result.Message || "Marka Err", {
-      position: "top-right",
-    });
   }
+  return result;
 }
 
 export async function GetCarBrandByIdService({ id }: { id: number }) {
-  return (await BaseFetch({
+  const result = (await BaseFetch({
     method: "GET",
-    url: `adminApi/Car//brand-getbyid/${id}`,
+    url: `adminApi/Car/brand-getbyid/${id}`,
   })) as ResponseResult<CarBrandType>;
+  if (result.IsSuccess) {
+    const resultData = result.Data as CarBrandType;
+    const brandsResult = await GetCarModelsByBrandIdService({
+      brandId: resultData.Id as number,
+    });
+
+    if (brandsResult.IsSuccess) {
+      const brandsResultData =
+        brandsResult.Data as PaginationType<CarBrandModelType>;
+      resultData.models = brandsResultData.records as CarBrandModelType[];
+      const newResponseResult: ResponseResult<CarBrandType> = {
+        Code: 200,
+        IsSuccess: true,
+        Data: resultData,
+      };
+      return newResponseResult;
+    }
+    return result;
+  }
+  return result;
+}
+
+export async function CarBrandDeleteService({ id }: { id: number }) {
+  return (await BaseFetch({
+    method: "POST",
+    url: `adminApi/Car/brand-delete/${id}`,
+  })) as ResponseResult<CarBrandType>;
+}
+
+export async function GetCarModelsByBrandIdService({
+  brandId,
+}: {
+  brandId: number;
+}) {
+  return (await BaseFetch({
+    method: "POST",
+    url: `adminApi/Car/models/${brandId}`,
+    body: {
+      pageIndex: 1,
+      pageSize: 9999,
+    },
+  })) as ResponseResult<CarBrandType>;
+}
+
+export async function DeleteCarModelByIdService({ id }: { id: number }) {
+  return (await BaseFetch({
+    method: "POST",
+    url: `adminApi/Car/model-delete/${id}`,
+  })) as ResponseResult<CarBrandModelType>;
 }

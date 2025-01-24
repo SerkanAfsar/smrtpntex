@@ -10,7 +10,7 @@ import {
 } from "@/Utils/Variables";
 import AraclarCustomSearch from "../Components/AraclarCustomSearch";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import CustomDatatable from "@/Components/UI/CustomDataTable";
 
 import { ExcelAraclarResult } from "@/Services/Excel.Service";
@@ -19,6 +19,8 @@ import { useCarBrandModal } from "@/store/useCarBrandModal";
 import { useShallow } from "zustand/shallow";
 import CarBrandAddEditModal from "../Components/CarBrandAddEditModal";
 import { CustomOptionsType } from "@/Types/Common.Types";
+import { CarBrandDeleteService } from "@/Services/CarService";
+import { toast } from "react-toastify";
 
 export default function AraclarContainer({
   catData,
@@ -31,15 +33,43 @@ export default function AraclarContainer({
   const [excelLoading, setExcelLoading] = useState<boolean>(false);
   const [activeMenu, setActiveMenu] = useState<string>("Araçlar");
 
-  const [isOpenedModal, selectedBrand, setSelectedBrand, toogleOpenedBrand] =
-    useCarBrandModal(
-      useShallow((state) => [
-        state.isOpened,
-        state.selectedBrand,
-        state.setSelectedBrand,
-        state.toggleOpened,
-      ]),
-    );
+  const [
+    isOpenedModal,
+    selectedBrand,
+    setSelectedBrand,
+    toogleOpenedBrand,
+    isUpdated,
+    setIsUpdated,
+  ] = useCarBrandModal(
+    useShallow((state) => [
+      state.isOpened,
+      state.selectedBrand,
+      state.setSelectedBrand,
+      state.toggleOpened,
+      state.isUpdated,
+      state.setIsUpdated,
+    ]),
+  );
+
+  const deleteCarBrandFunc = useCallback(
+    async ({ id }: { id: number }) => {
+      const confirmMessage = confirm(
+        "Seçili Markayı Silmek İstediğinizden Emin misiniz?",
+      );
+      if (confirmMessage) {
+        const responseResult = await CarBrandDeleteService({ id });
+        if (responseResult.IsSuccess) {
+          toast.success("Marka Silindi", { position: "top-right" });
+          setIsUpdated();
+        } else {
+          return toast.error(responseResult.Message || "bRAND Delete Error", {
+            position: "top-right",
+          });
+        }
+      }
+    },
+    [setIsUpdated],
+  );
 
   const types = useMemo<MenuType>(() => {
     return {
@@ -62,12 +92,12 @@ export default function AraclarContainer({
             toogleOpenedBrand(true);
           },
           async ({ id }: { id: number }) => {
-            alert(`${id} Api Bekleniyor...`);
+            await deleteCarBrandFunc({ id });
           },
         ),
       },
     };
-  }, [setSelectedBrand, toogleOpenedBrand]);
+  }, [setSelectedBrand, toogleOpenedBrand, deleteCarBrandFunc]);
 
   return (
     <>
@@ -141,6 +171,7 @@ export default function AraclarContainer({
             columns={types[activeMenu].columns}
             keywords={keywords}
             plateNumber={plateNumber}
+            updated={isUpdated}
           />
         )}
       </div>
@@ -159,7 +190,7 @@ export default function AraclarContainer({
         isOpenedModal={isOpenedModal}
         title="Marka Ekle"
         toggleOpened={toogleOpenedBrand}
-        setUpdated={null}
+        setUpdated={setIsUpdated}
         catData={catData}
       />
     </>

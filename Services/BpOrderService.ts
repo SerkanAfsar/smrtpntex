@@ -1,6 +1,7 @@
 import {
   AddBpOrderType,
   BpOrderListType,
+  BpOrderStateType,
   BpOrderStationType,
   BpOrderType,
 } from "@/Types/BpOrder.Types";
@@ -39,4 +40,18 @@ export async function DeleteBpOrderService({ id }: { id: number }) {
     method: "POST",
     url: `adminApi/BpOrder/delete/${id}`,
   })) as ResponseResult<AddBpOrderType>;
+}
+
+export async function ApproveBpOrderService({ idList }: { idList: number[] }) {
+  return (await BaseFetch({
+    method: "POST",
+    url: `adminApi/BpOrder/approve-selected-order?selectedIds=${idList.join(",")}`,
+  })) as ResponseResult<AddBpOrderType>;
+}
+
+export async function GetBpOrderStateService() {
+  return (await BaseFetch({
+    method: "GET",
+    url: `adminApi/Common/order-states`,
+  })) as ResponseResult<BpOrderStateType>;
 }

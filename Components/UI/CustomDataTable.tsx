@@ -20,6 +20,8 @@ export type CustomDataTableProps = {
   plateNumber?: string;
   subjectId?: string;
   statusId?: string;
+  selectableRows?: boolean;
+  orderStateId?: number;
 };
 export default function CustomDatatable({
   apiUrl,
@@ -35,6 +37,7 @@ export default function CustomDatatable({
   plateNumber,
   subjectId,
   statusId,
+  orderStateId,
 }: CustomDataTableProps) {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -80,6 +83,9 @@ export default function CustomDatatable({
       if (statusId) {
         newUrl.searchParams.append("statusId", statusId.toString());
       }
+      if (orderStateId) {
+        newUrl.searchParams.append("orderStateId", orderStateId.toString());
+      }
 
       const response = await fetch(newUrl.toString());
       const result: ResponseResult<PaginationType<any>> = await response.json();
@@ -107,6 +113,7 @@ export default function CustomDatatable({
       plateNumber,
       subjectId,
       statusId,
+      orderStateId,
     ],
   );
 
@@ -135,6 +142,7 @@ export default function CustomDatatable({
         onChangeRowsPerPage={handlePerRowsChange}
         paginationRowsPerPageOptions={[25, 50, 100]}
         onChangePage={handlePageChange}
+        highlightOnHover
         className={cn("custom-table", extraClass && extraClass)}
         customStyles={{
           table: {

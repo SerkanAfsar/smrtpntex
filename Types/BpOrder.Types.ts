@@ -4,6 +4,7 @@ export type BpOrderListType = PageIndexType & {
   keywords?: string;
   startDate?: string;
   endDate?: string;
+  orderStateId?: number;
 };
 
 export type BpOrderType = {
@@ -52,4 +53,9 @@ export type BpOrderStationType = {
   LastModifiedDate: string;
   CreatedDate: string;
   Id: number;
+};
+
+export type BpOrderStateType = {
+  Id: number;
+  Name: string;
 };
