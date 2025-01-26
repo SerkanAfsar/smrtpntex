@@ -82,7 +82,7 @@ export async function AddCarBrandTotalService({
     const arr = data.models as AddCarBrandModelType[];
     for (let index = 0; index < arr.length; index++) {
       const element = arr[index];
-      console.log("element is ", element);
+
       const modelResult = await AddCarBrandModelService({
         data: {
           brandId: resultData.Id as number,

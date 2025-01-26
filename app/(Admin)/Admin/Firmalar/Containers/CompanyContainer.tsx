@@ -211,6 +211,7 @@ export default function CompaniesContainer({
           riskLimit: selectedCompany?.RiskLimit ?? 0,
           taxNumber: selectedCompany?.TaxNumber ?? "",
           taxOffice: selectedCompany?.TaxOffice ?? "",
+          purchasePrice: selectedCompany?.PurchasePrice ?? 0,
           title: selectedCompany?.Title ?? "",
           addresses: selectedCompany?.addresses?.map((item: AddressType) => ({
             addressHtml: item.AddressHtml,

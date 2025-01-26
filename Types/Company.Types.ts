@@ -6,6 +6,7 @@ export type CompanyType = Omit<DistrubitorType, "DistributorGuid"> & {
   CompanyGuid: string;
   DistributorId: number;
   addresses?: AddressType[];
+  PurchasePrice?: number;
 };
 
 export type CompanyListType = PageIndexType & {
@@ -56,6 +57,7 @@ export type AddCompanyType = {
   taxNumber: string;
   taxOffice: string;
   alertLimit: number;
+  purchasePrice: number;
   riskLimit: number;
   isActive: boolean;
   addresses?: AddAddressType[];

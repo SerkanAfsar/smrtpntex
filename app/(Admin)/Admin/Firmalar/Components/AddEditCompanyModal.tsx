@@ -173,7 +173,16 @@ export default function AddEditCompanyModal({
           className="rounded-md border p-3 outline-none"
           err={errors.taxOffice?.message}
         />
-
+        <CustomTextbox
+          {...register("purchasePrice", {
+            required: "Alış Fiyatı ( TL )  Giriniz..",
+            valueAsNumber: true,
+          })}
+          type="number"
+          title="Alış Fiyatı ( TL ) "
+          className="rounded-md border p-3 outline-none"
+          err={errors.purchasePrice?.message}
+        />
         <CustomTextbox
           {...register("alertLimit", {
             required: "Uyarı Limiti ( TL )  Giriniz..",
