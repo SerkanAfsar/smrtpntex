@@ -9,7 +9,6 @@ import {
 import { PaginationType, ResponseResult } from "@/Types/Common.Types";
 import { ProductListType, ProductType } from "@/Types/Product.Types";
 import {
-  Delete2,
   Delete3,
   EditIcon,
   ExportCsvIcon,
