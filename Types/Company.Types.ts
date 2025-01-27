@@ -215,3 +215,10 @@ export type CompanyInvoiceType = {
   CreatedDate: string;
   Id: number;
 };
+
+export type AddEditCompanyCurrentAccounts = {
+  paymentMethodId: number | string;
+  revenue: number;
+  expense: number;
+  description: string;
+};

@@ -24,6 +24,7 @@ import PetronetCustomSearch from "../../Petronet/Components/PetronetCustomSearch
 import { ExportCsvIcon, PlusSmall } from "@/Utils/IconList";
 import { ExcelFirmalarSatisResult } from "@/Services/Excel.Service";
 import { AddressType } from "@/Types/Address.Types";
+import AddEditFinanceModal from "../Components/AddEditFinanceModal";
 
 const types: MenuType = {
   Araçlar: {
@@ -76,6 +77,9 @@ export default function CompaniesContainer({
   const [endDate, setEndDate] = useState<string>("");
   const [excelLoading, setExcelLoading] = useState<boolean>(false);
   const [activeMenu, setActiveMenu] = useState<string>("Araçlar");
+  const [isFinanceModalOpened, setIsFinanceModalOpened] =
+    useState<boolean>(false);
+  const [isUpdated, setIsUpdated] = useState<boolean>(false);
 
   const [
     toggleOpenedModal,
@@ -144,7 +148,7 @@ export default function CompaniesContainer({
                 <CustomButton
                   className="P-2 bg-blue-100 text-blue-500"
                   onClick={() => {
-                    alert("Finans Eklenicek Api Kısmı Mevcut Değil");
+                    setIsFinanceModalOpened(true);
                   }}
                   icon={PlusSmall}
                   title={"Finans Ekle"}
@@ -187,6 +191,7 @@ export default function CompaniesContainer({
                 startDate={startDate}
                 endDate={endDate}
                 keywords={keywords}
+                updated={isUpdated}
               />
             )}
           </>
@@ -231,6 +236,21 @@ export default function CompaniesContainer({
           })),
         }}
       />
+      {selectedCompany?.Id && (
+        <AddEditFinanceModal
+          companyId={selectedCompany.Id}
+          isOpenedModal={isFinanceModalOpened}
+          toggleOpenedModal={setIsFinanceModalOpened}
+          paymentMethods={paymentMethods}
+          editData={{
+            description: "",
+            expense: 0,
+            paymentMethodId: "",
+            revenue: 0,
+          }}
+          setUpdated={setIsUpdated}
+        />
+      )}
     </>
   );
 }

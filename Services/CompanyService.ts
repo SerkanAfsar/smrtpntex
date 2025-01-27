@@ -1,6 +1,7 @@
 import { PaginationType, ResponseResult } from "@/Types/Common.Types";
 import {
   AddCompanyType,
+  AddEditCompanyCurrentAccounts,
   CompanyCarListType,
   CompanyCarType,
   CompanyCreditCartListType,
@@ -268,4 +269,18 @@ export async function GetCompanyAddressListService({
     method: "GET",
     url: `adminApi/Company/address-list/${companyId}`,
   })) as ResponseResult<PaginationType<AddressType>>;
+}
+
+export async function AddCompanyCurrentAccounsService({
+  id,
+  data,
+}: {
+  id: number;
+  data: AddEditCompanyCurrentAccounts;
+}) {
+  return (await BaseFetch({
+    method: "POST",
+    body: data,
+    url: `/adminapi/Company/current-accounts-add/${id}`,
+  })) as ResponseResult<any>;
 }

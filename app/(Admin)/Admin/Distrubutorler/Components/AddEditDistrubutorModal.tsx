@@ -181,6 +181,11 @@ export default function AddEditDistrubutorModal({
           title="Uyarı Limiti (TL)"
           className="rounded-md border p-3 outline-none"
           err={errors.alertLimit?.message}
+          onKeyDown={(e) => {
+            if (e.currentTarget.value.length > 7) {
+              e.currentTarget.value = e.currentTarget.value.substring(0, 7);
+            }
+          }}
         />
         <CustomTextbox
           {...register("riskLimit", {
@@ -191,6 +196,11 @@ export default function AddEditDistrubutorModal({
           title="Risk Limiti (TL)"
           className="rounded-md border p-3 outline-none"
           err={errors.riskLimit?.message}
+          onKeyDown={(e) => {
+            if (e.currentTarget.value.length > 7) {
+              e.currentTarget.value = e.currentTarget.value.substring(0, 7);
+            }
+          }}
         />
         <CustomSelect
           setFirst={true}
