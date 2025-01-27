@@ -1,15 +1,11 @@
 import CustomButton from "@/Components/UI/CustomButton";
-import CustomCheckbox from "@/Components/UI/CustomCheckbox";
+
 import CustomSelect from "@/Components/UI/CustomSelect";
 import { CustomTextbox } from "@/Components/UI/CustomTextbox";
 import { AddCompanyCurrentAccounsService } from "@/Services/CompanyService";
 
-import { CustomOptionsType, ResponseResult } from "@/Types/Common.Types";
-import {
-  AddCompanyType,
-  AddEditCompanyCurrentAccounts,
-  CompanyType,
-} from "@/Types/Company.Types";
+import { CustomOptionsType } from "@/Types/Common.Types";
+import { AddEditCompanyCurrentAccounts } from "@/Types/Company.Types";
 
 import { cn } from "@/Utils";
 import { ExitIcon } from "@/Utils/IconList";
