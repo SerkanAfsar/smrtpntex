@@ -732,11 +732,23 @@ export const CompanyCurrentAccountListColumns = [
     sortable: true,
     width: "300px",
   },
-  // {
-  //   name: "Kullanıcı Adı",
-  //   selector: (row: CurrentAccountType) => row.UserName,
-  //   sortable: true,
-  // },
+  {
+    name: "Tutar",
+    selector: (row: CurrentAccountType) => (
+      <span className="text-moneyGreen">
+        {new Intl.NumberFormat("tr-TR", {
+          style: "currency",
+          currency: "TRY",
+          currencyDisplay: "code",
+        })
+          .format(row.Revenue)
+          .replace("TRY", "")
+          .trim()}{" "}
+        ₺
+      </span>
+    ),
+    sortable: true,
+  },
   {
     name: "Açıklama",
     selector: (row: CurrentAccountType) => row.Description,
