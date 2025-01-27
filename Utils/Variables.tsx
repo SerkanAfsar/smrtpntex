@@ -320,6 +320,7 @@ export const BpDatatableProps = (
       <input
         type="checkbox"
         checked={selectedRows?.includes(row.Id)}
+        disabled={row.StateMessage != "Sipariş Oluştu"}
         onChange={(e) => checkBoxFunc(e.target.checked, row.Id)}
       />
     ),

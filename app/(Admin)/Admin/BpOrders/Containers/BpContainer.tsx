@@ -78,6 +78,7 @@ export default function BpContainer({
     if (responseResult.IsSuccess) {
       toast.success(responseResult.Message, { position: "top-right" });
       setUpdated();
+      setSelectedRows([]);
     } else {
       toast.error(responseResult.Message || "Approve Error", {
         position: "top-right",
