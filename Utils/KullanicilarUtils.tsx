@@ -1,7 +1,7 @@
 import CustomButton from "@/Components/UI/CustomButton";
 import { UserType } from "@/Types/User.Types";
 import { format } from "date-fns";
-import { CheckIcon, Delete2, Edit2 } from "./IconList";
+import { CheckIcon, Delete2, Delete3, Edit2, EditIcon } from "./IconList";
 import Image from "next/image";
 import { RoleType } from "@/Types/Role.Types";
 
@@ -85,7 +85,7 @@ export const KullanicilarDataTableColumns = (
     selector: (row: any) => (
       <div className="flex items-center justify-center gap-3">
         <Image
-          src={Edit2}
+          src={EditIcon}
           width={20}
           height={20}
           alt="Edit"
@@ -93,7 +93,7 @@ export const KullanicilarDataTableColumns = (
           onClick={async () => editFunc({ id: row.Id })}
         />
         <Image
-          src={Delete2}
+          src={Delete3}
           width={20}
           height={20}
           alt="Delete"

@@ -1,5 +1,5 @@
 import { StationType } from "@/Types/Station.Types";
-import { CheckIcon, Delete2, Edit2 } from "./IconList";
+import { CheckIcon, Delete2, Delete3, Edit2, EditIcon } from "./IconList";
 
 import Image from "next/image";
 import { format } from "date-fns";
@@ -67,7 +67,7 @@ export const StationListHeaderColumns = (
     selector: (row: any) => (
       <div className="flex items-center justify-center gap-3">
         <Image
-          src={Edit2}
+          src={EditIcon}
           width={20}
           height={20}
           alt="Edit"
@@ -75,7 +75,7 @@ export const StationListHeaderColumns = (
           onClick={async () => editCommand({ id: row.Id })}
         />
         <Image
-          src={Delete2}
+          src={Delete3}
           width={20}
           height={20}
           alt="Delete"

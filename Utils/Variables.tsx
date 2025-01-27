@@ -6,8 +6,10 @@ import {
   AraclarIcon,
   BpIcon,
   Delete2,
+  Delete3,
   DistribitorlerIcon,
   Edit2,
+  EditIcon,
   FirmalarIcon,
   HelperIcon,
   IcerikYonetimiIcon,
@@ -363,7 +365,7 @@ export const BpDatatableProps = (
     selector: (row: any) => (
       <div className="flex items-center justify-center gap-3">
         <Image
-          src={Edit2}
+          src={EditIcon}
           width={20}
           height={20}
           alt="Edit"
@@ -371,7 +373,7 @@ export const BpDatatableProps = (
           onClick={async () => editFunc({ id: row.Id })}
         />
         <Image
-          src={Delete2}
+          src={Delete3}
           width={20}
           height={20}
           alt="Delete"
@@ -642,12 +644,16 @@ export const CompanySalesColumns = [
   },
   {
     name: "Satış Miktarı (L)",
-    selector: (row: CompanySalesType) => row.Liter,
+    selector: (row: CompanySalesType) => (
+      <span className="text-moneyGreen">{row.Liter} ₺</span>
+    ),
     sortable: true,
   },
   {
     name: "Satış Tutarı",
-    selector: (row: CompanySalesType) => row.Total,
+    selector: (row: CompanySalesType) => (
+      <span className="text-moneyGreen">{row.Total} ₺</span>
+    ),
     sortable: true,
   },
   {
@@ -726,11 +732,11 @@ export const CompanyCurrentAccountListColumns = [
     sortable: true,
     width: "300px",
   },
-  {
-    name: "Kullanıcı Adı",
-    selector: (row: CurrentAccountType) => row.UserName,
-    sortable: true,
-  },
+  // {
+  //   name: "Kullanıcı Adı",
+  //   selector: (row: CurrentAccountType) => row.UserName,
+  //   sortable: true,
+  // },
   {
     name: "Açıklama",
     selector: (row: CurrentAccountType) => row.Description,
@@ -818,7 +824,7 @@ export const MemberColumnHeaders = (editFunc: any, deleteFunc: any) => [
     selector: (row: any) => (
       <div className="flex items-center justify-center gap-3">
         <Image
-          src={Edit2}
+          src={EditIcon}
           width={20}
           height={20}
           alt="Edit"
@@ -826,7 +832,7 @@ export const MemberColumnHeaders = (editFunc: any, deleteFunc: any) => [
           onClick={async () => editFunc({ id: row.Id })}
         />
         <Image
-          src={Delete2}
+          src={Delete3}
           width={20}
           height={20}
           alt="Delete"
@@ -896,15 +902,20 @@ export const DistributorSatisColumnHeaders = [
 
   {
     name: "Toplam (TL)",
-    selector: (row: DistributorSaleType) =>
-      new Intl.NumberFormat("tr-TR", {
-        style: "currency",
-        currency: "TRY",
-        currencyDisplay: "code",
-      })
-        .format(row.Total)
-        .replace("TRY", "")
-        .trim(),
+    selector: (row: DistributorSaleType) => (
+      <span className="text-moneyGreen">
+        {new Intl.NumberFormat("tr-TR", {
+          style: "currency",
+          currency: "TRY",
+          currencyDisplay: "code",
+        })
+          .format(row.Total)
+          .replace("TRY", "")
+          .trim()}{" "}
+        ₺
+      </span>
+    ),
+
     sortable: true,
   },
   {
@@ -960,7 +971,7 @@ export const CompanyCarListTypeHeaders = (editFunc: any, deleteFunc: any) => [
     selector: (row: any) => (
       <div className="flex items-center justify-center gap-3">
         <Image
-          src={Edit2}
+          src={EditIcon}
           width={20}
           height={20}
           alt="Edit"
@@ -968,7 +979,7 @@ export const CompanyCarListTypeHeaders = (editFunc: any, deleteFunc: any) => [
           onClick={async () => editFunc({ id: row.Id })}
         />
         <Image
-          src={Delete2}
+          src={Delete3}
           width={20}
           height={20}
           alt="Delete"

@@ -18,6 +18,7 @@ export default {
         adminDarkBlueBg: "#e0f2fe",
         adminDarkBlue: "#3c7eff",
         "border-primary": "#D0D5DD",
+        moneyGreen: "#1aaf66",
       },
     },
   },

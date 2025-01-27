@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { format } from "date-fns";
 import { PriceType } from "@/Types/Price.Types";
-import { Delete2, Edit2 } from "./IconList";
+import { Delete2, Delete3, Edit2, EditIcon } from "./IconList";
 
 export const PriceHeaderColumns = (editCommand: any, deleteCommand: any) => [
   {
@@ -46,7 +46,7 @@ export const PriceHeaderColumns = (editCommand: any, deleteCommand: any) => [
     selector: (row: any) => (
       <div className="flex items-center justify-center gap-3">
         <Image
-          src={Edit2}
+          src={EditIcon}
           width={20}
           height={20}
           alt="Edit"
@@ -54,7 +54,7 @@ export const PriceHeaderColumns = (editCommand: any, deleteCommand: any) => [
           onClick={async () => editCommand({ id: row.Id })}
         />
         <Image
-          src={Delete2}
+          src={Delete3}
           width={20}
           height={20}
           alt="Delete"

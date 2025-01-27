@@ -10,6 +10,7 @@ import { PaginationType, ResponseResult } from "@/Types/Common.Types";
 import { ProductListType, ProductType } from "@/Types/Product.Types";
 import {
   Delete2,
+  Delete3,
   EditIcon,
   ExportCsvIcon,
   PlusSmall,
@@ -177,24 +178,20 @@ export default function ProductsSubLeftSection({
           <div
             className="group flex w-full flex-col items-center justify-center gap-2 rounded-md p-3 text-sm transition-all hover:bg-blue-100"
             key={index}
-            onClick={async () => {
-              toggleOpened(false);
-              await selectAction(Number(item.Id));
-              toggleOpened(true);
-            }}
           >
             <div className="flex w-full items-center justify-between">
               <h4 className="cursor-pointer text-[16px]">{item.Name}</h4>
               <div className="h-[30px]">
                 <div className="hidden items-center gap-3 opacity-0 transition-all delay-[25] group-hover:flex group-hover:opacity-100">
                   <Image
-                    src={Delete2}
+                    src={Delete3}
                     width={20}
                     height={20}
                     alt={item.Name}
                     className="cursor-pointer"
                     onClick={async () => {
                       await deleteProductFunc({ id: Number(item.Id) });
+                      toggleOpened(false);
                     }}
                   />
                   <Image
@@ -203,6 +200,11 @@ export default function ProductsSubLeftSection({
                     height={20}
                     alt={item.Name}
                     className="cursor-pointer"
+                    onClick={async () => {
+                      toggleOpened(false);
+                      await selectAction(Number(item.Id));
+                      toggleOpened(true);
+                    }}
                   />
                 </div>
                 <div className="block rounded-md bg-[#2970ff] px-2 py-1 text-sm text-white opacity-100 group-hover:hidden group-hover:opacity-0">
