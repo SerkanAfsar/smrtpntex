@@ -30,6 +30,7 @@ import ArrowRight from "../public/icons/arrowright.svg?url";
 import Edit2 from "../public/icons/edit2.svg?url";
 import Delete2 from "../public/icons/delete2.svg?url";
 import Delete3 from "../public/icons/delete3.svg?url";
+import Logout from "../public/icons/logout.svg?url";
 
 export {
   Edit2,
@@ -64,4 +65,5 @@ export {
   ExitIcon,
   NotSelectedIcon,
   Delete3,
+  Logout,
 };

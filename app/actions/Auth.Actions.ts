@@ -2,6 +2,7 @@
 
 import { AuthValidType, UserTokenType } from "@/Types/Auth.Types";
 import { ResponseResult } from "@/Types/Common.Types";
+import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 
 export const LoginValidSectionAction = async ({
@@ -27,4 +28,10 @@ export const LoginValidSectionAction = async ({
     cookieStore.set("smartJwt", data.Token);
   }
   return result;
+};
+
+export const LogoutAction = async () => {
+  const cookieStore = await cookies();
+  cookieStore.delete("smartJwt");
+  redirect("/Admin/Login");
 };

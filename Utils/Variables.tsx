@@ -13,6 +13,7 @@ import {
   FirmalarIcon,
   HelperIcon,
   IcerikYonetimiIcon,
+  Logout,
   LogsIcon,
   PetronetIcon,
   ProductsIcon,
@@ -44,6 +45,7 @@ import {
   DistributorUserType,
 } from "@/Types/Distrubitor.Types";
 import { SystemLogType, UserLogType } from "@/Types/Log.Types";
+import { LogoutAction } from "@/app/actions/Auth.Actions";
 
 export const AdminMenuList: MenuLinkGroupType[] = [
   {
@@ -151,6 +153,20 @@ export const AdminMenuList: MenuLinkGroupType[] = [
         icon: PetronetIcon,
         url: "/Admin/Petronet",
         isOpenedForce: true,
+      },
+    ],
+  },
+  {
+    sectionName: "Three",
+    menus: [
+      {
+        title: "Güvenli Çıkış",
+        icon: Logout,
+        url: "/",
+        isOpenedForce: true,
+        clickFunc: async () => {
+          await LogoutAction();
+        },
       },
     ],
   },

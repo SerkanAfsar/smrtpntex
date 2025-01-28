@@ -36,6 +36,7 @@ export type MenuLinkItemType = {
   title: string;
   url: string;
   isOpenedForce?: boolean;
+  clickFunc?: () => Promise<void>;
 };
 
 export type MenuLinkGroupType = {

@@ -24,6 +24,12 @@ export default function LeftSectionList({
               "relative flex w-full items-center gap-3 whitespace-nowrap rounded-md px-2 py-2.5 transition-all hover:bg-adminBgColor",
               pathName == menu.url && "bg-adminBgColor",
             )}
+            onClick={async (e) => {
+              if (menu.clickFunc) {
+                e.preventDefault();
+                await menu.clickFunc();
+              }
+            }}
             href={menu.url}
             title={menu.title}
           >
@@ -46,6 +52,9 @@ export default function LeftSectionList({
           </Link>
         </li>
       ))}
+      {/* <li className="flex w-full items-center justify-start gap-3">
+        Güvenli Çıkış
+      </li> */}
     </ul>
   );
 }
