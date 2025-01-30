@@ -1,7 +1,7 @@
 import { GetAllStationsService } from "@/Services/StationService";
 import { PaginationType, ResponseResult } from "@/Types/Common.Types";
 import { StationType } from "@/Types/Station.Types";
-import PinIcon from "../../../../../public/icons/pinicon.svg";
+
 import {
   GoogleMap,
   InfoWindow,
