@@ -1,6 +1,7 @@
 import { GetAllStationsService } from "@/Services/StationService";
 import { PaginationType, ResponseResult } from "@/Types/Common.Types";
 import { StationType } from "@/Types/Station.Types";
+import PinIcon from "../../../../../public/icons/pinicon.svg";
 import {
   GoogleMap,
   InfoWindow,
@@ -17,6 +18,20 @@ const containerStyle = {
 const center = {
   lat: 39.056,
   lng: 35.3213,
+};
+const colorTypes: Record<string, string> = {
+  alpet: "#58ba1f",
+  aytemiz: "#f70112",
+  bp: "#fcdc00",
+  lukoil: "#e71932",
+  moil: "#382f84",
+  "petrol ofisi": "#e71b23",
+  shell: "#f4cf00",
+  smartpoint: "#29567d",
+  sunpet: "#e09200",
+  total: "#8639e1",
+  tp: "#fcffff",
+  deneme: "black",
 };
 export default function StationMapsList() {
   const { isLoaded } = useJsApiLoader({
@@ -45,6 +60,15 @@ export default function StationMapsList() {
     process();
   }, []);
 
+  const customIcon = (brandName: string) => {
+    return {
+      path: "M32,5A21,21,0,0,0,11,26c0,17,21,33,21,33S53,43,53,26A21,21,0,0,0,32,5Zm0,31A10,10,0,1,1,42,26,10,10,0,0,1,32,36Z",
+      fillColor: colorTypes[brandName],
+      fillOpacity: 1,
+      scale: 0.5,
+    };
+  };
+
   const handleCloseInfoWindow = () => {
     setMarkerId(null);
   };
@@ -52,9 +76,7 @@ export default function StationMapsList() {
     <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={6}>
       {list.map((item: StationType) => (
         <Marker
-          icon={{
-            url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
-          }}
+          icon={customIcon(item.BrandName?.toLocaleLowerCase() || "smartpoint")}
           onClick={() => setMarkerId(item.Id)}
           key={item.Id}
           position={{ lat: Number(item.Latitude), lng: Number(item.Longitude) }}
