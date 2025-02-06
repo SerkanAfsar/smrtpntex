@@ -97,9 +97,9 @@ export default function StationDetailModal({
           tanks: undefined,
           TaxNumber: "",
           TaxOffice: "",
-          priceCode: "",
-          purchasePrice: 0,
-          remarketingRatio: 0,
+          PriceCode: "",
+          PurchasePrice: 0,
+          RemarketingRatio: 0,
         },
         { keepValues: false },
       );
