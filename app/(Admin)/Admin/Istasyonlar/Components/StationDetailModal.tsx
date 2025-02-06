@@ -31,15 +31,16 @@ export default function StationDetailModal({
   setUpdated,
   stationData,
   title,
+  distributorList,
 }: {
   toggleOpened: any;
   isOpenedModal: boolean;
   setUpdated: any;
   stationData: StationType | null;
   title: string;
+  distributorList: CustomOptionsType[];
 }) {
   const [brandList, setBrandList] = useState<CustomOptionsType[]>([]);
-
   useEffect(() => {
     const process = async () => {
       const result = await GetStationBrandTypesService();
@@ -96,6 +97,9 @@ export default function StationDetailModal({
           tanks: undefined,
           TaxNumber: "",
           TaxOffice: "",
+          priceCode: "",
+          purchasePrice: 0,
+          remarketingRatio: 0,
         },
         { keepValues: false },
       );
@@ -119,6 +123,11 @@ export default function StationDetailModal({
       taxOffice: data.TaxOffice,
       title: data.Title,
       id: stationData?.Id ?? null,
+      distributorId: data.DistributorId,
+      priceCode: data.PriceCode,
+      purchasePrice: data.PurchasePrice,
+      remarketingRatio: data.RemarketingRatio,
+
       tanks: data.tanks?.map((item: TankType) => ({
         currentCapacity: item.CurrentCapacity,
         integratorId: item.IntegratorId,
@@ -172,6 +181,17 @@ export default function StationDetailModal({
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <div className="flex flex-col gap-4 rounded-md border p-4">
           <h2 className="text-sm font-bold">İstasyon Bilgileri</h2>
+          <CustomSelect
+            {...register("DistributorId", {
+              required: "Distribütör Seçiniz",
+              valueAsNumber: true,
+            })}
+            setFirst={true}
+            options={distributorList}
+            className="rounded-md border p-3"
+            title="Distribütör Seçiniz"
+            err={errors.DistributorId?.message}
+          />
           <CustomTextbox
             {...register("Title", {
               required: "Ünvan Giriniz..",
@@ -274,6 +294,39 @@ export default function StationDetailModal({
             title="İstasyon No"
             // defaultValue={stationData?.StationNumber}
             err={errors.StationNumber?.message}
+          />
+          <div className="flex items-center justify-between gap-4">
+            <CustomTextbox
+              {...register("PurchasePrice", {
+                required: "Logo Fiyat Kodu Giriniz..",
+                valueAsNumber: true,
+              })}
+              className="rounded-md border p-3 outline-none"
+              title="Logo Fiyat Kodu"
+              type="number"
+              // defaultValue={stationData?.Latitude}
+              err={errors.PurchasePrice?.message}
+            />
+            <CustomTextbox
+              {...register("RemarketingRatio", {
+                required: "Yeniden Pazarlama Oranı Giriniz..",
+                valueAsNumber: true,
+              })}
+              type="number"
+              className="rounded-md border p-3 outline-none"
+              title="Yeniden Pazarlama Oranı"
+              // defaultValue={stationData?.Longitude}
+              err={errors.RemarketingRatio?.message}
+            />
+          </div>
+          <CustomTextbox
+            {...register("PriceCode", {
+              required: "Fiyat Kodu Giriniz..",
+            })}
+            className="rounded-md border p-3 outline-none"
+            title="Fiyat Kodu"
+            // defaultValue={stationData?.StationIP}
+            err={errors.PriceCode?.message}
           />
 
           <CustomTextbox

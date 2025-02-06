@@ -12,7 +12,7 @@ import { useStationModal } from "@/store/useStationModal";
 import { useShallow } from "zustand/shallow";
 import StationDetailModal from "../Components/StationDetailModal";
 import { ExcelIstasyonlarList } from "@/Services/Excel.Service";
-import { ResponseResult } from "@/Types/Common.Types";
+import { CustomOptionsType, ResponseResult } from "@/Types/Common.Types";
 import { StationType } from "@/Types/Station.Types";
 import { DeleteStationService } from "@/Services/StationService";
 import { toast } from "react-toastify";
@@ -20,7 +20,11 @@ import StationMapsList from "../Components/StationMapsList";
 
 export type ContainerListProps = Record<string, any>;
 
-export default function StationListContainer() {
+export default function StationListContainer({
+  distributorList,
+}: {
+  distributorList?: CustomOptionsType[];
+}) {
   const isOpened = useLeftMenuStore((state) => state.isOpened);
   const [keywords, setKeywords] = useState<string>("");
   const [isActive, setIsActive] = useState<boolean | undefined>(undefined);
@@ -152,6 +156,7 @@ export default function StationListContainer() {
         toggleOpened={toggleOpenedStation}
         setUpdated={setStationUpdate}
         title={selectedStation ? "İstasyon Güncelle" : "İstasyon Ekle"}
+        distributorList={distributorList ?? []}
       />
     </>
   );

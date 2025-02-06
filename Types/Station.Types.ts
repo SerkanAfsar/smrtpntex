@@ -17,10 +17,15 @@ export type AddStationType = {
   stationIP: string;
   isActive: boolean;
   tanks?: AddTankType[];
+  priceCode: string;
+  remarketingRatio: number;
+  purchasePrice: number;
+  distributorId: number;
   id?: number | null;
 };
 
 export type StationType = {
+  DistributorId: number;
   BrandName?: string;
   ImageUrl?: string;
   StationGuid: string;
@@ -40,6 +45,9 @@ export type StationType = {
   CreatedById: string | null;
   CreatedDate: string;
   Id: number;
+  RemarketingRatio: number;
+  PriceCode: string;
+  PurchasePrice: number;
   tanks?: TankType[];
 };
 
