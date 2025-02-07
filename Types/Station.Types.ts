@@ -26,7 +26,7 @@ export type AddStationType = {
 };
 
 export type StationType = {
-  DistributorId: number;
+  DistributorId: number | string;
   BrandName?: string;
   ImageUrl?: string;
   StationGuid: string;

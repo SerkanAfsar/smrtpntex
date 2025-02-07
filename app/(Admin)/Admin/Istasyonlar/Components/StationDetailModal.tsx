@@ -80,6 +80,7 @@ export default function StationDetailModal({
       reset(
         {
           Title: "",
+          DistributorId: "",
           AffiliateCode: "",
           CreatedById: "",
           CreatedDate: "",
@@ -105,7 +106,13 @@ export default function StationDetailModal({
         { keepValues: false },
       );
     } else {
-      reset({ ...stationData, tanks: stationData?.tanks });
+      reset({
+        ...stationData,
+        tanks: stationData?.tanks,
+        DistributorId:
+          stationData.DistributorId == 0 ? "" : stationData.DistributorId,
+        AffiliateCode: stationData.AffiliateCode.trim(),
+      });
     }
   }, [stationData, reset, clearErrors, remove]);
 
@@ -124,7 +131,7 @@ export default function StationDetailModal({
       taxOffice: data.TaxOffice,
       title: data.Title,
       id: stationData?.Id ?? null,
-      distributorId: data.DistributorId,
+      distributorId: data.DistributorId as number,
       priceCode: data.PriceCode,
       purchasePrice: data.PurchasePrice,
       remarketingRatio: data.RemarketingRatio,
@@ -263,6 +270,7 @@ export default function StationDetailModal({
           <CustomTextbox
             {...register("SalePrice", {
               required: "Satış Fiyatı Giriniz..",
+              valueAsNumber: true,
             })}
             type="number"
             className="rounded-md border p-3 outline-none"
