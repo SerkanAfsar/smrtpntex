@@ -21,6 +21,7 @@ export type AddStationType = {
   remarketingRatio: number;
   purchasePrice: number;
   distributorId: number;
+  salePrice: number;
   id?: number | null;
 };
 
@@ -44,6 +45,7 @@ export type StationType = {
   DeletedDate: string | null;
   CreatedById: string | null;
   CreatedDate: string;
+  SalePrice: number;
   Id: number;
   RemarketingRatio: number;
   PriceCode: string;

@@ -100,6 +100,7 @@ export default function StationDetailModal({
           PriceCode: "",
           PurchasePrice: 0,
           RemarketingRatio: 0,
+          SalePrice: 0,
         },
         { keepValues: false },
       );
@@ -127,6 +128,7 @@ export default function StationDetailModal({
       priceCode: data.PriceCode,
       purchasePrice: data.PurchasePrice,
       remarketingRatio: data.RemarketingRatio,
+      salePrice: data.SalePrice,
 
       tanks: data.tanks?.map((item: TankType) => ({
         currentCapacity: item.CurrentCapacity,
@@ -257,6 +259,16 @@ export default function StationDetailModal({
             title="Müşteri Özel Kodu"
             // defaultValue={stationData?.AffiliateCode}
             err={errors.AffiliateCode?.message}
+          />
+          <CustomTextbox
+            {...register("SalePrice", {
+              required: "Satış Fiyatı Giriniz..",
+            })}
+            type="number"
+            className="rounded-md border p-3 outline-none"
+            title="Satış Fiyatı"
+            // defaultValue={stationData?.AffiliateCode}
+            err={errors.SalePrice?.message}
           />
           <div className="flex items-center justify-between gap-4">
             <CustomTextbox
