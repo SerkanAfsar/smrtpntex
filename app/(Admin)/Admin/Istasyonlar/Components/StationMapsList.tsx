@@ -54,7 +54,10 @@ export default function StationMapsList() {
         });
       if (result.IsSuccess) {
         const data = result.Data as PaginationType<StationType>;
-        setList(data.records as StationType[]);
+        const filteredData = ((data.records as StationType[]) || []).filter(
+          (a) => a.IsActive == true,
+        );
+        setList(filteredData);
       }
     };
     process();

@@ -318,11 +318,11 @@ export default function StationDetailModal({
           <div className="flex items-center justify-between gap-4">
             <CustomTextbox
               {...register("PurchasePrice", {
-                required: "Logo Fiyat Kodu Giriniz..",
+                required: "Alış Fiyatı Giriniz..",
                 valueAsNumber: true,
               })}
               className="rounded-md border p-3 outline-none"
-              title="Logo Fiyat Kodu"
+              title="Alış Fiyatı"
               type="number"
               // defaultValue={stationData?.Latitude}
               err={errors.PurchasePrice?.message}
@@ -341,10 +341,10 @@ export default function StationDetailModal({
           </div>
           <CustomTextbox
             {...register("PriceCode", {
-              required: "Fiyat Kodu Giriniz..",
+              required: "Logo Fiyat Kodu Giriniz..",
             })}
             className="rounded-md border p-3 outline-none"
-            title="Fiyat Kodu"
+            title="Logo Fiyat Kodu"
             // defaultValue={stationData?.StationIP}
             err={errors.PriceCode?.message}
           />
