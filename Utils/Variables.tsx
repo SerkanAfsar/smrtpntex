@@ -90,6 +90,12 @@ export const AdminMenuList: MenuLinkGroupType[] = [
         url: "/Admin/Fiyatlar",
         isOpenedForce: true,
       },
+      {
+        title: "Mütakabat",
+        icon: ProductsIcon,
+        url: "/Admin/Mutakabat",
+        isOpenedForce: true,
+      },
       // {
       //   title: "İçerik Yönetimi",
       //   icon: IcerikYonetimiIcon,
