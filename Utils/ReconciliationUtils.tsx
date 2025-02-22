@@ -66,22 +66,23 @@ const StatuConverter = (
 
     case "Waiting": {
       return (
-        <div className="flex w-full items-center justify-center gap-3 p-1">
-          <button
-            type="button"
-            className="rounded bg-blue-800 px-3 py-1 text-white"
-            onClick={async () => await approveFunc(id)}
-          >
-            Onayla
-          </button>
-          <button
-            type="button"
-            className="rounded bg-red-800 px-3 py-1 text-white"
-            onClick={async () => await denyFunc(id)}
-          >
-            Reddet
-          </button>
-        </div>
+        // <div className="flex w-full items-center justify-center gap-3 p-1">
+        //   <button
+        //     type="button"
+        //     className="rounded bg-blue-800 px-3 py-1 text-white"
+        //     onClick={async () => await approveFunc(id)}
+        //   >
+        //     Onayla
+        //   </button>
+        //   <button
+        //     type="button"
+        //     className="rounded bg-red-800 px-3 py-1 text-white"
+        //     onClick={async () => await denyFunc(id)}
+        //   >
+        //     Reddet
+        //   </button>
+        // </div>
+        "Bekleme Durumunda"
       );
     }
     default: {
