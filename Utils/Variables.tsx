@@ -91,7 +91,7 @@ export const AdminMenuList: MenuLinkGroupType[] = [
         isOpenedForce: true,
       },
       {
-        title: "Mütakabat",
+        title: "Mutabakat",
         icon: ProductsIcon,
         url: "/Admin/Mutakabat",
         isOpenedForce: true,
