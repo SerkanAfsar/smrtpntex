@@ -53,7 +53,7 @@ export default function LoginSection({
       onSubmit={handleSubmit(onSubmit)}
       className="flex w-full flex-col items-start justify-start gap-3 text-[#635C5C]"
     >
-      <h2></h2>
+      <h2 className="-mt-4 w-full text-center text-lg text-black">Admin</h2>
       <CustomTextbox
         {...register("userName", { required: "Kullanıcı Adı Boş Bırakılamaz" })}
         className="block w-full rounded-md border border-[#887E7E] p-3 text-sm text-[#635C5C] placeholder:text-sm placeholder:text-[#635C5C]"

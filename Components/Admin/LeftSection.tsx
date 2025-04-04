@@ -57,16 +57,20 @@ export default function LeftSection() {
               height={24}
               alt="Smartpoint"
             />
-            <Image
-              src={SmartPoint2Logo}
-              width={70}
-              height={24}
-              alt="Smartpoint"
+            <div
               className={cn(
-                "sticky inset-0 transition-all",
+                "sticky inset-0 flex w-full items-end justify-between transition-all",
                 isOpened ? "visible opacity-100" : "hidden opacity-0",
               )}
-            />
+            >
+              <Image
+                src={SmartPoint2Logo}
+                width={70}
+                height={24}
+                alt="Smartpoint"
+              />
+              <span className="text-base font-bold text-black">Admin</span>
+            </div>
           </Link>
         </li>
       </ul>

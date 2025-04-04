@@ -47,6 +47,7 @@ export default function ValidSection({ userName }: { userName: string }) {
         placeholder="Kullanıcı Adınız"
         err={errors.userName?.message}
       /> */}
+      <h2 className="-mt-4 w-full text-center text-lg text-black">Admin</h2>
       <CustomTextbox
         {...register("validCode", {
           required: "Doğrulama Kodu Boş Bırakılamaz",
