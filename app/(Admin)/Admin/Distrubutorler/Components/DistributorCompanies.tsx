@@ -66,7 +66,6 @@ export default function DistributorCompanies({
     process();
   }, [selectedDistributor.Id]);
 
-  useEffect(() => {}, []);
   return (
     <section className="ml-[62px] flex w-[320px] flex-col border-r border-t bg-white">
       <div className="flex w-full flex-col items-start justify-start gap-4 border-b bg-adminBgColor p-4 text-sm">

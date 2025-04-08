@@ -2,14 +2,14 @@
 import AdminTopSection from "@/Components/Admin/TopSection";
 import CustomButton from "@/Components/UI/CustomButton";
 
-import { ExportCsvIcon } from "@/Utils/IconList";
+import { ExportCsvIcon, PlusSmall } from "@/Utils/IconList";
 
 import DistributorsCustomSearch from "../Components/DistributorsCustomSearch";
 import { useEffect, useState } from "react";
 
 import ContentWithInfoSection from "@/Components/Admin/ContentWithInfoSection";
 import ContentSubLeftSearch from "@/Components/Admin/ContentSubLeftSearch";
-import { PaginationType } from "@/Types/Common.Types";
+import { CustomOptionsType, PaginationType } from "@/Types/Common.Types";
 import { DistrubitorType } from "@/Types/Distrubitor.Types";
 import { useDistrubutorModal } from "@/store/useDistrubutorModal";
 
@@ -29,6 +29,7 @@ import CustomDatatable from "@/Components/UI/CustomDataTable";
 import { cn } from "@/Utils";
 import DistributorCompanies from "../Components/DistributorCompanies";
 import { useCompanyModal } from "@/store/useCompanyModal";
+import AddEditFinanceModal from "../../Firmalar/Components/AddEditFinanceModal";
 
 const types: MenuType = {
   Satışlar: {
@@ -75,13 +76,17 @@ const types: MenuType = {
 
 export default function DistrubutorContainer({
   dataResult,
+  paymentMethods,
 }: {
   dataResult: PaginationType<DistrubitorType>;
+  paymentMethods?: CustomOptionsType[];
 }) {
   const [keywords, setKeywords] = useState<string>("");
   const [activeMenu, setActiveMenu] = useState<string>("Satışlar");
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
+  const [openFinanceModal, setOpenFinansModal] = useState<boolean>(false);
+  const [isUpdated, setIsUpdated] = useState<boolean>(false);
 
   const [selectedCompany, setSelectedCompany] = useCompanyModal(
     useShallow((state) => [state.selectedCompany, state.setSelectedCompany]),
@@ -115,6 +120,7 @@ export default function DistrubutorContainer({
             alert("test");
           }}
           addAction={() => {
+            setOpenFinansModal(false);
             toggleOpened(false);
             setSelectedDistributor(undefined);
             toggleOpened(true);
@@ -157,11 +163,27 @@ export default function DistrubutorContainer({
                   ))}
                 </div>
               </div>
-              <CustomButton
-                className="gap-1 bg-green-100 p-2 text-green-600"
-                icon={ExportCsvIcon}
-                title="Dışa Aktar"
-              />
+              <div className="flex items-center justify-center gap-3">
+                {activeMenu == "Finans" && (
+                  <CustomButton
+                    className="P-2 bg-blue-100 text-blue-500"
+                    onClick={async () => {
+                      if (selectedCompany?.Id) {
+                        setOpenFinansModal(true);
+                      } else {
+                        alert("Firma Seçiniz");
+                      }
+                    }}
+                    icon={PlusSmall}
+                    title={"Finans Ekle"}
+                  />
+                )}
+                <CustomButton
+                  className="gap-1 bg-green-100 p-2 text-green-600"
+                  icon={ExportCsvIcon}
+                  title="Dışa Aktar"
+                />
+              </div>
             </AdminTopSection>
             <DistributorsCustomSearch
               startDate={startDate}
@@ -201,6 +223,7 @@ export default function DistrubutorContainer({
                   startDate={startDate}
                   endDate={endDate}
                   keywords={keywords}
+                  updated={isUpdated}
                 />
               )}
           </>
@@ -224,6 +247,19 @@ export default function DistrubutorContainer({
           taxNumber: selectedDistributor?.TaxNumber ?? "",
           paymentMethodId: selectedDistributor?.PaymentMethodId ?? 0,
           limitId: selectedDistributor?.AlertLimit ?? 0,
+        }}
+      />
+      <AddEditFinanceModal
+        companyId={selectedCompany?.Id as number}
+        isOpenedModal={openFinanceModal}
+        paymentMethods={paymentMethods!}
+        setUpdated={setIsUpdated}
+        toggleOpenedModal={setOpenFinansModal}
+        editData={{
+          description: "",
+          expense: 0,
+          paymentMethodId: "",
+          revenue: 0,
         }}
       />
     </>

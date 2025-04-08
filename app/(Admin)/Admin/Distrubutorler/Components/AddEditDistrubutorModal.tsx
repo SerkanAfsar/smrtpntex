@@ -81,7 +81,9 @@ export default function AddEditDistrubutorModal({
           message: "Uyarı Limiti Risk Limitinden Fazla Olamaz",
         });
       } else {
-        clearErrors("alertLimit");
+        // if (value.alertLimit) {
+        //   clearErrors("alertLimit");
+        // }
       }
     });
     return () => unsubscribe();
@@ -121,7 +123,9 @@ export default function AddEditDistrubutorModal({
       )}
     >
       <div className="flex items-center justify-between">
-        <h1 className="text-lg font-medium">Distribütör Ekle</h1>
+        <h1 className="text-lg font-medium">
+          Distribütör {dataModel.id ? "Güncelle" : "Ekle"}
+        </h1>
         <Image
           src={ExitIcon}
           alt="Exit"

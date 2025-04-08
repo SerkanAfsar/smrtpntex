@@ -1,26 +1,45 @@
-import { GetAllDistrubitors } from "@/Services/DistrubitorsService";
+import {
+  GetAllDistrubitors,
+  GetPaymentMethodTypes,
+} from "@/Services/DistrubitorsService";
 import DistrubutorContainer from "./Containers/DistrubutorContainer";
-import { PaginationType } from "@/Types/Common.Types";
-import { DistrubitorType } from "@/Types/Distrubitor.Types";
+import { CustomOptionsType, PaginationType } from "@/Types/Common.Types";
+import { DistrubitorType, PaymentMethodType } from "@/Types/Distrubitor.Types";
 import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Distribütörler",
 };
 
 export default async function Page() {
-  const result = await GetAllDistrubitors({
-    searchType: {
-      pageIndex: 1,
-      pageSize: 10000,
-    },
-  });
-  if (!result.IsSuccess) {
-    throw new Error(result.Message || "Hata");
+  const [resultDistributors, resultPaymentMethods] = await Promise.all([
+    GetAllDistrubitors({
+      searchType: {
+        pageIndex: 1,
+        pageSize: 10000,
+      },
+    }),
+    GetPaymentMethodTypes(),
+  ]);
+
+  if (!resultDistributors.IsSuccess) {
+    throw new Error(resultDistributors.Message || "Distributor Hata");
   }
+  if (!resultPaymentMethods.IsSuccess) {
+    throw new Error(resultPaymentMethods.Message || "Payment Method Hata");
+  }
+
+  const paymentMethodList = resultPaymentMethods.Data as PaymentMethodType[];
+  const paymetOptionsData: CustomOptionsType[] = paymentMethodList.map(
+    (item) => ({
+      name: item.Name,
+      value: item.Id,
+    }),
+  );
 
   return (
     <DistrubutorContainer
-      dataResult={result.Data as PaginationType<DistrubitorType>}
+      dataResult={resultDistributors.Data as PaginationType<DistrubitorType>}
+      paymentMethods={paymetOptionsData}
     />
   );
 }

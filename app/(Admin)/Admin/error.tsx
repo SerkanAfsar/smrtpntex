@@ -1,6 +1,5 @@
 "use client"; // Error boundaries must be Client Components
 
-import { useLeftMenuStore } from "@/store/useLeftMenuStore";
 import { cn } from "@/Utils";
 import { useEffect } from "react";
 
@@ -11,10 +10,10 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  const [isOpened, toggleOpened] = useLeftMenuStore((state) => [
-    state.isOpened,
-    state.toggleOpened,
-  ]);
+  // const [isOpened, toggleOpened] = useLeftMenuStore((state) => [
+  //   state.isOpened,
+  //   state.toggleOpened,
+  // ]);
   useEffect(() => {
     // Log the error to an error reporting service
     console.error(error);
@@ -23,8 +22,7 @@ export default function Error({
   return (
     <div
       className={cn(
-        "flex flex-1 flex-col bg-adminBgColor transition-all",
-        isOpened ? "ml-[244px]" : "ml-[62px]",
+        "ml-[244px] flex flex-1 flex-col bg-adminBgColor transition-all",
       )}
     >
       <div>
