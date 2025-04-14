@@ -18,7 +18,7 @@ export default function DashboardContainer({
   return (
     <div
       className={cn(
-        "flex flex-col bg-adminBgColor transition-all",
+        "flex flex-auto flex-col bg-adminBgColor transition-all",
         isOpened ? "ml-[244px]" : "ml-[62px]",
       )}
     >

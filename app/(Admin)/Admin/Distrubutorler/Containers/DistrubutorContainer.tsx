@@ -30,6 +30,8 @@ import { cn } from "@/Utils";
 import DistributorCompanies from "../Components/DistributorCompanies";
 import { useCompanyModal } from "@/store/useCompanyModal";
 import AddEditFinanceModal from "../../Firmalar/Components/AddEditFinanceModal";
+import { CompanyUploadCarsService } from "@/Services/CompanyService";
+import { toast } from "react-toastify";
 
 const types: MenuType = {
   Satışlar: {
@@ -87,6 +89,8 @@ export default function DistrubutorContainer({
   const [endDate, setEndDate] = useState<string>("");
   const [openFinanceModal, setOpenFinansModal] = useState<boolean>(false);
   const [isUpdated, setIsUpdated] = useState<boolean>(false);
+  const [file, setFile] = useState<File | null>(null);
+  const [excelTitle, setExcelTitle] = useState<string>("Toplu Araç Yükle");
 
   const [selectedCompany, setSelectedCompany] = useCompanyModal(
     useShallow((state) => [state.selectedCompany, state.setSelectedCompany]),
@@ -103,6 +107,10 @@ export default function DistrubutorContainer({
   useEffect(() => {
     setSelectedDistributor(undefined);
   }, [setSelectedDistributor]);
+
+  useEffect(() => {
+    setFile(null);
+  }, [selectedCompany?.Id]);
 
   return (
     <>
@@ -145,8 +153,8 @@ export default function DistrubutorContainer({
       <ContentWithInfoSection>
         {selectedDistributor?.Id ? (
           <>
-            <AdminTopSection className="border-b">
-              <div className="flex items-center justify-center">
+            <AdminTopSection className="justify-between border-b">
+              <div className="flex flex-auto items-center justify-start">
                 <div className="mr-3 flex items-center justify-between gap-3">
                   {Object.keys(types).map((key: string, index: number) => (
                     <CustomButton
@@ -163,7 +171,7 @@ export default function DistrubutorContainer({
                   ))}
                 </div>
               </div>
-              <div className="flex items-center justify-center gap-3">
+              <div className="ml-auto flex items-center justify-end gap-3 justify-self-end">
                 {activeMenu == "Finans" && (
                   <CustomButton
                     className="P-2 bg-blue-100 text-blue-500"
@@ -177,6 +185,51 @@ export default function DistrubutorContainer({
                     icon={PlusSmall}
                     title={"Finans Ekle"}
                   />
+                )}
+                {activeMenu == "Araçlar" && (
+                  <div className="flex w-auto flex-auto items-center justify-center gap-3">
+                    <input
+                      type="file"
+                      placeholder="Toplu Araç Yükle"
+                      accept=".xlsx"
+                      onChange={(e) =>
+                        setFile(() =>
+                          e.target.files?.length ? e.target.files[0] : null,
+                        )
+                      }
+                      className="block max-w-44 text-xs text-gray-500 file:mr-4 file:cursor-pointer file:rounded-full file:border-0 file:bg-[#dcfce7] file:p-3 file:text-xs file:font-semibold file:text-green-800 file:shadow-sm hover:file:bg-gray-100"
+                    />
+
+                    <CustomButton
+                      className="gap-1 bg-green-100 p-2 text-green-600"
+                      icon={ExportCsvIcon}
+                      title={excelTitle}
+                      onClick={async () => {
+                        if (!selectedCompany?.Id) {
+                          return toast.error("Firma Seçiniz", {
+                            position: "top-right",
+                          });
+                        }
+
+                        if (!file || !file.name.includes(".xlsx")) {
+                          return toast.error("Excel Dosyası Seçiniz", {
+                            position: "top-right",
+                          });
+                        }
+                        setExcelTitle("Yükleniyor");
+                        const result = await CompanyUploadCarsService({
+                          id: selectedCompany.Id!,
+                          file,
+                        });
+
+                        toast.success(result.Message, {
+                          position: "top-right",
+                        });
+
+                        setFile(null);
+                      }}
+                    />
+                  </div>
                 )}
                 <CustomButton
                   className="gap-1 bg-green-100 p-2 text-green-600"

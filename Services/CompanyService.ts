@@ -284,3 +284,20 @@ export async function AddCompanyCurrentAccounsService({
     url: `/adminapi/Company/current-accounts-add/${id}`,
   })) as ResponseResult<any>;
 }
+
+export async function CompanyUploadCarsService({
+  id,
+  file,
+}: {
+  id: number;
+  file: any;
+}) {
+  const formData = new FormData();
+  formData.append("FileUpload", file);
+  return (await BaseFetch({
+    method: "POST",
+    body: formData,
+    url: `/adminapi/Company/upload-cars/${id}`,
+    isFile: true,
+  })) as ResponseResult<any>;
+}

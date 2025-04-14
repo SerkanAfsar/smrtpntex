@@ -62,11 +62,11 @@ export const AdminMenuList: MenuLinkGroupType[] = [
         icon: DistribitorlerIcon,
         url: "/Admin/Distrubutorler",
       },
-      {
-        title: "Firmalar",
-        icon: FirmalarIcon,
-        url: "/Admin/Firmalar",
-      },
+      // {
+      //   title: "Firmalar",
+      //   icon: FirmalarIcon,
+      //   url: "/Admin/Firmalar",
+      // },
       {
         title: "Araçlar",
         icon: AraclarIcon,

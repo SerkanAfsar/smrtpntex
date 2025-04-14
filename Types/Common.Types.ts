@@ -29,6 +29,7 @@ export type BaseFetchType = {
   method: "GET" | "POST" | "PUT" | "DELETE";
   body?: any | null;
   url: string;
+  isFile?: boolean;
 };
 
 export type MenuLinkItemType = {
