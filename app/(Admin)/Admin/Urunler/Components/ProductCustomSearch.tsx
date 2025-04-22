@@ -28,7 +28,7 @@ export default function ProductCustomSearch({
   }, [innerStatus, setStatus]);
 
   return (
-    <section className="flex w-full items-center justify-start gap-3 border border-b bg-adminBgColor p-3">
+    <section className="flex w-full items-center justify-start gap-3 border-b bg-adminBgColor p-3">
       <CustomTextbox
         placeholder="Ürün Adı"
         isFull={false}

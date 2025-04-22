@@ -31,8 +31,14 @@ import Edit2 from "../public/icons/edit2.svg?url";
 import Delete2 from "../public/icons/delete2.svg?url";
 import Delete3 from "../public/icons/delete3.svg?url";
 import Logout from "../public/icons/logout.svg?url";
+import UrunlerIcon from "../public/icons/urunler.svg?url";
+import UyelerIcon from "../public/icons/uyeler.svg?url";
+import MutakabatIcon from "../public/icons/mutakabat.svg?url";
 
 export {
+  UrunlerIcon,
+  UyelerIcon,
+  MutakabatIcon,
   Edit2,
   Delete2,
   ArrowRight,

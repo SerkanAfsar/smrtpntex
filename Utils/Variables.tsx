@@ -15,9 +15,12 @@ import {
   IcerikYonetimiIcon,
   Logout,
   LogsIcon,
+  MutakabatIcon,
   PetronetIcon,
   ProductsIcon,
+  UrunlerIcon,
   UsersIcon,
+  UyelerIcon,
 } from "./IconList";
 import {
   PetronetDealerSalesType,
@@ -82,7 +85,7 @@ export const AdminMenuList: MenuLinkGroupType[] = [
     menus: [
       {
         title: "Ürünler",
-        icon: ProductsIcon,
+        icon: UrunlerIcon,
         url: "/Admin/Urunler",
         isOpenedForce: true,
       },
@@ -94,7 +97,7 @@ export const AdminMenuList: MenuLinkGroupType[] = [
       },
       {
         title: "Mutabakat",
-        icon: ProductsIcon,
+        icon: MutakabatIcon,
         url: "/Admin/Mutakabat",
         isOpenedForce: true,
       },
@@ -129,7 +132,7 @@ export const AdminMenuList: MenuLinkGroupType[] = [
       },
       {
         title: "Üyeler",
-        icon: UsersIcon,
+        icon: UyelerIcon,
         url: "/Admin/Uyeler",
         isOpenedForce: true,
       },
