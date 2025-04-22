@@ -80,6 +80,7 @@ export default function CustomDatatable({
       if (subjectId) {
         newUrl.searchParams.append("subjectId", subjectId.toString());
       }
+
       if (statusId) {
         newUrl.searchParams.append("statusId", statusId.toString());
       }

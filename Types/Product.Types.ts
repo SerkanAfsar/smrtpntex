@@ -25,6 +25,8 @@ export type ProductType = {
   AddPictureModel: { [key: string]: any };
   Id: number;
   CustomProperties: { [key: string]: any };
+  Description: string;
+  Amount: string;
 };
 
 export type ProductListType = PageIndexType & {

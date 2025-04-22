@@ -46,6 +46,7 @@ import {
 } from "@/Types/Distrubitor.Types";
 import { SystemLogType, UserLogType } from "@/Types/Log.Types";
 import { LogoutAction } from "@/app/actions/Auth.Actions";
+import { ProductType } from "@/Types/Product.Types";
 
 export const AdminMenuList: MenuLinkGroupType[] = [
   {
@@ -83,6 +84,7 @@ export const AdminMenuList: MenuLinkGroupType[] = [
         title: "Ürünler",
         icon: ProductsIcon,
         url: "/Admin/Urunler",
+        isOpenedForce: true,
       },
       {
         title: "Fiyatlar",
@@ -1337,5 +1339,90 @@ export const ActivityLogsHeaderColumns = [
     name: "Oluşturulma Tarihi",
     selector: (row: UserLogType) => format(row.CreatedDate, "dd/MM/yyyy HH:ss"),
     sortable: true,
+  },
+];
+
+export const ProductHeaderColumns = (editFunc: any, deleteFunc: any) => [
+  {
+    name: "Ürün İsmi",
+    selector: (row: ProductType) => row.Name,
+    sortable: true,
+  },
+  {
+    name: "Açıklama",
+    selector: (row: ProductType) => row.Description,
+    sortable: true,
+  },
+  {
+    name: "Kategori",
+    selector: (row: ProductType) => row.CategoryPath,
+    sortable: true,
+  },
+  {
+    name: "Birim",
+    selector: (row: ProductType) => row.UnitId,
+    sortable: true,
+  },
+  {
+    name: "Tutar",
+    selector: (row: ProductType) => row.Amount,
+    sortable: true,
+  },
+  {
+    name: "Sku",
+    selector: (row: ProductType) => row.Sku,
+    sortable: true,
+  },
+  {
+    name: "Aktif mi?",
+    selector: (row: ProductType) => (Boolean(row.IsActive) ? "Aktif" : "Pasif"),
+    sortable: true,
+  },
+
+  // {
+  //   name: "Kayıt Tarihi",
+  //   selector: (row: CarBrandType) =>
+  //     formatDate(row.CreatedDate, "dd.MM.yyy hh:MM"),
+  //   sortable: true,
+  // },
+  {
+    width: "80px",
+    name: "İşlemler",
+    selector: (row: any) => (
+      <div className="flex items-center justify-center gap-3">
+        {/* <Image
+          src={Edit2}
+          width={20}
+          height={20}
+          alt="Edit"
+          className="cursor-pointer"
+          onClick={async () => editFunc({ id: row.Id })}
+        />
+        <Image
+          src={Delete2}
+          width={20}
+          height={20}
+          alt="Delete"
+          className="cursor-pointer"
+          onClick={async () => deleteFunc({ id: row.Id })}
+        /> */}
+        <Image
+          src={EditIcon}
+          width={20}
+          height={20}
+          alt="Edit"
+          className="cursor-pointer"
+          onClick={async () => editFunc({ id: row.Id })}
+        />
+        <Image
+          src={Delete3}
+          width={20}
+          height={20}
+          alt="Delete"
+          className="cursor-pointer"
+          onClick={async () => deleteFunc({ id: row.Id })}
+        />
+      </div>
+    ),
   },
 ];

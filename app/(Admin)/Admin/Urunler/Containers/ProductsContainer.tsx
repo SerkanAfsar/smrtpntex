@@ -2,23 +2,31 @@
 import AdminTopSection from "@/Components/Admin/TopSection";
 import CustomButton from "@/Components/UI/CustomButton";
 import { ExportCsvIcon, PlusSmall } from "@/Utils/IconList";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import ContentWithInfoSection from "@/Components/Admin/ContentWithInfoSection";
-import { GenericType2 } from "@/Types/Common.Types";
+import { GenericType2, ResponseResult } from "@/Types/Common.Types";
 import { useShallow } from "zustand/shallow";
-import NotSelected from "@/Components/Admin/NotSelected";
-import ProductsSubLeftSection from "../Components/ProductsSubLeftSection";
+
 import { CategoryType } from "@/Types/Category.Types";
 import ProductCustomSearch from "../Components/ProductCustomSearch";
 import AddEditProductModal from "../Components/AddEditProductModal";
 import { useProductModal } from "@/store/useProductModal";
+import { cn } from "@/Utils";
+import { useLeftMenuStore } from "@/store/useLeftMenuStore";
+import CustomDatatable from "@/Components/UI/CustomDataTable";
+import { ProductHeaderColumns } from "@/Utils/Variables";
+import { toast } from "react-toastify";
+import { ProductType } from "@/Types/Product.Types";
+import { DeleteProductService } from "@/Services/ProductService";
 
 export default function ProductsContainer({
   dataResult,
 }: {
   dataResult: GenericType2<CategoryType>;
 }) {
-  const [keywords, setKeywords] = useState<string>();
+  const isForceOpened = useLeftMenuStore((state) => state.isOpened);
+  const [keywords, setKeywords] = useState<string | undefined>(undefined);
+  const [status, setStatus] = useState<string | undefined>();
   const data = dataResult.Result as CategoryType[];
 
   const [
@@ -39,9 +47,31 @@ export default function ProductsContainer({
     ]),
   );
 
+  const deleteProductFunc = useCallback(
+    async ({ id }: { id: number }) => {
+      const confirmMessage = confirm(
+        "Ürünü Silmek İstediğinizden Emin misiniz?",
+      );
+      if (confirmMessage) {
+        const result: ResponseResult<ProductType> = await DeleteProductService({
+          id,
+        });
+        if (result.IsSuccess) {
+          setIsUpdated();
+          return toast.success("Ürün Silindi", { position: "top-right" });
+        } else {
+          return toast.error(result.Message ?? "Ürün Silme Hatası", {
+            position: "top-right",
+          });
+        }
+      }
+    },
+    [setIsUpdated],
+  );
+
   return (
     <>
-      <ProductsSubLeftSection
+      {/* <ProductsSubLeftSection
         actionOne={() => {
           alert("test");
         }}
@@ -62,55 +92,76 @@ export default function ProductsContainer({
         setIsUpdated={setIsUpdated}
         isUpdated={isUpdated}
         toggleOpened={toggleOpened}
-      />
-      <ContentWithInfoSection>
-        {selectedProduct?.Id ? (
-          <>
-            <AdminTopSection className="border-b">
-              <h3>Müşteriler</h3>
-              <div className="flex items-center justify-between gap-3">
-                <CustomButton
-                  className="gap-1 bg-green-100 p-1.5 text-sm text-green-600"
-                  icon={ExportCsvIcon}
-                />
-                <CustomButton
-                  title="Müşteri Ekle"
-                  className="bg-adminDarkBlueBg px-3 text-adminDarkBlue"
-                  icon={PlusSmall}
-                />
-              </div>
-            </AdminTopSection>
-            <ProductCustomSearch setKeywords={setKeywords} />
-          </>
-        ) : (
-          <NotSelected
-            title="Ürün"
-            action={() => toggleOpened(true)}
-            buttonTitle="Ürün Ekle"
-          />
+      /> */}
+      <div
+        className={cn(
+          "flex flex-1 flex-col bg-adminBgColor transition-all",
+          isForceOpened ? "ml-[244px]" : "ml-[62px]",
         )}
-      </ContentWithInfoSection>
+      >
+        <ContentWithInfoSection>
+          <AdminTopSection className="border-b">
+            <h3>Ürünler</h3>
+            <div className="flex items-center justify-between gap-3">
+              <CustomButton
+                className="gap-1 bg-green-100 p-1.5 text-sm text-green-600"
+                icon={ExportCsvIcon}
+              />
+              <CustomButton
+                title="Ürün Ekle"
+                onClick={async () => {
+                  toggleOpened(false);
+                  await selectAction(undefined);
+                  toggleOpened(true);
+                }}
+                className="bg-adminDarkBlueBg px-3 text-adminDarkBlue"
+                icon={PlusSmall}
+              />
+            </div>
+          </AdminTopSection>
+          <ProductCustomSearch
+            setKeywords={setKeywords}
+            setStatus={setStatus}
+          />
+          <CustomDatatable
+            apiUrl={"/api/products/getlist"}
+            columns={ProductHeaderColumns(
+              async ({ id }: { id: number }) => {
+                toggleOpened(false);
+                await selectAction(id);
+                toggleOpened(true);
+              },
+              async ({ id }: { id: number }) => {
+                await deleteProductFunc({ id });
+              },
+            )}
+            keywords={keywords}
+            updated={isUpdated}
+            statusId={status}
+          />
+        </ContentWithInfoSection>
 
-      <AddEditProductModal
-        categoryList={data.map((category) => ({
-          name: category.Name,
-          value: category.Id,
-        }))}
-        editData={{
-          amount: selectedProduct?.Amount ?? null,
-          categoryId: selectedProduct?.CategoryId ?? null,
-          description: selectedProduct?.Description ?? "",
-          isActive: selectedProduct?.IsActive ?? null,
-          name: selectedProduct?.Name ?? null,
-          sku: selectedProduct?.Sku ?? null,
-          sort: selectedProduct?.Sort ?? null,
-          unitId: selectedProduct?.UnitId ?? null,
-          Id: selectedProduct?.Id ?? undefined,
-        }}
-        setIsUpdated={setIsUpdated}
-        toggleOpened={toggleOpened}
-        isOpened={isOpened}
-      />
+        <AddEditProductModal
+          categoryList={data.map((category) => ({
+            name: category.Name,
+            value: category.Id,
+          }))}
+          editData={{
+            amount: selectedProduct?.Amount ?? null,
+            categoryId: selectedProduct?.CategoryId ?? null,
+            description: selectedProduct?.Description ?? "",
+            isActive: selectedProduct?.IsActive ?? null,
+            name: selectedProduct?.Name ?? null,
+            sku: selectedProduct?.Sku ?? null,
+            sort: selectedProduct?.Sort ?? null,
+            unitId: selectedProduct?.UnitId ?? null,
+            Id: selectedProduct?.Id ?? undefined,
+          }}
+          setIsUpdated={setIsUpdated}
+          toggleOpened={toggleOpened}
+          isOpened={isOpened}
+        />
+      </div>
     </>
   );
 }
